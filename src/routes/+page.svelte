@@ -12,11 +12,13 @@
 <div class="main">
     {#if visible}
         <h1 transition:fly={{ y: 30, duration: 1000 }}>Science of Happiness</h1>
-        <input transition:fly={{ y: 80, duration: 1000 }} value={email} type="email"/>
+        <div>
+            <input transition:fly={{ y: 80, duration: 1000 }} value={email} type="email"/>
+        </div>
     {/if}
 </div>
 
-<img src="happiness1.jpg" alt="hello" />
+<img src="happiness1.jpg" alt="hello" class="background"/>
 
 <style>
     /* center all elements and stack them like a list with a fixed width between each other */
@@ -32,7 +34,7 @@
         font-style: normal;
     }
 
-    img {
+    .background {
         position: absolute;
         left: 0;
         top: 0;
