@@ -3,15 +3,3 @@
 </div>
 
 <slot />
-
-<style>
-    .main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        font-family: 'Georgia';
-        font-style: normal;
-    }
-</style>

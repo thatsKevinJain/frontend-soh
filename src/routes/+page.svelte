@@ -24,16 +24,6 @@
 
 <style>
     /* center all elements and stack them like a list with a fixed width between each other */
-    .main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        font-family: 'Georgia';
-        font-style: normal;
-    }
-
     .background {
         position: absolute;
         left: 0;
@@ -59,13 +49,6 @@
         width: 80%;
         text-align: center;
         margin-bottom: 40px;
-    }
-
-    .submit-btn {
-        width: 99px;
-        height: 50px;
-        background: #6750A4;
-        border-radius: 100px;
     }
 
     .email-input {
