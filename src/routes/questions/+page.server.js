@@ -1,28 +1,29 @@
-
+// @ts-nocheck
 import { game } from '../../lib/game.js'
+import { redirect } from '@sveltejs/kit';
+let index = 1;
 
-export function load({cookies}){
-    return { 
+export function load({cookies, url}){
+    return {
     	game,
-    	email: cookies.get('email') };
-}
+    	email: cookies.get('email'),
+    	index
+    }
+};
 
 export const actions = {
-	submit: async ({ cookies, request }) => {
+	default: async ({ request, url }) => {
+		// Get the form data //
 		const data = await request.formData();
+		console.log([...data][0]);
 
-		const demographic = [...data].map((d) => {
-			return { question: d[0], answer: d[1] };
-		});
-
-		const email = cookies.get('email');
-		
-		const response = await fetch('https://64873998beba629727904492.mockapi.io/demographic', {
-			method: 'POST',
-			body: JSON.stringify({ demographic, email }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});	
+		// TODO: Store this data in a JSON variable //
+		console.log(index, game.questions.length);
+		if(index >= game.questions.length){
+			// TODO: goto to next page, save all data via API //
+			throw redirect(303, "/");
+		}
+		index = index+1;
+		return { success: true };
 	}
 };

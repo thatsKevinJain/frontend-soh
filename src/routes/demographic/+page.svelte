@@ -6,7 +6,7 @@
 <div class="main">
 	<h1>Hello {data.email.split("@")[0]}, there are {data.demographic.questions.length} demographic questions!</h1>
 
-	<form method="POST" action="/questions?/submit">
+	<form method="POST" action="?/submit">
 	{#each data.demographic.questions as q, i}
 		<p>{i+1}. {q.question}</p>
 			{#each q.options as o, j}
