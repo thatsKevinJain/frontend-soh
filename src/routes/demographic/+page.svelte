@@ -13,7 +13,7 @@
 				<label>
 					<!-- TODO: try to think of some unique "value" names to uniquely identify questions + answers -->
 					<!-- TODO: Add "required flag" -->
-					<input type={q.type} name={q.question} value={o.option}/>
+					<input type={q.type} name={q.question} value={o.option} required/>
 					{o.option}
 				</label><br>
 			{/each}

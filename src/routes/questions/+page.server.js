@@ -15,10 +15,10 @@ export const actions = {
 	default: async ({ request, url }) => {
 		// Get the form data //
 		const data = await request.formData();
-		console.log([...data][0]);
 
 		// TODO: Store this data in a JSON variable //
-		console.log(index, game.questions.length);
+		console.log([...data][0]);
+		
 		if(index >= game.questions.length){
 			// TODO: goto to next page, save all data via API //
 			throw redirect(303, "/");
