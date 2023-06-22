@@ -17,7 +17,7 @@ export const actions = {
 		const data = await request.formData();
 
 		const demographic = [...data].map((d) => {
-			return { question: d[0], answer: d[1] };
+			return { question: parseInt(d[0]), answer: parseInt(d[1]) };
 		});
 
 		const email = cookies.get('email');
