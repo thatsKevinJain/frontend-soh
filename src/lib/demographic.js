@@ -20,7 +20,7 @@ export const demographic =
 			],
 			type: "radio", 	// [radio, checkbox]
 			format: "text",	// [plain-text, images, cards]
-			required: true
+			required: false
 		},
 		{
 			id: 2,
@@ -34,7 +34,7 @@ export const demographic =
 			],
 			type: "radio", 	// [radio, checkbox]
 			format: "text",	// [plain-text, images, cards]
-			required: true
+			required: false
 		},
 		{
 			id: 3,
@@ -59,7 +59,7 @@ export const demographic =
 			],
 			type: "radio", 	// [radio, checkbox]
 			format: "text",	// [plain-text, images, cards]
-			required: true
+			required: false
 		}
 	]
 };
