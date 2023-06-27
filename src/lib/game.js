@@ -14,7 +14,7 @@ export const game =
 			],
 			type: "radio", 	// [radio, checkbox]
 			format: "text",	// [plain-text, images, cards]
-			required: true
+			required: false
 		},
 		{
 			id: 2,
@@ -26,7 +26,7 @@ export const game =
 			],
 			type: "radio", 	// [radio, checkbox]
 			format: "text",	// [plain-text, images, cards]
-			required: true
+			required: false
 		},
 		{
 			id: 3,
@@ -40,7 +40,7 @@ export const game =
 			],
 			type: "radio", 	// [radio, checkbox]
 			format: "text",	// [plain-text, images, cards]
-			required: true
+			required: false
 		},
 		{
 			id: 4,
@@ -52,7 +52,7 @@ export const game =
 			],
 			type: "radio", 	// [radio, checkbox]
 			format: "text",	// [plain-text, images, cards]
-			required: true
+			required: false
 		},
 		{
 			id: 5,
@@ -66,7 +66,7 @@ export const game =
 			],
 			type: "radio", 	// [radio, checkbox]
 			format: "text",	// [plain-text, images, cards]
-			required: true
+			required: false
 		}
 	]
 };

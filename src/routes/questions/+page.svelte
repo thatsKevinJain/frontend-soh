@@ -12,12 +12,10 @@
             <p>{data.index}. {data.game.questions[data.index-1].question}</p>
             {#each data.game.questions[data.index-1].options as o, j}
                 <label>
-                    <!-- TODO: try to think of some unique "value" names to uniquely identify questions + answers -->
-                    <!-- TODO: Add "required flag" -->
-                    <input  type={data.game.questions[data.index-1].type}
-                            name={data.game.questions[data.index-1].id}
-                            value={o.id}
-                            required={data.game.questions[data.index-1].required ? true : null}/>
+                    <input  type     = {data.game.questions[data.index-1].type}
+                            name     = {data.game.questions[data.index-1].id}
+                            value    = {o.id}
+                            required = {data.game.questions[data.index-1].required ? true : null}/>
                     {o.option}
                 </label><br>
             {/each}     
@@ -30,12 +28,10 @@
                 <p>{question}</p>
                 {#each data.game.questions[data.index-1].options as o, j}
                     <label>
-                        <!-- TODO: try to think of some unique "value" names to uniquely identify questions + answers -->
-                        <!-- TODO: Add "required flag" -->
-                        <input  type={data.game.questions[data.index-1].type}
-                                value={parseInt(j+1)}
-                                name={data.game.questions[data.index-1].id + "-" + parseInt(i+1)}
-                                required={data.game.questions[data.index-1].required ? true : null}/>
+                        <input  type     = {data.game.questions[data.index-1].type}
+                                value    = {parseInt(j+1)}
+                                name     = {data.game.questions[data.index-1].id + "-" + parseInt(i+1)}
+                                required = {data.game.questions[data.index-1].required ? true : null}/>
                         {o.option}
                     </label><br>
                 {/each} 

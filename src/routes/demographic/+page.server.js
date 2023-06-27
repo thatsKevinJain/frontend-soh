@@ -1,17 +1,33 @@
 // @ts-nocheck
 import { demographic } from '../../lib/demographic.js'
+import { getResponse } from '../../utils/getResponse.js'
 import { redirect } from '@sveltejs/kit';
 
 export function load({cookies}){
-    return { 
-    	demographic, 
-    	email: cookies.get('email') };
+	return { 
+		demographic, 
+		email: cookies.get('email') };
 }
 
 export const actions = {
 	create: async ({ cookies, request }) => {
 		const data = await request.formData();
-        cookies.set('email', data.get('email'));
+		
+		// TODO: Redirect the user straight to questions if demographic data already exists //
+		let result = await getResponse('http://localhost:3000/user/create', 'POST', { email: data.get('email') });
+		result = JSON.parse(result);
+		
+		if(result){
+			cookies.set('email', data.get('email'));
+			cookies.set('_id', result._id);
+
+			if(result.demographic){
+				throw redirect(303, "/questions?i=1");
+			}
+		}
+		else{
+			throw redirect(303, "/");
+		}
 	},
 	submit: async ({ cookies, request }) => {
 		const data = await request.formData();
@@ -23,15 +39,10 @@ export const actions = {
 			return a;
 		}, {});
 
-		const email = cookies.get('email');
+		const _id = cookies.get('_id');
 		
-		const response = await fetch('https://64873998beba629727904492.mockapi.io/demographic', {
-			method: 'POST',
-			body: JSON.stringify({ demographic: demo, email }),
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
+		const response = await getResponse('http://localhost:3000/user/update', 'POST', { demographic: demo, _id });
+
 		throw redirect(303, "/questions?i=1");
 	}
 };
