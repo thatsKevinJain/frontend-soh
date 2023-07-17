@@ -2,29 +2,39 @@
 // @ts-nocheck
 
 	import { each } from 'svelte/internal';
+    import { onMount } from 'svelte';
 
     // @ts-nocheck
     // import { enhance } from '$app/forms';
     export let data;
 
-    // const progress = document.getElementById("progress");
-    // const stepCircles = document.querySelectorAll(".circle");
-    // let currentActive = 1;
+    onMount(() => {
+        const progress = document.getElementById("progress");
+        const stepCircles = document.querySelectorAll(".circle");
+        let currentActive = data.index-1;
 
-    // update(3);
+        update(data.index);
 
-    // function update(currentActive) {
-    //     stepCircles.forEach((circle, i) => {
-    //         if (i < currentActive) {
-    //             circle.classList.add("active");
-    //         } else {
-    //             circle.classList.remove("active");
-    //         }
-    //     });
+        function update(currentActive) {
+            stepCircles.forEach((circle, i) => {
+                if (i < currentActive) {
+                    circle.classList.add("active");
+                } else {
+                    circle.classList.remove("active");
+                }
+            });
 
-    //     const activeCircles = document.querySelectorAll(".active");
-    //     progress.style.width = ((activeCircles.length - 1) / (stepCircles.length - 1)) * 100 + "%";
-    // }
+            const activeCircles = document.querySelectorAll(".active");
+            progress.style.width = ((activeCircles.length - 1) / (stepCircles.length - 1)) * 100 + "%";
+        }
+    })
+
+    function getClass(i){
+        if(i <= data.index-1){
+            return "circle active"
+        }
+        return "circle"
+    }
 </script>
 
 <section>
@@ -36,11 +46,10 @@
 
 <div class="container">
   <div class="progress-container">
-    <div class="progress" id="progress"> </div>
-    <div class="circle">25%</div>
-    <div class="circle active">50%</div>
-    <div class="circle">75%</div>
-    <div class="circle">100%</div>
+    <div class="progress" id="progress" style={"width:" + (((data.index-2)/(data.game.questions.length-1)) * 100) + "%"}> </div>
+    {#each {length: data.game.questions.length} as _, i}
+        <div class={getClass(i)}>{i+1}</div>
+    {/each}
   </div>
 </div>
 
