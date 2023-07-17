@@ -14,7 +14,7 @@ export const game =
 			],
 			type: "radio", 	// [radio, checkbox]
 			format: "text",	// [plain-text, images, cards]
-			required: false
+			required: true
 		},
 		{
 			id: 2,
@@ -56,13 +56,19 @@ export const game =
 		},
 		{
 			id: 5,
-			questions: ["When you spend time alone, what sorts of activities do you engage in?", 
-						"HELLO ?", 
-						"O HELLO ?"],
+			title: "Compared to others, how much of the following do you think that you experience",
+			questions: ["Joy, hope, love, gratitude", 
+						"Curiosity, exploration, adventurous, creative, risk-taking",
+						"Thoughtful, goal-focused, prepared, organized, detail-oriented",
+						"Excited, sociable, talkative, high energy, assertive",
+						"Being warm, benevolent, sincere, helpful, generous, trusting, empathetic",
+						"Anxiety, sadness, anger, irritablility, guilt, moodiness"],
 			options: [
-				{ id: 1, option: "YES" },
-				{ id: 2, option: "NO" },
-				{ id: 3, option: "MAYBE" }
+				{ id: 1, option: "A lot more" },
+				{ id: 2, option: "A little more" },
+				{ id: 3, option: "About the same" },
+				{ id: 3, option: "A little less" },
+				{ id: 3, option: "A lot less" }
 			],
 			type: "radio", 	// [radio, checkbox]
 			format: "text",	// [plain-text, images, cards]

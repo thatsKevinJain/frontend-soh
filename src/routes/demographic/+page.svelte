@@ -3,8 +3,15 @@
 	export let data;
 </script>
 
+<section>
+  <div class='air air1'></div>
+  <div class='air air2'></div>
+  <div class='air air3'></div>
+  <div class='air air4'></div>
+</section>
+
 <div class="main">
-	<h1>Hello {data.email.split("@")[0]}, there are {data.demographic.questions.length} demographic questions!</h1>
+	<h1>Hello {data.email.split("@")[0]}!</h1>
 
 	<form method="POST" action="?/submit">
 	{#each data.demographic.questions as q, i}
