@@ -1,4 +1,8 @@
 <script>
+// @ts-nocheck
+
+	import { each } from 'svelte/internal';
+
     // @ts-nocheck
     // import { enhance } from '$app/forms';
     export let data;
@@ -45,8 +49,8 @@
 
         <!-- Populate options for a SINGLE question -->
         {#if data.game.questions[data.index-1]?.question}
-            <div class="block-single">
-                <p class="question-single">{data.index}. {data.game.questions[data.index-1].question}</p>
+            <div>
+                <p class="question">{data.index}. {data.game.questions[data.index-1].question}</p>
                 <div class="options-single">
                     {#each data.game.questions[data.index-1].options as o, j}
                         <label class="option">
@@ -64,21 +68,30 @@
 
         <!-- Populate options for MULTIPLE questions -->
         {#if data.game.questions[data.index-1]?.questions}
-            <div class="block-multiple">
-                <p class="question-single">{data.index}. {data.game.questions[data.index-1].title}</p>
-                {#each data.game.questions[data.index-1]?.questions as question, i}
-                    <p class="question-multiple">{question}</p>
-                    <div class="options-multiple">
-                        {#each data.game.questions[data.index-1].options as o, j}
-                            <label class="option-multiple">
-                                <input  type     = {data.game.questions[data.index-1].type}
-                                        value    = {parseInt(j+1)}
-                                        name     = {data.game.questions[data.index-1].id + "-" + parseInt(i+1)}
-                                        required = {data.game.questions[data.index-1].required ? true : null}/>
-                            </label><br>
-                        {/each}
-                    </div>
-                {/each}
+
+            <div>
+                <p class="question">{data.index}. {data.game.questions[data.index-1].title}</p>
+        
+                <div class="block-container">
+                    <div class="space"></div>
+                    {#each data.game.questions[data.index-1].options as o, j}
+                        <div class="a">{o.option}</div>
+                    {/each}
+
+                    {#each data.game.questions[data.index-1]?.questions as question, i}
+                        <div class="q">{question}</div>
+                            {#each data.game.questions[data.index-1].options as o, j}
+                                <div class="a">
+                                    <label class="option-multiple">
+                                        <input  type     = {data.game.questions[data.index-1].type}
+                                                value    = {parseInt(j+1)}
+                                                name     = {data.game.questions[data.index-1].id + "-" + parseInt(i+1)}
+                                                required = {data.game.questions[data.index-1].required ? true : null}/>
+                                    </label><br>
+                                </div>
+                            {/each}
+                    {/each}
+                </div>
             </div>
         {/if}
 
@@ -112,7 +125,6 @@
 
     .option {
         padding: 10px;
-        border-radius: 16px;
         background: var(--m-3-sys-light-surface-container-low, #F7F2FA);
 
         /* M3/Elevation Light/1 */
@@ -183,21 +195,42 @@
         padding: 0;
     }
 
-    .question-single {
+    .question {
         font-size: 20px;
         display: grid;
         justify-content: center;
-        margin-bottom: 50px;
+        margin-bottom: 20px;
     }
 
-    .options-multiple {
-        display: block ruby;
-    }
-
-    .question-multiple {
-        margin-top: 40px;
-        font-size: 20px;
+    .block-container {
         display: grid;
+        gap: 10px;
+        padding: 10px;
+        grid-template-columns: auto auto auto auto auto auto auto;
+    }
+
+    .space {
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+
+    .q {
+        grid-column-start: 1;
+        grid-column-end: 3;
+        background: var(--m-3-sys-light-surface-container-low, #F7F2FA);
+
+        /* M3/Elevation Light/1 */
+        box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+
+        background-color: #fff;
+        border-radius: var(--card-radius);
+        padding: 10px;
+        text-align: center;
+    }
+
+    .a {
+        text-align: center;
+        padding: 12px;
     }
 
 </style>
