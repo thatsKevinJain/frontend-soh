@@ -95,7 +95,8 @@
                                         <input  type     = {data.game.questions[data.index-1].type}
                                                 value    = {parseInt(j+1)}
                                                 name     = {data.game.questions[data.index-1].id + "-" + parseInt(i+1)}
-                                                required = {data.game.questions[data.index-1].required ? true : null}/>
+                                                required = {data.game.questions[data.index-1].required ? true : null}
+                                                class    = "radio"/>
                                     </label><br>
                                 </div>
                             {/each}
