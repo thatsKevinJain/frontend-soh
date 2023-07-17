@@ -82,7 +82,7 @@
             </div>
         {/if}
 
-        <button class="submit">Submit</button>
+        <button class="submit-btn">Submit</button>
     </form>
 </div>
 
@@ -188,15 +188,6 @@
         display: grid;
         justify-content: center;
         margin-bottom: 50px;
-    }
-
-    .submit {
-        width: 99px;
-        height: 50px;
-        background: #6750A4;
-        border-radius: 100px;
-        margin: 20px;
-        color: white;
     }
 
     .options-multiple {
