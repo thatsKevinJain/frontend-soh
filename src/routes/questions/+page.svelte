@@ -57,7 +57,7 @@
     <form method="POST" action="/questions?i={parseInt(data.index)+1}">
 
         <!-- Populate options for a SINGLE question -->
-        {#if data.game.questions[data.index-1]?.question}
+        {#if !data.game.questions[data.index-1]?.multiple}
             <div>
                 <p class="question">{data.index}. {data.game.questions[data.index-1].question}</p>
                 <div class="options-single">
@@ -76,7 +76,7 @@
         {/if}
 
         <!-- Populate options for MULTIPLE questions -->
-        {#if data.game.questions[data.index-1]?.questions}
+        {#if data.game.questions[data.index-1]?.multiple}
 
             <div>
                 <p class="question">{data.index}. {data.game.questions[data.index-1].title}</p>
@@ -88,7 +88,7 @@
                     {/each}
 
                     {#each data.game.questions[data.index-1]?.questions as question, i}
-                        <div class="q">{question}</div>
+                        <div class="q">{question.q}</div>
                             {#each data.game.questions[data.index-1].options as o, j}
                                 <div class="a">
                                     <label class="option-multiple">
