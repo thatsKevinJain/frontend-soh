@@ -15,17 +15,38 @@
 
 	<form method="POST" action="?/submit">
 	{#each data.demographic.questions as q, i}
-		<p>{i+1}. {q.question}</p>
-			{#each q.options as o, j}
-				<label>
-					<!-- TODO: try to think of some unique "value" names to uniquely identify questions + answers -->
-					<!-- TODO: Add "required flag" -->
-					<input type={q.type} name={q.id} value={o.id} required={q.required ? true : null}/>
-					{o.option}
-				</label><br>
-			{/each}
+		<p class="question">{i+1}. {q.question}</p>
+			<div class="options-single">
+				{#each q.options as o, j}
+						<label class="option">
+							<!-- TODO: try to think of some unique "value" names to uniquely identify questions + answers -->
+							<!-- TODO: Add "required flag" -->
+							<input 	type     = {q.type} 
+											name     = {q.id} 
+											value    = {o.id} 
+											required = {q.required ? true : null}
+											class    = "radio"/>
+							{o.option}
+						</label><br>
+				{/each}
+			</div>
 	{/each}
 
 	<button class="submit-btn">Submit</button>
 	</form>
 </div>
+
+
+<style>
+	
+	.question {
+		font-size: 20px;
+		margin-top: 24px;
+	}
+
+	.options-single {
+		margin-top: 8px;
+		font-size: 18px;
+	}
+
+</style>
