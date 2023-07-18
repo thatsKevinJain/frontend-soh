@@ -1,10 +1,11 @@
 // @ts-nocheck
 // Asynchronosly reads the response stream and returns the body //
-export async function getResponse(url, method, body){
+
+export async function getResponse(url, method='GET', body={}){
 	
 	const response = await fetch(url, {
 							method: method,
-							body: JSON.stringify(body),
+							body: (Object.keys(body).length > 0) ? JSON.stringify(body) : null,
 							headers: {
 								'Content-Type': 'application/json'
 							}})

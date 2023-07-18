@@ -1,9 +1,17 @@
 // @ts-nocheck
-import { demographic } from '../../lib/demographic.js'
+// import { demographic } from '../../lib/demographic.js'
 import { getResponse } from '../../utils/getResponse.js'
 import { redirect } from '@sveltejs/kit';
+let demographic;
 
-export function load({cookies}){
+export async function load({cookies}){
+
+	// Load questions on every page load //
+	// This is redundant API calling but works for now //
+	// TODO: store these questions in a svelte-store to avoid overloading APIs //
+	demographic = await getResponse('http://localhost:3000/app/getDemographic');
+	demographic = JSON.parse(demographic);
+
 	return { 
 		demographic, 
 		email: cookies.get('email') };
