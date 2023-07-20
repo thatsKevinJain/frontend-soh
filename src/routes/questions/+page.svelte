@@ -40,6 +40,8 @@
     }
 </script>
 
+
+<!-- CLOUDS animation background -->
 <section>
   <div class='air air1'></div>
   <div class='air air2'></div>
@@ -47,6 +49,7 @@
   <div class='air air4'></div>
 </section>
 
+<!-- PROGRESS BAR -->
 <div class="container">
   <div class="progress-container">
     <div class="progress" id="progress" style={"width:" + (((data.index-2)/(data.game.questions.length-1)) * 100) + "%"}> </div>
@@ -56,6 +59,7 @@
   </div>
 </div>
 
+<!-- QUESTIONS -->
 <div class="main">
     <form method="POST" action="/questions?i={parseInt(data.index)+1}">
 
