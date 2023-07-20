@@ -1,6 +1,7 @@
 export const game = 
 {
 	version: 1,
+	max_score: 5000,
 	questions: [
 		{
 			id: 1,
@@ -99,8 +100,8 @@ export const game =
 				{ id: 1, option: "A lot more", score: 1},
 				{ id: 2, option: "A little more", score: 0.5},
 				{ id: 3, option: "About the same", score: 0},
-				{ id: 3, option: "A little less", score: -0.5},
-				{ id: 3, option: "A lot less", score: -1}
+				{ id: 4, option: "A little less", score: -0.5},
+				{ id: 5, option: "A lot less", score: -1}
 			],
 			multiple: true,
 			weight: 1,
