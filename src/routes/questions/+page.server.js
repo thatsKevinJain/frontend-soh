@@ -14,6 +14,9 @@ export async function load({url}){
 		ans = {}
 	}
 
+	// TODO: find a way to FORCE RELOAD this index on refresh //
+	console.log("INDEX", index)
+
 	// Load questions on every page load //
 	// This is redundant API calling but works for now //
 	// TODO: store these questions in a svelte-store to avoid overloading APIs //
@@ -43,7 +46,7 @@ export const actions = {
 			// TODO: store the "version" in each user for less future headache //
 			const response = await getResponse('http://localhost:3000/submission/create', 'POST', { answers: ans, user: cookies.get('_id') });
 
-			throw redirect(303, "/");
+			throw redirect(303, "/results");
 		}
 		return { success: true };
 	}
