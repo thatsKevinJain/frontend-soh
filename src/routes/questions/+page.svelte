@@ -4,11 +4,14 @@
 	import { each } from 'svelte/internal';
     import { onMount } from 'svelte';
 
-    // @ts-nocheck
-    // import { enhance } from '$app/forms';
     export let data;
 
     onMount(() => {
+
+        // Get the index from URL //
+        data.index = document.URL.split("?i=")[1];
+
+        // Set the progress bar based on index //
         const progress = document.getElementById("progress");
         const stepCircles = document.querySelectorAll(".circle");
         let currentActive = data.index-1;
@@ -127,12 +130,6 @@
       --radio-size: 1.5em;
     }
 
-    .option-label {
-        text-align: center;
-        font-size: 18px;
-        margin-left: 20px;
-    }
-
     .option {
         padding: 10px;
         background: var(--m-3-sys-light-surface-container-low, #F7F2FA);
@@ -145,9 +142,38 @@
         position: relative;
     }
 
+    .option:hover .radio {
+        border-color: var(--color-dark-gray);
+    }
+
+    .option-label {
+        text-align: center;
+        font-size: 18px;
+        margin-left: 20px;
+    }
+
+    .options-single {
+        display: grid;
+        grid-gap: var(--card-padding);
+        margin: 0 auto;
+        max-width: 40em;
+        padding: 0;
+    }
+
+    .question {
+        font-size: 20px;
+        display: grid;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
     .radio {
         margin: 0;
         position: absolute;
+    }
+
+    .radio:checked {
+      border-color: var(--color-green);
     }
 
     @supports(-webkit-appearance: none) or (-moz-appearance: none) { 
@@ -187,29 +213,6 @@
             background: var(--color-green);
             border-color: var(--color-green);
         }
-    }
-  
-    .option:hover .radio {
-        border-color: var(--color-dark-gray);
-    }
-
-    .radio:checked {
-      border-color: var(--color-green);
-    }
-
-    .options-single {
-        display: grid;
-        grid-gap: var(--card-padding);
-        margin: 0 auto;
-        max-width: 40em;
-        padding: 0;
-    }
-
-    .question {
-        font-size: 20px;
-        display: grid;
-        justify-content: center;
-        margin-bottom: 20px;
     }
 
     .block-container {

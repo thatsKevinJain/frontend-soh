@@ -2,20 +2,17 @@
 // import { game } from '../../lib/game.js'
 import { getResponse } from '../../utils/getResponse.js'
 import { redirect } from '@sveltejs/kit';
-let index = 1;
+
 let ans = {};
 let game;
 
 export async function load({url}){
 	
 	// INIT //
-	index = url.searchParams.get('i');
+	const index = url.searchParams.get('i');
 	if(index == 1){
 		ans = {}
 	}
-
-	// TODO: find a way to FORCE RELOAD this index on refresh //
-	console.log("INDEX", index)
 
 	// Load questions on every page load //
 	// This is redundant API calling but works for now //
@@ -37,11 +34,14 @@ export const actions = {
 		// TODO: Store this data in a JSON variable //
 		const unwind = [...data];
 
+		// Get the index //
+		const index = url.searchParams.get("i");
+
 		for(let u of unwind){
 			ans[u[0]] = parseInt(u[1]);
 		}
 		
-		if(index >= game.questions.length){
+		if(index > game.questions.length){
 			// TODO: goto to next page, save all data via API //
 			// TODO: store the "version" in each user for less future headache //
 			const response = await getResponse('http://localhost:3000/submission/create', 'POST', { answers: ans, user: cookies.get('_id') });
