@@ -1,10 +1,10 @@
 // @ts-nocheck
-// import { game } from '../../lib/game.js'
+import { game } from '../../lib/game.js'
 import { getResponse } from '../../utils/getResponse.js'
 import { redirect } from '@sveltejs/kit';
 
 let ans = {};
-let game;
+// let game;
 
 export async function load({url}){
 	
@@ -17,8 +17,8 @@ export async function load({url}){
 	// Load questions on every page load //
 	// This is redundant API calling but works for now //
 	// TODO: store these questions in a svelte-store to avoid overloading APIs //
-	game = await getResponse('http://localhost:3000/app/getGame');
-	game = JSON.parse(game);
+	// game = await getResponse('http://localhost:3000/app/getGame');
+	// game = JSON.parse(game);
 
     return {
     	game,
@@ -37,8 +37,14 @@ export const actions = {
 		// Get the index //
 		const index = url.searchParams.get("i");
 
-		for(let u of unwind){
-			ans[u[0]] = parseInt(u[1]);
+		if(unwind.length == 1){
+			ans[unwind[0][0]] = parseInt(unwind[0][1]);
+		}
+		else{
+			ans[unwind[0][0]] = null
+			for(let u of unwind){
+				ans[u[0]] = ans[u[0]] ? ans[u[0]]+","+parseInt(u[1]) : parseInt(u[1])
+			}
 		}
 		
 		if(index > game.questions.length){

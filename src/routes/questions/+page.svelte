@@ -5,6 +5,7 @@
     import { onMount } from 'svelte';
 
     export let data;
+    let selectedOptions = []
 
     onMount(() => {
 
@@ -38,6 +39,36 @@
         }
         return "circle"
     }
+
+    let randomizedArray = []
+    function getRandomizedArray(arr){
+        randomizedArray = []
+        for(;;)
+        {
+            var random = Math.floor(Math.random() * arr.length)
+            if(randomizedArray.length < arr.length){
+                if(randomizedArray.indexOf(random) === -1){
+                    randomizedArray.push(random)
+                }
+            }
+            else{
+                break;
+            }
+        }
+        for(var i=0; i<randomizedArray.length; i++){
+            randomizedArray[i] = arr[randomizedArray[i]]
+        }
+        return 0
+    }
+
+    function getGridColumns(size){
+        var gridColumns = "grid-template-columns: auto auto"
+        for(let i=0;i<size;i++){
+            gridColumns += " auto"
+        }
+        return gridColumns
+    }
+
 </script>
 
 
@@ -63,50 +94,81 @@
 <div class="main">
     <form method="POST" action="/questions?i={parseInt(data.index)+1}">
 
-        <!-- Populate options for a SINGLE question -->
-        {#if !data.game.questions[data.index-1]?.multiple}
-            <div>
-                <p class="question">{data.index}. {data.game.questions[data.index-1].question}</p>
-                <div class="options-single">
-                    {#each data.game.questions[data.index-1].options as o, j}
-                        <label class="option">
-                            <input  type     = {data.game.questions[data.index-1].type}
-                                    name     = {data.game.questions[data.index-1].id}
-                                    value    = {o.id}
-                                    required = {data.game.questions[data.index-1].required ? true : null}
-                                    class    = "radio"/>
-                            <p class="option-label">{o.option}</p>
-                        </label><br>
-                    {/each}
+        <!-- Popluate questions with TEXT -->
+        {#if data.game.questions[data.index-1]?.format === "text"}
+
+            <!-- Populate options for a SINGLE question -->
+            {#if !data.game.questions[data.index-1]?.multiple}
+                <div>
+                    <p class="question">{data.index}. {data.game.questions[data.index-1].question}</p>
+                    <div class="options-single">
+                        {#each data.game.questions[data.index-1].options as o, j}
+                            <label class="option">
+                                <input  type     = {data.game.questions[data.index-1].type}
+                                        name     = {data.game.questions[data.index-1].id}
+                                        value    = {o.id}
+                                        required = {data.game.questions[data.index-1].required ? true : null}
+                                        class    = "radio"/>
+                                <p class="option-label">{o.option}</p>
+                            </label><br>
+                        {/each}
+                    </div>
                 </div>
-            </div>
+            {/if}
+
+            <!-- Populate options for MULTIPLE questions -->
+            {#if data.game.questions[data.index-1]?.multiple}
+                <div>
+                    <p class="question">{data.index}. {data.game.questions[data.index-1].title}</p>
+            
+                    <div class="block-container" style={getGridColumns(data.game.questions[data.index-1]?.questions.length)}>
+                        <div class="space"></div>
+                        {#each data.game.questions[data.index-1].options as o, j}
+                            <div class="a">{o.option}</div>
+                        {/each}
+
+                        {#each data.game.questions[data.index-1]?.questions as question, i}
+                            <div class="q">{question.q}</div>
+                                {#each data.game.questions[data.index-1].options as o, j}
+                                    <div class="a">
+                                        <label class="option-multiple">
+                                            <input  type     = {data.game.questions[data.index-1].type}
+                                                    value    = {parseInt(j+1)}
+                                                    name     = {data.game.questions[data.index-1].id + "-" + parseInt(i+1)}
+                                                    required = {data.game.questions[data.index-1].required ? true : null}
+                                                    class    = "radio"/>
+                                        </label><br>
+                                    </div>
+                                {/each}
+                        {/each}
+                    </div>
+                </div>
+            {/if}
         {/if}
 
-        <!-- Populate options for MULTIPLE questions -->
-        {#if data.game.questions[data.index-1]?.multiple}
-
+        <!-- Populate options for questions with IMAGES -->
+        {#if data.game.questions[data.index-1]?.format === "image"}
+            <!-- TODO: add randomized images with correct ID's associated with them -->
             <div>
-                <p class="question">{data.index}. {data.game.questions[data.index-1].title}</p>
-        
-                <div class="block-container">
-                    <div class="space"></div>
-                    {#each data.game.questions[data.index-1].options as o, j}
-                        <div class="a">{o.option}</div>
-                    {/each}
+                <p class="question">{data.index}. {data.game.questions[data.index-1].question}</p>
 
-                    {#each data.game.questions[data.index-1]?.questions as question, i}
-                        <div class="q">{question.q}</div>
-                            {#each data.game.questions[data.index-1].options as o, j}
-                                <div class="a">
-                                    <label class="option-multiple">
-                                        <input  type     = {data.game.questions[data.index-1].type}
-                                                value    = {parseInt(j+1)}
-                                                name     = {data.game.questions[data.index-1].id + "-" + parseInt(i+1)}
-                                                required = {data.game.questions[data.index-1].required ? true : null}
-                                                class    = "radio"/>
-                                    </label><br>
-                                </div>
-                            {/each}
+                <!-- Fetch the randomized images array; hide it too -->
+                <p class="blank-text">{getRandomizedArray(data.game.questions[data.index-1].options)}</p>
+                <div class="images-container">
+
+                    {#each randomizedArray as o, j}
+                        <!-- svelte-ignore a11y-label-has-associated-control -->
+                        <label class="image-block">
+                            <img src={o.url} class="image" alt={o.label}/>
+                            <p class="label">{o.label}</p>
+                            <input  type       = "checkbox"
+                                    value      = {o.id}
+                                    name       = {data.game.questions[data.index-1].id}
+                                    required   = {data.game.questions[data.index-1].required ? true : null}
+                                    bind:group = {selectedOptions}
+                                    disabled   = {selectedOptions.length === data.game.questions[data.index-1].maxSelections && !selectedOptions.includes(o.id)}
+                                    class      = "radio"/>
+                        </label>
                     {/each}
                 </div>
             </div>
@@ -131,7 +193,7 @@
       --color-gray: #e2ebf6;
       --color-dark-gray: #c4d1e1;
       --radio-border-width: 2px;
-      --radio-size: 1.5em;
+      --radio-size: 1.8em;
     }
 
     .option {
@@ -186,7 +248,7 @@
             -moz-appearance: none;
             appearance: none;
             background: #fff;
-            border: var(--radio-border-width) solid var(--color-gray);
+            border: var(--radio-border-width) solid black;
             border-radius: 50%;
             cursor: pointer;
             height: var(--radio-size);
@@ -223,7 +285,6 @@
         display: grid;
         gap: 10px;
         padding: 10px;
-        grid-template-columns: auto auto auto auto auto auto auto;
     }
 
     .space {
@@ -250,4 +311,39 @@
         padding: 12px;
     }
 
+    .images-container {
+        display: grid;
+        margin: 10px;
+        grid-template-columns: auto auto auto auto;
+    }
+
+    .image-block {
+        background: var(--m-3-sys-light-surface-container-low, #F7F2FA);
+
+        /* M3/Elevation Light/1 */
+        box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+
+        background-color: #fff;
+        border-radius: var(--card-radius);
+        padding: 10px;
+        text-align: center;
+        margin: 10px;
+    }
+
+    .label {
+        padding: 4px;
+    }
+
+    .radio:disabled {
+        border-color: var(--color-gray);
+    }
+
+    .image {
+        width: 200px;
+        height: 200px;
+    }
+
+    .blank-text {
+        color: rgba(0, 0, 0, 0);
+    }
 </style>
