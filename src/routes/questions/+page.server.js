@@ -6,7 +6,7 @@ import { redirect } from '@sveltejs/kit';
 let ans = {};
 // let game;
 
-export async function load({url}){
+export async function load({url, cookies}){
 	
 	// INIT //
 	const index = url.searchParams.get('i');
@@ -37,17 +37,18 @@ export const actions = {
 		// Get the index //
 		const index = url.searchParams.get("i");
 
-		if(unwind.length == 1){
+		if(unwind && unwind.length == 1){
 			ans[unwind[0][0]] = parseInt(unwind[0][1]);
 		}
-		else{
+
+		if(unwind && unwind.length > 1){
 			ans[unwind[0][0]] = null
 			for(let u of unwind){
 				ans[u[0]] = ans[u[0]] ? ans[u[0]]+","+parseInt(u[1]) : parseInt(u[1])
 			}
 		}
 		
-		if(index > game.questions.length){
+		if(unwind && index > game.questions.length){
 			// TODO: goto to next page, save all data via API //
 			// TODO: store the "version" in each user for less future headache //
 			const response = await getResponse('http://localhost:3000/submission/create', 'POST', { answers: ans, user: cookies.get('_id') });

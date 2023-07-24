@@ -68,7 +68,6 @@
         }
         return gridColumns
     }
-
 </script>
 
 
