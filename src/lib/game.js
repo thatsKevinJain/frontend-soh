@@ -111,7 +111,7 @@ export const game =
 		},
 		{
 			id: 6,
-			question: "Select the images that you most resonate with (Max 2)",
+			question: "Select the images that you most resonate with (Select 2 images)",
 			format: "image",
 			maxSelections: 2, 	// Max number of selections that a user can make //
 			options: [
@@ -126,7 +126,7 @@ export const game =
 					{ id: 9, label: "hello", score: 0, url: "https://images.unsplash.com/photo-1687253673883-d5f0f1f13443?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTkzNw&ixlib=rb-4.0.3&q=80&w=200"},
 				],
 			type: "checkbox",
-			required: false,
+			required: true,
 			weight: 1,
 			multiple: false
 		}

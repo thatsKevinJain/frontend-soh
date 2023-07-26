@@ -1,7 +1,5 @@
 <script>
 // @ts-nocheck
-
-	import { each } from 'svelte/internal';
     import { onMount } from 'svelte';
 
     export let data;
@@ -15,30 +13,31 @@
         // Set the progress bar based on index //
         const progress = document.getElementById("progress");
         const stepCircles = document.querySelectorAll(".circle");
-        let currentActive = data.index-1;
 
         update(data.index);
 
-        function update(currentActive) {
+        function update(index) {
+            console.log("NUM", (((index-1)/data.game.questions.length)*100))
             stepCircles.forEach((circle, i) => {
-                if (i < currentActive) {
+                if ((((index-1)/data.game.questions.length)*100) >= percs[i]) {
                     circle.classList.add("active");
                 } else {
                     circle.classList.remove("active");
                 }
             });
 
-            const activeCircles = document.querySelectorAll(".active");
-            progress.style.width = ((activeCircles.length - 1) / (stepCircles.length - 1)) * 100 + "%";
+            // const activeCircles = document.querySelectorAll(".active");
+            progress.style.width = (((data.index-1)/(data.game.questions.length)) * 100) + "%";
         }
     })
 
-    function getClass(i){
-        if(i <= data.index-1){
-            return "circle active"
-        }
-        return "circle"
-    }
+    let percs = [0, 25, 50, 75, 100]
+    // function getClass(perc){
+    //     if(data.index-1 <= perc){
+    //         return "circle active"
+    //     }
+    //     return "circle"
+    // }
 
     let randomizedArray = []
     function getRandomizedArray(arr){
@@ -82,9 +81,9 @@
 <!-- PROGRESS BAR -->
 <div class="container">
   <div class="progress-container">
-    <div class="progress" id="progress" style={"width:" + (((data.index-2)/(data.game.questions.length-1)) * 100) + "%"}> </div>
-    {#each {length: data.game.questions.length} as _, i}
-        <div class={getClass(i)}>{i+1}</div>
+    <div class="progress" id="progress" style={"width:" + (((data.index-2)/(data.game.questions.length)) * 100) + "%"}> </div>
+    {#each percs as perc, i}
+        <div class="circle">{perc.toString()+"%"}</div>
     {/each}
   </div>
 </div>
