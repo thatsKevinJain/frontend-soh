@@ -78,10 +78,13 @@ body {
   justify-content: center;
   border: 3px solid var(--line-border-empty);
   transition: .4s ease;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 14px;
 }
 
 .circle.active {
   border-color: var(--line-border-fill);
+  font-weight: bold;
 }
 
 .btn {

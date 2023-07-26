@@ -191,7 +191,7 @@
       --color-gray: #e2ebf6;
       --color-dark-gray: #c4d1e1;
       --radio-border-width: 2px;
-      --radio-size: 1.8em;
+      --radio-size: 1.5em;
     }
 
     .option {
@@ -213,7 +213,7 @@
     .option-label {
         text-align: center;
         font-size: 18px;
-        margin-left: 20px;
+        margin-left: 24px;
     }
 
     .options-single {
