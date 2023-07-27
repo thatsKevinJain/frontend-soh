@@ -14,9 +14,11 @@ export async function load({url, cookies}){
 		ans = {}
 	}
 
-	// Load questions on every page load //
-	// This is redundant API calling but works for now //
-	// TODO: store these questions in a svelte-store to avoid overloading APIs //
+	/* 
+		Load game questions on every page load
+		This is a redundant API call (a bad practice when building apps of scale)
+		But works for now!
+	*/
 	// game = await getResponse('http://localhost:3000/app/getGame');
 	// game = JSON.parse(game);
 
@@ -28,15 +30,27 @@ export async function load({url, cookies}){
 
 export const actions = {
 	default: async ({ request, url, cookies }) => {
+
 		// Get the form data //
 		const data = await request.formData();
-
-		// TODO: Store this data in a JSON variable //
 		const unwind = [...data];
 
 		// Get the index //
 		const index = url.searchParams.get("i");
 
+		/* 
+			Different questions here will have a different way of storing the answer --
+			format "TEXT":
+				-- SINGLE   -- { "question": answer }
+						    -- { "1": 4 }
+				-- MULTIPLE -- { "question-subQuestion": answer }
+						    -- { "5-1": 3 }
+
+			format "IMAGE": -- { "question": "ans1,ans2,ans3" }
+							-- { "3": "2,4,6,8" }
+
+			We will smartly break the "unwind" variable and form the "ans" object in the above format
+		*/
 		if(unwind && unwind.length == 1){
 			ans[unwind[0][0]] = parseInt(unwind[0][1]);
 		}
@@ -48,9 +62,11 @@ export const actions = {
 			}
 		}
 		
+		/* 
+			If all the questions are answered, store the "ans" variable via our API and redirect to "results" page,
+			else go to the NEXT question.
+		*/
 		if(unwind && index > game.questions.length){
-			// TODO: goto to next page, save all data via API //
-			// TODO: store the "version" in each user for less future headache //
 			const response = await getResponse('http://localhost:3000/submission/create', 'POST', { answers: ans, user: cookies.get('_id') });
 
 			throw redirect(303, "/results");

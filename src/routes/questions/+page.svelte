@@ -2,22 +2,45 @@
 // @ts-nocheck
     import { onMount } from 'svelte';
 
+    /*
+        DATA: this is initialized automatically by load() function in "+page.server.js"
+        It has all the data points to successfully load all elements in the page
+    */
     export let data;
-    let selectedOptions = []
 
+    /* 
+        Progress of the game will be divided into 4 quarters
+    */
+    const percs = [0, 25, 50, 75, 100]
+
+    /* Variables to store page specific data */
+    let selectedOptions = []
+    let currentQuestion = data.game.questions[data.index-1]
+    let oldCompletionPercent = (((data.index-2)/(data.game.questions.length)) * 100)
+    let completionPercent = (((data.index-1)/(data.game.questions.length)) * 100)
+
+    /* 
+        Function called when components have finished mounting on the DOM,
+        this will allow us to animate certain elements like progress-bar after the page is loaded
+    */
     onMount(() => {
 
-        // Get the index from URL //
+        /* 
+            Get the index from URL,
+            this is an important step, load() function isn't called when user presses "BACK" on their browsers
+            It allows us to update the "index" to it's correct value. Saves us from many unforseen BUGS :)
+        */
         data.index = document.URL.split("?i=")[1];
 
-        // Set the progress bar based on index //
+        /* 
+            Set the progress bar based on current index,
+            we calculate the % of total questions completed and update the progress bar
+            along with the active checkpoints [0, 25, 50, 75, 100] set by us
+        */
         const progress = document.getElementById("progress");
         const stepCircles = document.querySelectorAll(".circle");
 
-        update(data.index);
-
         function update(index) {
-            console.log("NUM", (((index-1)/data.game.questions.length)*100))
             stepCircles.forEach((circle, i) => {
                 if ((((index-1)/data.game.questions.length)*100) >= percs[i]) {
                     circle.classList.add("active");
@@ -25,20 +48,14 @@
                     circle.classList.remove("active");
                 }
             });
-
-            // const activeCircles = document.querySelectorAll(".active");
-            progress.style.width = (((data.index-1)/(data.game.questions.length)) * 100) + "%";
+            progress.style.width = completionPercent + "%";
         }
+        update(data.index);
     })
 
-    let percs = [0, 25, 50, 75, 100]
-    // function getClass(perc){
-    //     if(data.index-1 <= perc){
-    //         return "circle active"
-    //     }
-    //     return "circle"
-    // }
-
+    /* 
+        Randomize images in a given question
+    */
     let randomizedArray = []
     function getRandomizedArray(arr){
         randomizedArray = []
@@ -60,8 +77,9 @@
         return 0
     }
 
+    /* CSS: setting to dynamically style multiple-questions with radio buttons */
     function getGridColumns(size){
-        var gridColumns = "grid-template-columns: auto auto"
+        var gridColumns = "grid-template-columns: 250px 250px"
         for(let i=0;i<size;i++){
             gridColumns += " auto"
         }
@@ -81,7 +99,7 @@
 <!-- PROGRESS BAR -->
 <div class="container">
   <div class="progress-container">
-    <div class="progress" id="progress" style={"width:" + (((data.index-2)/(data.game.questions.length)) * 100) + "%"}> </div>
+    <div class="progress" id="progress" style={"width:" + oldCompletionPercent + "%"}> </div>
     {#each percs as perc, i}
         <div class="circle">{perc.toString()+"%"}</div>
     {/each}
@@ -90,24 +108,35 @@
 
 <!-- QUESTIONS -->
 <div class="main">
+
+    <!-- 
+        Load ONE question at a time indicated by "data.index", the UI will populate as per the questions requirements
+
+        When the user presses "SUBMIT", we store the selections made by the user in "+page.server.js"
+        and call the same page with "?i=data.index+1"
+
+        Power of "dynamic-page-loading-with-recursion"
+    -->
     <form method="POST" action="/questions?i={parseInt(data.index)+1}">
 
-        <!-- Popluate questions with TEXT -->
-        {#if data.game.questions[data.index-1]?.format === "text"}
+        <!-- 
+            Questions with "TEXT" format
+        -->
+        {#if currentQuestion?.format === "text"}
 
-            <!-- Populate options for a SINGLE question -->
-            {#if !data.game.questions[data.index-1]?.multiple}
+            <!-- Populate options for a "SINGLE" question -->
+            {#if !currentQuestion?.multiple}
                 <div>
-                    <p class="question">{data.index}. {data.game.questions[data.index-1].question}</p>
-                    <div class="options-single">
-                        {#each data.game.questions[data.index-1].options as o, j}
-                            <label class="option">
-                                <input  type     = {data.game.questions[data.index-1].type}
-                                        name     = {data.game.questions[data.index-1].id}
+                    <p class="question">{data.index}. {currentQuestion.question}</p>
+                    <div class="option-single">
+                        {#each currentQuestion.options as o, j}
+                            <label class="option-label">
+                                <input  type     = {currentQuestion.type}
+                                        name     = {currentQuestion.id}
                                         value    = {o.id}
-                                        required = {data.game.questions[data.index-1].required ? true : null}
-                                        class    = "radio"/>
-                                <p class="option-label">{o.option}</p>
+                                        required = {currentQuestion.required ? true : null}
+                                        class    = "checkbox"/>
+                                <p class="option-text">{o.option}</p>
                             </label><br>
                         {/each}
                     </div>
@@ -115,57 +144,75 @@
             {/if}
 
             <!-- Populate options for MULTIPLE questions -->
-            {#if data.game.questions[data.index-1]?.multiple}
+            {#if currentQuestion?.multiple}
                 <div>
-                    <p class="question">{data.index}. {data.game.questions[data.index-1].title}</p>
-            
-                    <div class="block-container" style={getGridColumns(data.game.questions[data.index-1]?.questions.length)}>
+                    <p class="question">{data.index}. {currentQuestion.title}</p>
+                    
+                    <!-- 
+                        CSS: Based on the number of options, fetch a dynamic grid for this question
+                    -->
+                    <div class="multiple-container" style={getGridColumns(currentQuestion?.options.length)}>
+                        
+                        <!-- HACK: added a blank space to place questions with their radio buttons -->
                         <div class="space"></div>
-                        {#each data.game.questions[data.index-1].options as o, j}
-                            <div class="a">{o.option}</div>
+
+                        {#each currentQuestion.options as o, j}
+                            <div class="multiple-option">{o.option}</div>
                         {/each}
 
-                        {#each data.game.questions[data.index-1]?.questions as question, i}
-                            <div class="q">{question.q}</div>
-                                {#each data.game.questions[data.index-1].options as o, j}
-                                    <div class="a">
-                                        <label class="option-multiple">
-                                            <input  type     = {data.game.questions[data.index-1].type}
+                        {#each currentQuestion?.questions as question, i}
+                            <div class="multiple-question">{question.q}</div>
+
+                                {#each currentQuestion.options as o, j}
+                                    <div class="multiple-option">
+                                        <label>
+                                            <input  type     = {currentQuestion.type}
                                                     value    = {parseInt(j+1)}
-                                                    name     = {data.game.questions[data.index-1].id + "-" + parseInt(i+1)}
-                                                    required = {data.game.questions[data.index-1].required ? true : null}
-                                                    class    = "radio"/>
+                                                    name     = {currentQuestion.id + "-" + parseInt(i+1)}
+                                                    required = {currentQuestion.required ? true : null}
+                                                    class    = "checkbox"/>
                                         </label><br>
                                     </div>
                                 {/each}
+
                         {/each}
                     </div>
                 </div>
             {/if}
         {/if}
 
-        <!-- Populate options for questions with IMAGES -->
-        {#if data.game.questions[data.index-1]?.format === "image"}
-            <!-- TODO: add randomized images with correct ID's associated with them -->
+        <!-- 
+            Questions with "IMAGES" format
+        -->
+        {#if currentQuestion?.format === "image"}
             <div>
-                <p class="question">{data.index}. {data.game.questions[data.index-1].question}</p>
+                <p class="question">{data.index}. {currentQuestion.question}</p>
 
-                <!-- Fetch the randomized images array; hide it too -->
-                <p class="blank-text">{getRandomizedArray(data.game.questions[data.index-1].options)}</p>
-                <div class="images-container">
+                <!-- 
+                    Fetch the randomized images array,
+                    HACK: I couldn't think of a better way to call function "getRandomizedArray()" specifically with a question with images,
+                    so I did it inside a <p> tag with {} braces and then used fancy CSS to hide it.
+                    It works and I'm proud of it :D
+                -->
+                <p class="blank-text">{getRandomizedArray(currentQuestion.options)}</p>
 
+                <div class="image-container">
                     {#each randomizedArray as o, j}
                         <!-- svelte-ignore a11y-label-has-associated-control -->
                         <label class="image-block">
                             <img src={o.url} class="image" alt={o.label}/>
-                            <p class="label">{o.label}</p>
+                            <p class="image-label">{o.label}</p>
+
+                            <!-- 
+                                "required", "bind:group" and "disabled" allow us to force the user to select images EXACTLY equal to "maxSelections"
+                            -->
                             <input  type       = "checkbox"
                                     value      = {o.id}
-                                    name       = {data.game.questions[data.index-1].id}
-                                    required   = {data.game.questions[data.index-1].required ? true : null}
+                                    name       = {currentQuestion.id}
+                                    required   = {currentQuestion.required ? true : null}
                                     bind:group = {selectedOptions}
-                                    disabled   = {selectedOptions.length === data.game.questions[data.index-1].maxSelections && !selectedOptions.includes(o.id)}
-                                    class      = "radio"/>
+                                    disabled   = {selectedOptions.length === currentQuestion.maxSelections && !selectedOptions.includes(o.id)}
+                                    class      = "checkbox"/>
                         </label>
                     {/each}
                 </div>
@@ -194,7 +241,7 @@
       --radio-size: 1.5em;
     }
 
-    .option {
+    .option-label {
         padding: 10px;
         background: var(--m-3-sys-light-surface-container-low, #F7F2FA);
 
@@ -206,17 +253,17 @@
         position: relative;
     }
 
-    .option:hover .radio {
+    .option-label:hover .checkbox {
         border-color: var(--color-dark-gray);
     }
 
-    .option-label {
+    .option-text {
         text-align: center;
         font-size: 18px;
         margin-left: 24px;
     }
 
-    .options-single {
+    .option-single {
         display: grid;
         grid-gap: var(--card-padding);
         margin: 0 auto;
@@ -231,17 +278,21 @@
         margin-bottom: 20px;
     }
 
-    .radio {
+    .checkbox {
         margin: 0;
         position: absolute;
     }
 
-    .radio:checked {
+    .checkbox:checked {
       border-color: var(--color-green);
     }
 
+    .checkbox:disabled {
+        border-color: var(--color-gray);
+    }
+
     @supports(-webkit-appearance: none) or (-moz-appearance: none) { 
-        .radio {
+        .checkbox {
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
@@ -257,7 +308,7 @@
             width: var(--radio-size); 
         }
 
-        .radio:after {
+        .checkbox:after {
             border: var(--radio-border-width) solid #fff;
             border-top: 0;
             border-left: 0;
@@ -273,13 +324,13 @@
             width: 0.375rem;
         }
 
-        .radio:checked {
+        .checkbox:checked {
             background: var(--color-green);
             border-color: var(--color-green);
         }
     }
 
-    .block-container {
+    .multiple-container {
         display: grid;
         gap: 10px;
         padding: 10px;
@@ -290,7 +341,7 @@
         grid-column-end: 3;
     }
 
-    .q {
+    .multiple-question {
         grid-column-start: 1;
         grid-column-end: 3;
         background: var(--m-3-sys-light-surface-container-low, #F7F2FA);
@@ -304,12 +355,12 @@
         text-align: center;
     }
 
-    .a {
+    .multiple-option {
         text-align: center;
         padding: 12px;
     }
 
-    .images-container {
+    .image-container {
         display: grid;
         margin: 10px;
         grid-template-columns: auto auto auto auto;
@@ -328,12 +379,8 @@
         margin: 10px;
     }
 
-    .label {
+    .image-label {
         padding: 4px;
-    }
-
-    .radio:disabled {
-        border-color: var(--color-gray);
     }
 
     .image {
