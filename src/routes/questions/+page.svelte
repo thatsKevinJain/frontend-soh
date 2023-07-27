@@ -1,6 +1,7 @@
 <script>
 // @ts-nocheck
     import { onMount } from 'svelte';
+    import { Slider } from "fluent-svelte";
 
     /*
         DATA: this is initialized automatically by load() function in "+page.server.js"
@@ -15,6 +16,7 @@
 
     /* Variables to store page specific data */
     let selectedOptions = []
+    let value = 1
     let currentQuestion = data.game.questions[data.index-1]
     let oldCompletionPercent = (((data.index-2)/(data.game.questions.length)) * 100)
     let completionPercent = (((data.index-1)/(data.game.questions.length)) * 100)
@@ -40,9 +42,9 @@
         const progress = document.getElementById("progress");
         const stepCircles = document.querySelectorAll(".circle");
 
-        function update(index) {
+        function update() {
             stepCircles.forEach((circle, i) => {
-                if ((((index-1)/data.game.questions.length)*100) >= percs[i]) {
+                if (completionPercent >= percs[i]) {
                     circle.classList.add("active");
                 } else {
                     circle.classList.remove("active");
@@ -50,7 +52,7 @@
             });
             progress.style.width = completionPercent + "%";
         }
-        update(data.index);
+        update();
     })
 
     /* 
@@ -78,12 +80,28 @@
     }
 
     /* CSS: setting to dynamically style multiple-questions with radio buttons */
-    function getGridColumns(size){
+    function getGridColumns(){
+
+        let size = currentQuestion.options ? currentQuestion.options.length : currentQuestion.max
+
         var gridColumns = "grid-template-columns: 250px 250px"
         for(let i=0;i<size;i++){
-            gridColumns += " auto"
+            if(currentQuestion.options)
+                gridColumns += " auto"
         }
         return gridColumns
+    }
+
+    /* 
+        CSS: Get the number of ticks required to be placed on the range slider
+        TICKS = number of steps in a given range
+    */
+    function getTicks(){
+        let ticks = []
+        for(var i=currentQuestion.min; i<=currentQuestion.max; i+=currentQuestion.step){
+            ticks.push[i]
+        }
+        return ticks
     }
 </script>
 
@@ -122,10 +140,10 @@
         <!-- 
             Questions with "TEXT" format
         -->
-        {#if currentQuestion?.format === "text"}
+        {#if currentQuestion.format === "text"}
 
             <!-- Populate options for a "SINGLE" question -->
-            {#if !currentQuestion?.multiple}
+            {#if !currentQuestion.multiple}
                 <div>
                     <p class="question">{data.index}. {currentQuestion.question}</p>
                     <div class="option-single">
@@ -144,37 +162,65 @@
             {/if}
 
             <!-- Populate options for MULTIPLE questions -->
-            {#if currentQuestion?.multiple}
+            {#if currentQuestion.multiple}
                 <div>
                     <p class="question">{data.index}. {currentQuestion.title}</p>
                     
                     <!-- 
                         CSS: Based on the number of options, fetch a dynamic grid for this question
                     -->
-                    <div class="multiple-container" style={getGridColumns(currentQuestion?.options.length)}>
+                    <div class="multiple-container" style={getGridColumns()}>
                         
                         <!-- HACK: added a blank space to place questions with their radio buttons -->
                         <div class="space"></div>
 
-                        {#each currentQuestion.options as o, j}
-                            <div class="multiple-option">{o.option}</div>
-                        {/each}
+                        {#if currentQuestion.options}
+                            {#each currentQuestion.options as o, j}
+                                <div class="multiple-option">{o.option}</div>
+                            {/each}
+                        {:else}
+                            {#each {length: currentQuestion.max} as _, i}
+                                <div class="multiple-option">{i+1}</div>
+                            {/each}
+                        {/if}
 
-                        {#each currentQuestion?.questions as question, i}
+                        {#each currentQuestion.questions as question, i}
                             <div class="multiple-question">{question.q}</div>
 
-                                {#each currentQuestion.options as o, j}
-                                    <div class="multiple-option">
-                                        <label>
-                                            <input  type     = {currentQuestion.type}
-                                                    value    = {parseInt(j+1)}
-                                                    name     = {currentQuestion.id + "-" + parseInt(i+1)}
-                                                    required = {currentQuestion.required ? true : null}
-                                                    class    = "checkbox"/>
-                                        </label><br>
-                                    </div>
-                                {/each}
+                                <!-- Populate options for a SLIDER -->
+                                {#if currentQuestion.type === "slider"}
+                                    
+                                    <div class="slider" style={"grid-column-end: " + parseInt(currentQuestion.max+3) + ";"}>
+                                        <Slider
+                                            min={currentQuestion.min}
+                                            max={currentQuestion.max}
+                                            step={currentQuestion.step}
+                                            ticks={[1,2,3,4]}>
 
+                                            <svelte:fragment slot="tooltip" let:value>
+                                                {#if currentQuestion.options}
+                                                    {currentQuestion.options[value-1].option}
+                                                {:else}
+                                                    {value}
+                                                {/if}
+                                            </svelte:fragment>
+                                        </Slider>
+                                    </div>
+
+                                <!-- Populate options for RADIO/CHECKBOX -->
+                                {:else}
+                                    {#each currentQuestion.options as o, j}
+                                        <div class="multiple-option">
+                                            <label>
+                                                <input  type     = {currentQuestion.type}
+                                                        value    = {parseInt(j+1)}
+                                                        name     = {currentQuestion.id + "-" + parseInt(i+1)}
+                                                        required = {currentQuestion.required ? true : null}
+                                                        class    = "checkbox"/>
+                                            </label><br>
+                                        </div>
+                                    {/each}
+                                {/if}
                         {/each}
                     </div>
                 </div>
@@ -184,7 +230,7 @@
         <!-- 
             Questions with "IMAGES" format
         -->
-        {#if currentQuestion?.format === "image"}
+        {#if currentQuestion.format === "image"}
             <div>
                 <p class="question">{data.index}. {currentQuestion.question}</p>
 
@@ -390,5 +436,10 @@
 
     .blank-text {
         color: rgba(0, 0, 0, 0);
+    }
+
+    .slider {
+        display: grid;
+        grid-column-start: 3;
     }
 </style>

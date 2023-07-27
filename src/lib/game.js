@@ -57,36 +57,44 @@ export const game =
 			multiple: true,
 			weight: 4,
 			type: "radio", 	// [radio, checkbox]
-			format: "text",	// [plain-text, images, slider]
+			format: "text",	// [plain-text, images]
 			required: false
 		},
-		// {
-		// 	id: 3,
-		// 	title: "Social Life: On average...",
-		// 	format: "text",	// [plain-text, images]
-		// 	questions: [{ id: 1, q: "How many hours per day do you socialize face-to-face with family members?", sign: 1 },
-		// 				{ id: 2, q: "How many hours per day do you socialize face-to-face with friends?", sign: 1 },
-		// 				{ id: 3, q: "How many close friends do you have that you socialize with regularly?", sign: 1 }],
-		// 	multiple: true,
-		// 	weight: 4,
-		// 	type: "slider", 	// [radio, checkbox, slider]
-		// 	range: 10,
-		// 	steps: 1,
-		// 	required: false
-		// },
-		// {
-		// 	id: 4,
-		// 	title: "Consider the 10 people that you spend the most time with: ",
-		// 	format: "text",	// [plain-text, images]
-		// 	questions: [{ id: 1, q: "How many of these friends would you describe  as happy, upbeat, optimistic, or cheerful?", sign: 1 },
-		// 				{ id: 1, q: "How many of your friends would you describe  as unhappy, sad, depressed or pessimistic?", sign: -1 }],
-		// 	multiple: true,
-		// 	weight: 4,
-		// 	type: "slider", 	// [radio, checkbox, slider]
-		// 	range: 10,
-		// 	steps: 1,
-		// 	required: false
-		// },
+		{
+			id: 3,
+			title: "Social Life: On average...",
+			format: "text",	// [plain-text, images]
+			questions: [{ id: 1, q: "How many hours per day do you socialize face-to-face with family members?", sign: 1 },
+						{ id: 2, q: "How many hours per day do you socialize face-to-face with friends?", sign: 1 },
+						{ id: 3, q: "How many close friends do you have that you socialize with regularly?", sign: 1 }],
+			multiple: true,
+			weight: 1,
+			type: "slider", 	// [radio, checkbox, slider]
+			min: 1,
+			max: 10,
+			step: 1,
+			required: false
+		},
+		{
+			id: 4,
+			title: "Consider the 10 people that you spend the most time with: ",
+			format: "text",	// [plain-text, images]
+			questions: [{ id: 1, q: "How many of these friends would you describe  as happy, upbeat, optimistic, or cheerful?", sign: 1 },
+						{ id: 1, q: "How many of your friends would you describe  as unhappy, sad, depressed or pessimistic?", sign: -1 }],
+			options: [
+				{ id: 1, option: "A lot less", score: 0.25},
+				{ id: 2, option: "A little less", score: 0.5},
+				{ id: 3, option: "A little more", score: 0.75},
+				{ id: 4, option: "A lot more", score: 1}
+			],
+			multiple: true,
+			weight: 4,
+			type: "slider", 	// [radio, checkbox, slider]
+			min: 1,
+			max: 4,
+			step: 1,
+			required: false
+		},
 	]
 };
 
