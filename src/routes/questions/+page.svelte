@@ -1,7 +1,6 @@
 <script>
 // @ts-nocheck
     import { onMount } from 'svelte';
-    import { Slider } from "fluent-svelte";
 
     /*
         DATA: this is initialized automatically by load() function in "+page.server.js"
@@ -175,6 +174,7 @@
                         <!-- HACK: added a blank space to place questions with their radio buttons -->
                         <div class="space"></div>
 
+                        <!-- Display available options OR range of numbers -->
                         {#if currentQuestion.options}
                             {#each currentQuestion.options as o, j}
                                 <div class="multiple-option">{o.option}</div>
@@ -188,25 +188,26 @@
                         {#each currentQuestion.questions as question, i}
                             <div class="multiple-question">{question.q}</div>
 
-                                <!-- Populate options for a SLIDER -->
-                                {#if currentQuestion.type === "slider"}
+                                <!-- Populate options for a SLIDER with a RANGE -->
+                                {#if currentQuestion.type === "range"}
                                     
-                                    <div class="slider" style={"grid-column-end: " + parseInt(currentQuestion.max+3) + ";"}>
-                                        <Slider
-                                            min={currentQuestion.min}
-                                            max={currentQuestion.max}
-                                            step={currentQuestion.step}
-                                            ticks={ticks}>
-
-                                            <svelte:fragment slot="tooltip" let:value>
-                                                {#if currentQuestion.options}
-                                                    {currentQuestion.options[value-1].option}
-                                                {:else}
-                                                    {value}
-                                                {/if}
-                                            </svelte:fragment>
-                                        </Slider>
+                                    <div class="slidecontainer" style={"grid-column-end: " + parseInt(currentQuestion.max+3) + ";"}>
+                                        <input  type  = "range"
+                                                class = "slider"
+                                                list  = "ticks"
+                                                min   = {currentQuestion.min}
+                                                max   = {currentQuestion.max}
+                                                step  = {currentQuestion.step}
+                                                name  = {currentQuestion.id + "-" + parseInt(i+1)}
+                                                value = {parseInt(1)}/>
                                     </div>
+
+                                    <!-- Add TICKS to the slider -->
+                                    <datalist id="ticks">
+                                        {#each ticks as t}
+                                            <option value={t} label={t}/>
+                                        {/each}
+                                    </datalist>
 
                                 <!-- Populate options for RADIO/CHECKBOX -->
                                 {:else}
@@ -237,7 +238,7 @@
 
                 <!-- 
                     Fetch the randomized images array,
-                    HACK: I couldn't think of a better way to call function "getRandomizedArray()" specifically with a question with images,
+                    HACK: I couldn't think of a better way to call function "getRandomizedArray()" specifically for a question with images,
                     so I did it inside a <p> tag with {} braces and then used fancy CSS to hide it.
                     It works and I'm proud of it :D
                 -->
@@ -439,8 +440,20 @@
         color: rgba(0, 0, 0, 0);
     }
 
-    .slider {
+    .slidecontainer {
+        width: 100%;
         display: grid;
         grid-column-start: 3;
+        align-items: center;
     }
+
+    .slider {
+        height: 15px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
 </style>

@@ -34,7 +34,6 @@ export const actions = {
 		// Get the form data //
 		const data = await request.formData();
 		const unwind = [...data];
-		console.log(unwind);
 
 		// Get the index //
 		const index = url.searchParams.get("i");

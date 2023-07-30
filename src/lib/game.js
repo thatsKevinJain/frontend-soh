@@ -69,7 +69,7 @@ export const game =
 						{ id: 3, q: "How many close friends do you have that you socialize with regularly?", sign: 1 }],
 			multiple: true,
 			weight: 1,
-			type: "slider", 	// [radio, checkbox, slider]
+			type: "range", 	// [radio, checkbox, slider]
 			min: 1,
 			max: 10,
 			step: 1,
@@ -89,7 +89,7 @@ export const game =
 			],
 			multiple: true,
 			weight: 4,
-			type: "slider", 	// [radio, checkbox, slider]
+			type: "range", 	// [radio, checkbox, slider]
 			min: 1,
 			max: 4,
 			step: 1,
