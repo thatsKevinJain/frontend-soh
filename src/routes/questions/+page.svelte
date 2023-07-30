@@ -17,6 +17,7 @@
     /* Variables to store page specific data */
     let selectedOptions = []
     let value = 1
+    let ticks = [1,2,3,4]
     let currentQuestion = data.game.questions[data.index-1]
     let oldCompletionPercent = (((data.index-2)/(data.game.questions.length)) * 100)
     let completionPercent = (((data.index-1)/(data.game.questions.length)) * 100)
@@ -53,6 +54,18 @@
             progress.style.width = completionPercent + "%";
         }
         update();
+
+        /* 
+            CSS: Get the number of ticks required to be placed on the range slider
+            TICKS = number of steps in a given range
+        */
+        function getTicks(){
+            ticks = []
+            for(var i=currentQuestion.min; i<=currentQuestion.max; i+=currentQuestion.step){
+                ticks = [...ticks, i];
+            }
+        }
+        getTicks();
     })
 
     /* 
@@ -90,18 +103,6 @@
                 gridColumns += " auto"
         }
         return gridColumns
-    }
-
-    /* 
-        CSS: Get the number of ticks required to be placed on the range slider
-        TICKS = number of steps in a given range
-    */
-    function getTicks(){
-        let ticks = []
-        for(var i=currentQuestion.min; i<=currentQuestion.max; i+=currentQuestion.step){
-            ticks.push[i]
-        }
-        return ticks
     }
 </script>
 
@@ -195,7 +196,7 @@
                                             min={currentQuestion.min}
                                             max={currentQuestion.max}
                                             step={currentQuestion.step}
-                                            ticks={[1,2,3,4]}>
+                                            ticks={ticks}>
 
                                             <svelte:fragment slot="tooltip" let:value>
                                                 {#if currentQuestion.options}
