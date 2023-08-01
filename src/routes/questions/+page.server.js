@@ -6,6 +6,14 @@ import { redirect } from '@sveltejs/kit';
 let ans = {};
 let game;
 
+function onlyUnique(value, index, array) {
+	return array.indexOf(value) === index;
+}
+
+function getNElement(value, index, array) {
+	return value[0];
+}
+
 export async function load({url, cookies}){
 	
 	// INIT //
@@ -34,6 +42,7 @@ export const actions = {
 		// Get the form data //
 		const data = await request.formData();
 		const unwind = [...data];
+		console.log(unwind);
 
 		// Get the index //
 		const index = url.searchParams.get("i");
@@ -56,9 +65,22 @@ export const actions = {
 		}
 
 		if(unwind && unwind.length > 1){
-			ans[unwind[0][0]] = null
-			for(let u of unwind){
-				ans[u[0]] = ans[u[0]] ? ans[u[0]]+","+parseInt(u[1]) : parseInt(u[1])
+
+			// If the question number is same, append the values //
+			if(((unwind.map(getNElement)).filter(onlyUnique)).length === 1){
+
+				ans[unwind[0][0]] = null
+				for(let u of unwind){
+					ans[u[0]] = ans[u[0]] ? ans[u[0]]+","+parseInt(u[1]) : parseInt(u[1])
+				}
+
+			}
+
+			// Else, simply store them separately //
+			else{
+				for(let u of unwind){
+					ans[u[0]] = parseInt(u[1])
+				}
 			}
 		}
 		
