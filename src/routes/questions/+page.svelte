@@ -144,6 +144,11 @@
 
             <!-- Populate options for a "SINGLE" question -->
             {#if !currentQuestion.multiple}
+
+                <!-- TODO: Populate a SLIDER -->
+                
+
+                <!-- Options for a RADIO/CHECKBOX -->
                 <div>
                     <p class="question">{data.index}. {currentQuestion.question}</p>
                     <div class="option-single">

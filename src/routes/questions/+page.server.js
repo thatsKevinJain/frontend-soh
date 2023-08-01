@@ -1,10 +1,10 @@
 // @ts-nocheck
-import { game } from '../../lib/game.js'
+// import { game } from '../../lib/game.js'
 import { getResponse } from '../../utils/getResponse.js'
 import { redirect } from '@sveltejs/kit';
 
 let ans = {};
-// let game;
+let game;
 
 export async function load({url, cookies}){
 	
@@ -19,8 +19,8 @@ export async function load({url, cookies}){
 		This is a redundant API call (a bad practice when building apps of scale)
 		But works for now!
 	*/
-	// game = await getResponse('http://localhost:3000/app/getGame');
-	// game = JSON.parse(game);
+	game = await getResponse('http://localhost:3000/app/getGame');
+	game = JSON.parse(game);
 
     return {
     	game,
