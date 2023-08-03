@@ -1,8 +1,9 @@
 // @ts-nocheck
 // import { game } from '../../lib/game.js'
 import { getResponse } from '../../utils/getResponse.js'
-import { redirect } from '@sveltejs/kit';
 
+// INIT //
+let index = 1;
 let ans = {};
 let game;
 
@@ -14,10 +15,8 @@ function getNElement(value, index, array) {
 	return value[0];
 }
 
-export async function load({url, cookies}){
-	
-	// INIT //
-	const index = url.searchParams.get('i');
+export async function load(){
+
 	if(index == 1){
 		ans = {}
 	}
@@ -37,15 +36,15 @@ export async function load({url, cookies}){
 };
 
 export const actions = {
-	default: async ({ request, url, cookies }) => {
+	default: async ({ request, cookies }) => {
 
 		// Get the form data //
-		const data = await request.formData();
-		const unwind = [...data];
+		const formData = await request.formData();
+		const unwind = [...formData].slice(1);
 		console.log(unwind);
 
 		// Get the index //
-		const index = url.searchParams.get("i");
+		index = parseInt(formData.get('index')) + 1
 
 		/* 
 			Different questions here will have a different way of storing the answer --
@@ -88,10 +87,10 @@ export const actions = {
 			If all the questions are answered, store the "ans" variable via our API and redirect to "results" page,
 			else go to the NEXT question.
 		*/
-		if(unwind && index > game.questions.length){
+		if(index > game.questions.length){
 			const response = await getResponse('http://localhost:3000/submission/create', 'POST', { answers: ans, user: cookies.get('_id') });
 
-			throw redirect(303, "/results");
+			return { location: "/results" };
 		}
 		return { success: true };
 	}

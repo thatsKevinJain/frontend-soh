@@ -14,6 +14,12 @@ export const game =
 				{ id: 4, option: "9-10", score: 0.5 },
 				{ id: 5, option: "More than 10", score: 0 }
 			],
+			suggestions: {
+				1 : "The sun sets over mountains.",
+				2 : "Laughter echoes through the park.",
+				3 : "Raindrops dance on windowpanes.",
+				4 : "Flowers bloom in springtime meadows."
+			},
 			weight: 1,
 			multiple: false,	// boolean to indicate if there are multiple questions in one
 			type: "radio", 		// [radio, checkbox]
@@ -35,6 +41,12 @@ export const game =
 				{ id: 3, option: "A little more", score: 0.75},
 				{ id: 4, option: "A lot more", score: 1}
 			],
+			suggestions: {
+				1 : "Ocean waves crash against rocks.",
+				2 : "Children play in colorful playgrounds.",
+				3 : "Autumn leaves create a mosaic.",
+				4 : "A cozy fire warms hearts."
+			},
 			multiple: true,
 			weight: 1,
 			type: "radio", 	// [radio, checkbox]
@@ -57,6 +69,12 @@ export const game =
 					{ id: 8, label: "hello", score: 0, url: "https://images.unsplash.com/photo-1690005866751-3cab315c0096?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTkyOA&ixlib=rb-4.0.3&q=80&w=200"},
 					{ id: 9, label: "hello", score: 0, url: "https://images.unsplash.com/photo-1687253673883-d5f0f1f13443?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTkzNw&ixlib=rb-4.0.3&q=80&w=200"},
 				],
+			suggestions: {
+				1 : "Snowflakes blanket the frozen ground.",
+				2 : "Birds chirp in the morning.",
+				3 : "Stars twinkle in the night.",
+				4 : "Books transport us to imagination."
+			},
 			type: "checkbox",
 			required: true,
 			weight: 1,
@@ -85,6 +103,12 @@ export const game =
 				{ id: 3, option: "A little more", score: 0.75},
 				{ id: 4, option: "A lot more", score: 1}
 			],
+			suggestions: {
+				1 : "Soccer players score stunning goals.",
+				2 : "Artists paint with vibrant hues.",
+				3 : "Thunder rumbles through dark skies.",
+				4 : "Families gather for holiday feasts."
+			},
 			multiple: true,
 			weight: 1,
 			type: "radio", 	// [radio, checkbox]
@@ -113,6 +137,12 @@ export const game =
 				{ id: 3, option: "A little more", score: 0.75},
 				{ id: 4, option: "A lot more", score: 1}
 			],
+			suggestions: {
+				1 : "Butterflies flutter in lush gardens.",
+				2 : "Music soothes the troubled soul.",
+				3 : "Time flies, memories remain.",
+				4 : "Dreams inspire us to achieve."
+			},
 			multiple: true,
 			weight: 1,
 			type: "radio", 	// [radio, checkbox]
@@ -126,6 +156,12 @@ export const game =
 			questions: [{ id: 1, q: "How many hours per day do you socialize face-to-face with family members?", sign: 1 },
 						{ id: 2, q: "How many hours per day do you socialize face-to-face with friends?", sign: 1 },
 						{ id: 3, q: "How many close friends do you have that you socialize with regularly?", sign: 1 }],
+			suggestions: {
+				1 : "Waves gently caress sandy shores.",
+				2 : "Birds build nests in trees.",
+				3 : "Candles flicker in dim rooms.",
+				4 : "Coffee warms hands on mornings."
+			},
 			multiple: true,
 			weight: 1,
 			type: "range", 	// [radio, checkbox, slider]
@@ -146,6 +182,12 @@ export const game =
 				{ id: 3, option: "A little more", score: 0.75},
 				{ id: 4, option: "A lot more", score: 1}
 			],
+			suggestions: {
+				1 : "Moonlight illuminates a silent night.",
+				2 : "Rainbows grace the storm's end.",
+				3 : "Honeybees buzz around blooming flowers.",
+				4 : "Butter melts on warm toast."
+			},
 			multiple: true,
 			weight: 1,
 			type: "range", 	// [radio, checkbox, slider]

@@ -1,6 +1,9 @@
 <script>
 // @ts-nocheck
     import { onMount } from 'svelte';
+    import { enhance } from '$app/forms';
+    import { fly } from 'svelte/transition';
+    import { goto } from '$app/navigation';
 
     /*
         DATA: this is initialized automatically by load() function in "+page.server.js"
@@ -14,56 +17,49 @@
     const percs = [0, 25, 50, 75, 100]
 
     /* Variables to store page specific data */
+    let visible;
+    let index = data.index;
     let selectedOptions = []
-    let value = 1
     let ticks = [1,2,3,4]
-    let currentQuestion = data.game.questions[data.index-1]
-    let oldCompletionPercent = (((data.index-2)/(data.game.questions.length)) * 100)
-    let completionPercent = (((data.index-1)/(data.game.questions.length)) * 100)
+    let currentQuestion = data.game.questions[index-1]
+    let completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
+
+    /* 
+        CSS: Get the number of ticks required to be placed on the range slider
+        TICKS = number of steps in a given range
+    */
+    function getTicks(){
+        ticks = []
+        for(var i=currentQuestion.min; i<=currentQuestion.max; i+=currentQuestion.step){
+            ticks = [...ticks, i];
+        }
+    }
+    
+    /* 
+        Set the progress bar based on current index,
+        we calculate the % of total questions completed and update the progress bar
+        along with the active checkpoints [0, 25, 50, 75, 100] set by us
+    */
+    function updateProgressBar() {
+        const progress = document.getElementById("progress");
+        const stepCircles = document.querySelectorAll(".circle");
+        stepCircles.forEach((circle, i) => {
+            if (completionPercent >= percs[i]) {
+                circle.classList.add("active");
+            } else {
+                circle.classList.remove("active");
+            }
+        });
+        progress.style.width = completionPercent + "%";
+    }
 
     /* 
         Function called when components have finished mounting on the DOM,
         this will allow us to animate certain elements like progress-bar after the page is loaded
     */
     onMount(() => {
-
-        /* 
-            Get the index from URL,
-            this is an important step, load() function isn't called when user presses "BACK" on their browsers
-            It allows us to update the "index" to it's correct value. Saves us from many unforseen BUGS :)
-        */
-        data.index = document.URL.split("?i=")[1];
-
-        /* 
-            Set the progress bar based on current index,
-            we calculate the % of total questions completed and update the progress bar
-            along with the active checkpoints [0, 25, 50, 75, 100] set by us
-        */
-        const progress = document.getElementById("progress");
-        const stepCircles = document.querySelectorAll(".circle");
-
-        function update() {
-            stepCircles.forEach((circle, i) => {
-                if (completionPercent >= percs[i]) {
-                    circle.classList.add("active");
-                } else {
-                    circle.classList.remove("active");
-                }
-            });
-            progress.style.width = completionPercent + "%";
-        }
-        update();
-
-        /* 
-            CSS: Get the number of ticks required to be placed on the range slider
-            TICKS = number of steps in a given range
-        */
-        function getTicks(){
-            ticks = []
-            for(var i=currentQuestion.min; i<=currentQuestion.max; i+=currentQuestion.step){
-                ticks = [...ticks, i];
-            }
-        }
+        visible = true;
+        updateProgressBar();
         getTicks();
     })
 
@@ -103,6 +99,60 @@
         }
         return gridColumns
     }
+
+    /*
+        ENHANCE function is called when the user presses submit,
+        we will store the input in the form, update the index, load the next question, 
+        and then redirect to a new page on form completion.
+
+        This is called just before the form is submitted.
+    */
+    function useEnhance(){
+
+        // Make the current question hidden //
+        visible = false
+        
+        return async ({ result, update }) => {
+            
+            // `result` is an `ActionResult` object
+            // `update` is a function which triggers the default logic that would be triggered to reset the form
+            await update();
+            
+            if(result.data.location){
+                await goto(result.data.location)
+            }
+            else{
+                /*
+                    We increment the "index" here, update the page with the new question 
+                */
+                index += 1;
+                updatePage();
+            }
+        };
+    }
+
+    /*
+        Function to scroll the page to the TOP of the screen to enhance the user experience
+    */
+    function topFunction() {
+        const c = document.documentElement.scrollTop || document.body.scrollTop;
+        if (c > 0) {
+            window.requestAnimationFrame(topFunction);
+            window.scrollTo(0, c - c / 15);
+        }
+    } 
+
+    /*
+        Update the progress bar, load the new queston, scroll to the top of screen
+    */
+    function updatePage(){;
+        currentQuestion = data.game.questions[index-1]
+        completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
+        updateProgressBar();
+        getTicks();
+        topFunction();
+        visible = true;
+    }
 </script>
 
 
@@ -117,7 +167,7 @@
 <!-- PROGRESS BAR -->
 <div class="container">
   <div class="progress-container">
-    <div class="progress" id="progress" style={"width:" + oldCompletionPercent + "%"}> </div>
+    <div class="progress" id="progress" style={"width:" + completionPercent + "%"}> </div>
     {#each percs as perc, i}
         <div class="circle">{perc.toString()+"%"}</div>
     {/each}
@@ -125,156 +175,160 @@
 </div>
 
 <!-- QUESTIONS -->
-<div class="main">
-
-    <!-- 
-        Load ONE question at a time indicated by "data.index", the UI will populate as per the questions requirements
-
-        When the user presses "SUBMIT", we store the selections made by the user in "+page.server.js"
-        and call the same page with "?i=data.index+1"
-
-        Power of "dynamic-page-loading-with-recursion"
-    -->
-    <form method="POST" action="/questions?i={parseInt(data.index)+1}">
+{#if visible}
+    <div class="main" in:fly={{x:20}} out:fly={{x:-20}}>
 
         <!-- 
-            Questions with "TEXT" format
+            Load ONE question at a time indicated by "data.index", the UI will populate as per the questions requirements
+
+            When the user presses "SUBMIT", we store the selections made by the user in "+page.server.js"
+            and call the same page with "?i=data.index+1"
+
+            Power of "dynamic-page-loading-with-recursion"
         -->
-        {#if currentQuestion.format === "text"}
+        <form method="POST" action="/questions" use:enhance={useEnhance}>
 
-            <!-- Populate options for a "SINGLE" question -->
-            {#if !currentQuestion.multiple}
+            <input name="index" value={index} hidden/>
 
-                <!-- TODO: Populate a SLIDER -->
-                
+            <!-- 
+                Questions with "TEXT" format
+            -->
+            {#if currentQuestion.format === "text"}
 
-                <!-- Options for a RADIO/CHECKBOX -->
-                <div>
-                    <p class="question">{data.index}. {currentQuestion.question}</p>
-                    <div class="option-single">
-                        {#each currentQuestion.options as o, j}
-                            <label class="option-label">
-                                <input  type     = {currentQuestion.type}
-                                        name     = {currentQuestion.id}
-                                        value    = {o.id}
-                                        required = {currentQuestion.required ? true : null}
-                                        class    = "checkbox"/>
-                                <p class="option-text">{o.option}</p>
-                            </label><br>
-                        {/each}
-                    </div>
-                </div>
-            {/if}
+                <!-- Populate options for a "SINGLE" question -->
+                {#if !currentQuestion.multiple}
 
-            <!-- Populate options for MULTIPLE questions -->
-            {#if currentQuestion.multiple}
-                <div>
-                    <p class="question">{data.index}. {currentQuestion.title}</p>
+                    <!-- TODO: Populate a SLIDER -->
                     
-                    <!-- 
-                        CSS: Based on the number of options, fetch a dynamic grid for this question
-                    -->
-                    <div class="multiple-container" style={getGridColumns()}>
-                        
-                        <!-- HACK: added a blank space to place questions with their radio buttons -->
-                        <div class="space"></div>
 
-                        <!-- Display available options OR range of numbers -->
-                        {#if currentQuestion.options}
+                    <!-- Options for a RADIO/CHECKBOX -->
+                    <div>
+                        <p class="question">{index}. {currentQuestion.question}</p>
+                        <div class="option-single">
                             {#each currentQuestion.options as o, j}
-                                <div class="multiple-option">{o.option}</div>
+                                <label class="option-label">
+                                    <input  type     = {currentQuestion.type}
+                                            name     = {currentQuestion.id}
+                                            value    = {o.id}
+                                            required = {currentQuestion.required ? true : null}
+                                            class    = "checkbox"/>
+                                    <p class="option-text">{o.option}</p>
+                                </label><br>
                             {/each}
-                        {:else}
-                            {#each {length: currentQuestion.max} as _, i}
-                                <div class="multiple-option">{i+1}</div>
-                            {/each}
-                        {/if}
+                        </div>
+                    </div>
+                {/if}
 
-                        {#each currentQuestion.questions as question, i}
-                            <div class="multiple-question">{question.q}</div>
+                <!-- Populate options for MULTIPLE questions -->
+                {#if currentQuestion.multiple}
+                    <div>
+                        <p class="question">{index}. {currentQuestion.title}</p>
+                        
+                        <!-- 
+                            CSS: Based on the number of options, fetch a dynamic grid for this question
+                        -->
+                        <div class="multiple-container" style={getGridColumns()}>
+                            
+                            <!-- HACK: added a blank space to place questions with their radio buttons -->
+                            <div class="space"></div>
 
-                                <!-- Populate options for a SLIDER with a RANGE -->
-                                {#if currentQuestion.type === "range"}
-                                    
-                                    <div class="slidecontainer" style={"grid-column-end: " + parseInt(currentQuestion.max+3) + ";"}>
-                                        <input  type  = "range"
-                                                class = "slider"
-                                                list  = "ticks"
-                                                min   = {currentQuestion.min}
-                                                max   = {currentQuestion.max}
-                                                step  = {currentQuestion.step}
-                                                name  = {currentQuestion.id + "-" + parseInt(i+1)}
-                                                value = {parseInt(1)}/>
-                                    </div>
+                            <!-- Display available options OR range of numbers -->
+                            {#if currentQuestion.options}
+                                {#each currentQuestion.options as o, j}
+                                    <div class="multiple-option">{o.option}</div>
+                                {/each}
+                            {:else}
+                                {#each {length: currentQuestion.max} as _, i}
+                                    <div class="multiple-option">{i+1}</div>
+                                {/each}
+                            {/if}
 
-                                    <!-- Add TICKS to the slider -->
-                                    <datalist id="ticks">
-                                        {#each ticks as t}
-                                            <option value={t} label={t}/>
-                                        {/each}
-                                    </datalist>
+                            {#each currentQuestion.questions as question, i}
+                                <div class="multiple-question">{question.q}</div>
 
-                                <!-- Populate options for RADIO/CHECKBOX -->
-                                {:else}
-                                    {#each currentQuestion.options as o, j}
-                                        <div class="multiple-option">
-                                            <label>
-                                                <input  type     = {currentQuestion.type}
-                                                        value    = {parseInt(j+1)}
-                                                        name     = {currentQuestion.id + "-" + parseInt(i+1)}
-                                                        required = {currentQuestion.required ? true : null}
-                                                        class    = "checkbox"/>
-                                            </label><br>
+                                    <!-- Populate options for a SLIDER with a RANGE -->
+                                    {#if currentQuestion.type === "range"}
+                                        
+                                        <div class="slidecontainer" style={"grid-column-end: " + parseInt(currentQuestion.max+3) + ";"}>
+                                            <input  type  = "range"
+                                                    class = "slider"
+                                                    list  = "ticks"
+                                                    min   = {currentQuestion.min}
+                                                    max   = {currentQuestion.max}
+                                                    step  = {currentQuestion.step}
+                                                    name  = {currentQuestion.id + "-" + parseInt(i+1)}
+                                                    value = {parseInt(1)}/>
                                         </div>
-                                    {/each}
-                                {/if}
+
+                                        <!-- Add TICKS to the slider -->
+                                        <datalist id="ticks">
+                                            {#each ticks as t}
+                                                <option value={t} label={t}/>
+                                            {/each}
+                                        </datalist>
+
+                                    <!-- Populate options for RADIO/CHECKBOX -->
+                                    {:else}
+                                        {#each currentQuestion.options as o, j}
+                                            <div class="multiple-option">
+                                                <label>
+                                                    <input  type     = {currentQuestion.type}
+                                                            value    = {parseInt(j+1)}
+                                                            name     = {currentQuestion.id + "-" + parseInt(i+1)}
+                                                            required = {currentQuestion.required ? true : null}
+                                                            class    = "checkbox"/>
+                                                </label><br>
+                                            </div>
+                                        {/each}
+                                    {/if}
+                            {/each}
+                        </div>
+                    </div>
+                {/if}
+            {/if}
+
+            <!-- 
+                Questions with "IMAGES" format
+            -->
+            {#if currentQuestion.format === "image"}
+                <div>
+                    <p class="question">{index}. {currentQuestion.question}</p>
+
+                    <!-- 
+                        Fetch the randomized images array,
+                        HACK: I couldn't think of a better way to call function "getRandomizedArray()" specifically for a question with images,
+                        so I did it inside a <p> tag with {} braces and then used fancy CSS to hide it.
+                        It works and I'm proud of it :D
+                    -->
+                    <p class="blank-text">{getRandomizedArray(currentQuestion.options)}</p>
+
+                    <div class="image-container">
+                        {#each randomizedArray as o, j}
+                            <!-- svelte-ignore a11y-label-has-associated-control -->
+                            <label class="image-block">
+                                <img src={o.url} class="image" alt={o.label}/>
+                                <p class="image-label">{o.label}</p>
+
+                                <!-- 
+                                    "required", "bind:group" and "disabled" allow us to force the user to select images EXACTLY equal to "maxSelections"
+                                -->
+                                <input  type       = "checkbox"
+                                        value      = {o.id}
+                                        name       = {currentQuestion.id}
+                                        required   = {currentQuestion.required ? true : null}
+                                        bind:group = {selectedOptions}
+                                        disabled   = {selectedOptions.length === currentQuestion.maxSelections && !selectedOptions.includes(o.id)}
+                                        class      = "checkbox"/>
+                            </label>
                         {/each}
                     </div>
                 </div>
             {/if}
-        {/if}
 
-        <!-- 
-            Questions with "IMAGES" format
-        -->
-        {#if currentQuestion.format === "image"}
-            <div>
-                <p class="question">{data.index}. {currentQuestion.question}</p>
-
-                <!-- 
-                    Fetch the randomized images array,
-                    HACK: I couldn't think of a better way to call function "getRandomizedArray()" specifically for a question with images,
-                    so I did it inside a <p> tag with {} braces and then used fancy CSS to hide it.
-                    It works and I'm proud of it :D
-                -->
-                <p class="blank-text">{getRandomizedArray(currentQuestion.options)}</p>
-
-                <div class="image-container">
-                    {#each randomizedArray as o, j}
-                        <!-- svelte-ignore a11y-label-has-associated-control -->
-                        <label class="image-block">
-                            <img src={o.url} class="image" alt={o.label}/>
-                            <p class="image-label">{o.label}</p>
-
-                            <!-- 
-                                "required", "bind:group" and "disabled" allow us to force the user to select images EXACTLY equal to "maxSelections"
-                            -->
-                            <input  type       = "checkbox"
-                                    value      = {o.id}
-                                    name       = {currentQuestion.id}
-                                    required   = {currentQuestion.required ? true : null}
-                                    bind:group = {selectedOptions}
-                                    disabled   = {selectedOptions.length === currentQuestion.maxSelections && !selectedOptions.includes(o.id)}
-                                    class      = "checkbox"/>
-                        </label>
-                    {/each}
-                </div>
-            </div>
-        {/if}
-
-        <button class="submit-btn">Submit</button>
-    </form>
-</div>
+            <button class="submit-btn">Submit</button>
+        </form>
+    </div>
+{/if}
 
 <style>
 
