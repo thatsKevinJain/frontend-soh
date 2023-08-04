@@ -54,16 +54,6 @@
     }
 
     /* 
-        Function called when components have finished mounting on the DOM,
-        this will allow us to animate certain elements like progress-bar after the page is loaded
-    */
-    onMount(() => {
-        visible = true;
-        updateProgressBar();
-        getTicks();
-    })
-
-    /* 
         Randomize images in a given question
     */
     let randomizedArray = []
@@ -101,11 +91,32 @@
     }
 
     /*
+        Function to scroll the page to the TOP of the screen to enhance the user experience
+    */
+    function topFunction() {
+        const c = document.documentElement.scrollTop || document.body.scrollTop;
+        if (c > 0) {
+            window.requestAnimationFrame(topFunction);
+            window.scrollTo(0, c - c / 15);
+        }
+    }
+
+    /*
+        Update the progress bar, load the new queston, scroll to the top of screen
+    */
+    function updatePage(){;
+        currentQuestion = data.game.questions[index-1]
+        completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
+        updateProgressBar();
+        getTicks();
+        topFunction();
+        visible = true;
+    }
+
+    /*
         ENHANCE function is called when the user presses submit,
         we will store the input in the form, update the index, load the next question, 
         and then redirect to a new page on form completion.
-
-        This is called just before the form is submitted.
     */
     function useEnhance(){
 
@@ -131,28 +142,15 @@
         };
     }
 
-    /*
-        Function to scroll the page to the TOP of the screen to enhance the user experience
+    /* 
+        Function called when components have finished mounting on the DOM,
+        this will allow us to animate certain elements like progress-bar after the page is loaded
     */
-    function topFunction() {
-        const c = document.documentElement.scrollTop || document.body.scrollTop;
-        if (c > 0) {
-            window.requestAnimationFrame(topFunction);
-            window.scrollTo(0, c - c / 15);
-        }
-    }
-
-    /*
-        Update the progress bar, load the new queston, scroll to the top of screen
-    */
-    function updatePage(){;
-        currentQuestion = data.game.questions[index-1]
-        completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
+    onMount(() => {
+        visible = true;
         updateProgressBar();
         getTicks();
-        topFunction();
-        visible = true;
-    }
+    })
 </script>
 
 
@@ -179,7 +177,7 @@
     <div class="main" in:fly={{x:20}} out:fly={{x:-20}}>
 
         <!-- 
-            Load ONE question at a time indicated by "data.index", the UI will populate as per the questions requirements
+            Load ONE question at a time indicated by "index", the UI will populate as per the questions requirements
 
             When the user presses "SUBMIT", we store the selections made by the user in "+page.server.js"
 
