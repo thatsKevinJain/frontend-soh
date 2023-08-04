@@ -16,11 +16,6 @@ function getNElement(value, index, array) {
 }
 
 export async function load(){
-
-	if(index == 1){
-		ans = {}
-	}
-
 	/* 
 		Load game questions on every page load
 		This is a redundant API call (a bad practice when building apps of scale)
@@ -45,6 +40,10 @@ export const actions = {
 
 		// Get the index //
 		index = parseInt(formData.get('index')) + 1
+		
+		if(index == 1){
+			ans = {}
+		}
 
 		/* 
 			Different questions here will have a different way of storing the answer --

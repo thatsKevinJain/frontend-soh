@@ -18,7 +18,7 @@
 
     /* Variables to store page specific data */
     let visible;
-    let index = data.index;
+    let index = 1;
     let selectedOptions = []
     let ticks = [1,2,3,4]
     let currentQuestion = data.game.questions[index-1]
@@ -140,7 +140,7 @@
             window.requestAnimationFrame(topFunction);
             window.scrollTo(0, c - c / 15);
         }
-    } 
+    }
 
     /*
         Update the progress bar, load the new queston, scroll to the top of screen
@@ -182,12 +182,12 @@
             Load ONE question at a time indicated by "data.index", the UI will populate as per the questions requirements
 
             When the user presses "SUBMIT", we store the selections made by the user in "+page.server.js"
-            and call the same page with "?i=data.index+1"
 
             Power of "dynamic-page-loading-with-recursion"
         -->
         <form method="POST" action="/questions" use:enhance={useEnhance}>
 
+            <!-- HACK: we will add a form input that allows us to pass current "index" value to the server -->
             <input name="index" value={index} hidden/>
 
             <!-- 
