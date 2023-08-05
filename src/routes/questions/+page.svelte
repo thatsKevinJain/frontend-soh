@@ -109,9 +109,9 @@
         backgroundColor = getRandomColor();
         currentQuestion = data.game.questions[index-1]
         completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
+        topFunction();
         updateProgressBar();
         getTicks();
-        topFunction();
         visible = true;
     }
 
@@ -169,6 +169,13 @@
             
             if(result.data.location){
                 await goto(result.data.location)
+            }
+            else if(result.data.prev){
+                /*
+                    We decrement the "index" here, update the page with the previous question 
+                */
+                index -= 1;
+                updatePage();
             }
             else{
                 /*
@@ -364,12 +371,14 @@
             {/if}
 
             <div>
-                <button class="submit-btn">Next</button>
+                {#if index > 1}
+                    <button type="submit" class="submit-btn" formaction="/questions?/prev">← Previous</button>
+                {/if}
+                <button type="submit" class="submit-btn" formaction="/questions?/next">
+                    {(index<data.game.questions.length)?"Next →":"Submit"}
+                </button>
             </div>
         </form>
-        <!-- {#if index > 1}
-            <button class="submit-btn" on:click={previousQuestion}>Previous</button>
-        {/if} -->
     </div>
 {/if}
 

@@ -31,12 +31,36 @@ export async function load(){
 };
 
 export const actions = {
-	default: async ({ request, cookies }) => {
+
+	prev: async ({ request }) => {
+		// Get the form data //
+		const formData = await request.formData();
+		const unwind = [...formData].slice(1);
+		console.log("PREV", unwind);
+
+		// Get the index //
+		let index = parseInt(formData.get('index'))
+
+		if(index == 1){
+			ans = {}
+		}
+		else{
+			Object.keys(ans).forEach((key) => {
+				let question = parseInt(key.split("-"))
+				if(question === index || question === (index - 1)){
+					ans[key] = 0
+				}
+			})
+		}
+		return { prev: true };
+	}, 
+
+	next: async ({ request, cookies }) => {
 
 		// Get the form data //
 		const formData = await request.formData();
 		const unwind = [...formData].slice(1);
-		console.log(unwind);
+		console.log("NEXT", unwind);
 
 		// Get the index //
 		let index = parseInt(formData.get('index')) + 1
