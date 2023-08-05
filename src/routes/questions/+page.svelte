@@ -4,6 +4,8 @@
     import { enhance } from '$app/forms';
     import { fly } from 'svelte/transition';
     import { goto } from '$app/navigation';
+    import Carousel from 'svelte-carousel'
+    import { browser } from '$app/environment';
 
     /*
         DATA: this is initialized automatically by load() function in "+page.server.js"
@@ -21,6 +23,7 @@
     let index = 1;
     let selectedOptions = []
     let ticks = [1,2,3,4]
+    let carousel = new Array(20)
     let backgroundColor = "#00cfff8a"
     let currentQuestion = data.game.questions[index-1]
     let completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
@@ -105,7 +108,7 @@
     /*
         Update the progress bar, load the new queston, scroll to the top of screen
     */
-    function updatePage(){;
+    function updatePage(){
         backgroundColor = getRandomColor();
         currentQuestion = data.game.questions[index-1]
         completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
@@ -113,12 +116,6 @@
         updateProgressBar();
         getTicks();
         visible = true;
-    }
-
-    function previousQuestion(){
-        visible = false;
-        index -= 1;
-        updatePage();
     }
 
     /*
@@ -208,6 +205,27 @@
   <div class='air air3'></div>
   <div class='air air4'></div>
 </section>
+
+<!-- CAROUSEL based on categories -->
+{#if browser && currentQuestion.category}
+    <div class="carousel">
+       <Carousel
+            autoplayDuration={0}
+            duration={10000}
+            autoplay
+            timingFunction="linear"
+            dots={false}
+            arrows={false}
+            swiping={false}
+            particlesToShow={10}
+            particlesToScroll={2}>
+
+            {#each carousel as o, i}
+                <img src={"https://source.unsplash.com/random/200x200/?"+ currentQuestion.category +"&" + i} class="image" alt=""/>
+            {/each}
+        </Carousel>
+    </div>
+{/if}
 
 <!-- PROGRESS BAR -->
 <div class="container">
@@ -565,6 +583,15 @@
         opacity: 0.7;
         -webkit-transition: .2s;
         transition: opacity .2s;
+    }
+
+    .carousel {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0.5;
+        z-index: -1;
     }
 
 </style>

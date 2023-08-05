@@ -6,6 +6,7 @@ export const game =
 	questions: [
 		{
 			id: 1,
+			category: "sleep",
 			question: "On average, how many hours of sleep do you get per night?",
 			options: [
 				{ id: 1, option: "Less than 6", score: 0 },
@@ -28,6 +29,7 @@ export const game =
 		},
 		{
 			id: 2,
+			category: "emotions",
 			title: "Compared to others, how much of the following do you think that you experience",
 			questions: [{ q: "Joy, hope, love, gratitude",  sign: 1},
 						{ q: "Curiosity, exploration, adventurous, creative, risk-taking", sign: 1},
@@ -82,6 +84,7 @@ export const game =
 		},
 		{
 			id: 4,
+			category: "neighborhood",
 			title: "How important is it for you to live in a neighborhood with:",
 			questions: [{ id: 1, q: "Sidewalk", sign: 1 },
 						{ id: 2, q: "Walking distance to grocery store, parks, house of worship", sign: 1 },
@@ -117,6 +120,7 @@ export const game =
 		},
 		{
 			id: 5,
+			category: "job",
 			title: "It is important that my job:",
 			questions: [{ id: 1, q: "Is in a location that is close to my home (short commute)", sign: 1 },
 						{ id: 2, q: "Has high status ", sign: -1 },
@@ -151,6 +155,7 @@ export const game =
 		},
 		{
 			id: 6,
+			category: "relationship",
 			title: "Social Life: On average...",
 			format: "text",	// [plain-text, images]
 			questions: [{ id: 1, q: "How many hours per day do you socialize face-to-face with family members?", sign: 1 },
@@ -172,6 +177,7 @@ export const game =
 		},
 		{
 			id: 7,
+			category: "friends",
 			title: "Consider the 10 people that you spend the most time with: ",
 			format: "text",	// [plain-text, images]
 			questions: [{ id: 1, q: "How many of these friends would you describe  as happy, upbeat, optimistic, or cheerful?", sign: 1 },

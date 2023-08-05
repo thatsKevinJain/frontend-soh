@@ -1,10 +1,10 @@
 // @ts-nocheck
-// import { game } from '../../lib/game.js'
+import { game } from '../../lib/game.js'
 import { getResponse } from '../../utils/getResponse.js'
 
 // INIT //
 let ans = {};
-let game = {};
+// let game = {};
 
 function onlyUnique(value, index, array) {
 	return array.indexOf(value) === index;
@@ -20,10 +20,10 @@ export async function load(){
 		This is a redundant API call (a bad practice when building apps of scale)
 		But works for now!
 	*/
-	if(Object.keys(game).length === 0){
-		game = await getResponse('http://localhost:3000/app/getGame');
-		game = JSON.parse(game);
-	}
+	// if(Object.keys(game).length === 0){
+	// 	game = await getResponse('http://localhost:3000/app/getGame');
+	// 	game = JSON.parse(game);
+	// }
 
     return {
     	game
