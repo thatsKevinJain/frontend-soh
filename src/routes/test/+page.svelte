@@ -1,24 +1,36 @@
 <script>
 // @ts-nocheck
+  import { onMount } from 'svelte';
 
-  import Carousel from 'svelte-carousel';
-  import { browser } from '$app/environment';
+  let name = ["Sushant", "Kevin", "Vaibhav"]
 
-  let carousel; // for calling methods of the carousel instance
-  
-  const handleNextClick = () => {
-    carousel.goToNext()
+  let randomizedArray = []
+  function getRandomizedArray(arr){
+      randomizedArray = []
+      for(;;)
+      {
+          var random = Math.floor(Math.random() * arr.length)
+          if(randomizedArray.length < arr.length){
+              if(randomizedArray.indexOf(random) === -1){
+                  randomizedArray.push(random)
+              }
+          }
+          else{
+              break;
+          }
+      }
+      for(var i=0; i<randomizedArray.length; i++){
+          randomizedArray[i] = arr[randomizedArray[i]]
+      }
+      return 0
   }
+
+  onMount(() => {
+    getRandomizedArray(name)
+    name = [...randomizedArray]
+  })
 </script>
 
-{#if browser}
-  <Carousel
-    bind:this={carousel}
-  >
-    <div>1</div>
-    <div>2</div>
-    <div>3</div>
-  </Carousel>
-{/if}
-
-<button on:click={handleNextClick}>Next</button>
+{#each name as n}
+    <h1>Hello {n}</h1>
+{/each}

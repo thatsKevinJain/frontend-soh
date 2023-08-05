@@ -21,6 +21,7 @@
     let index = 1;
     let selectedOptions = []
     let ticks = [1,2,3,4]
+    let backgroundColor = "#00cfff8a"
     let currentQuestion = data.game.questions[index-1]
     let completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
 
@@ -105,12 +106,49 @@
         Update the progress bar, load the new queston, scroll to the top of screen
     */
     function updatePage(){;
+        backgroundColor = getRandomColor();
         currentQuestion = data.game.questions[index-1]
         completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
         updateProgressBar();
         getTicks();
         topFunction();
         visible = true;
+    }
+
+    function previousQuestion(){
+        visible = false;
+        index -= 1;
+        updatePage();
+    }
+
+    /*
+        Use the Golden Ratio and the HSV color system to generate a random background color for every question
+    */
+    const goldenRatioConjugate = 0.618033988749895;
+    let h = Math.random(); // use random start value
+
+    function getRandomColor() {
+        h += goldenRatioConjugate;
+        h %= 1;
+        return hsvToRgb(h, 0.3, 0.99);
+    }
+
+    function hsvToRgb(h, s, v) {
+        const h_i = Math.floor(h * 6);
+        const f = h * 6 - h_i;
+        const p = v * (1 - s);
+        const q = v * (1 - f * s);
+        const t = v * (1 - (1 - f) * s);
+        let r, g, b;
+
+        if (h_i === 0) { r = v; g = t; b = p;} 
+        else if (h_i === 1) { r = q; g = v; b = p;} 
+        else if (h_i === 2) { r = p; g = v; b = t;} 
+        else if (h_i === 3) { r = p; g = q; b = v;} 
+        else if (h_i === 4) { r = t; g = p; b = v;} 
+        else if (h_i === 5) { r = v; g = p; b = q;}
+
+        return "rgb(" + Math.floor(r * 256) +","+ Math.floor(g * 256) +","+ Math.floor(b * 256) + ")";
     }
 
     /*
@@ -148,14 +186,16 @@
     */
     onMount(() => {
         visible = true;
+        backgroundColor = getRandomColor();
         updateProgressBar();
         getTicks();
     })
+
 </script>
 
 
 <!-- CLOUDS animation background -->
-<section>
+<section style={"background: " + backgroundColor}>
   <div class='air air1'></div>
   <div class='air air2'></div>
   <div class='air air3'></div>
@@ -174,7 +214,7 @@
 
 <!-- QUESTIONS -->
 {#if visible}
-    <div class="main" in:fly={{x:20}} out:fly={{x:-20}}>
+    <div class="main" in:fly={{x:100}} out:fly={{x:-100}}>
 
         <!-- 
             Load ONE question at a time indicated by "index", the UI will populate as per the questions requirements
@@ -323,8 +363,13 @@
                 </div>
             {/if}
 
-            <button class="submit-btn">Submit</button>
+            <div>
+                <button class="submit-btn">Next</button>
+            </div>
         </form>
+        <!-- {#if index > 1}
+            <button class="submit-btn" on:click={previousQuestion}>Previous</button>
+        {/if} -->
     </div>
 {/if}
 
