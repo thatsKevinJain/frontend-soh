@@ -388,9 +388,9 @@
                 </div>
             {/if}
 
-            <div>
+            <div class="button">
                 {#if index > 1}
-                    <button type="submit" class="submit-btn" formaction="/questions?/prev">← Previous</button>
+                    <button type="submit" class="prev-btn" formaction="/questions?/prev">←</button>
                 {/if}
                 <button type="submit" class="submit-btn" formaction="/questions?/next">
                     {(index<data.game.questions.length)?"Next →":"Submit"}
@@ -414,8 +414,8 @@
       --color-green: #558309;
       --color-gray: #e2ebf6;
       --color-dark-gray: #c4d1e1;
-      --radio-border-width: 2px;
-      --radio-size: 1.5em;
+      --radio-border-width: 1.5px;
+      --radio-size: 1.8em;
     }
 
     .option-label {
@@ -453,6 +453,7 @@
         display: grid;
         justify-content: center;
         margin-bottom: 20px;
+        font-weight: 500;
     }
 
     .checkbox {
@@ -592,6 +593,24 @@
         left: 0;
         opacity: 0.5;
         z-index: -1;
+    }
+
+    .prev-btn {
+        width: 50px;
+        height: 50px;
+        background: white;
+        border-radius: 100px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: 8px;
+        margin-right: 8px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    }
+
+    .button {
+        position: relative;
+        bottom: 0;
+        left: 40%;
     }
 
 </style>

@@ -7,7 +7,7 @@ export async function load({cookies}){
 
 	results = await getResponse(`http://localhost:3000/submission/find?_id=${cookies.get('_id')}`);
 	results = JSON.parse(results);
-	console.log(results)
+	// console.log(results)
 
     return results
 };
