@@ -24,10 +24,10 @@ export const game =
 			],
 			images: ["https://images.unsplash.com/photo-1524813686514-a57563d77965?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1576208861541-335784ba66c9?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1552360906-8cb62bb70825?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1635680022770-b58c69dd5e4e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1459535653751-d571815e906b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1475746812396-2b046c18be0e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1587186972578-59c73ae8f68d?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1613017614476-d320d3392a16?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1611588781379-ce2ded3ad165?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1552579854-efc1a047ec23?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1621649609003-1a6178f7833a?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200"],
 			weight: 1,
-			multiple: true,	// boolean to indicate if there are multiple questions in one
+			multiple: true,		// boolean to indicate if there are multiple questions in one
 			type: "radio", 		// [radio, checkbox]
 			format: "text",		// [plain-text, images, cards]
-			required: false 	// if the question is compulsory to answer
+			required: false, 	// if the question is compulsory to answer
 		},
 		{
 			id: 2,
@@ -53,7 +53,7 @@ export const game =
 			weight: 1,
 			type: "radio",
 			format: "text",
-			required: false
+			required: false,
 		},
 		{
 			id: 3,
@@ -71,7 +71,7 @@ export const game =
 			min: 0,
 			max: 10,
 			step: 1,
-			required: false
+			required: false,
 		},
 		{
 			id: 4,
@@ -87,7 +87,7 @@ export const game =
 			min: 0,
 			max: 10,
 			step: 1,
-			required: false
+			required: false,
 		},
 		{
 			id: 5,
@@ -102,7 +102,7 @@ export const game =
 			min: 0,
 			max: 10,
 			step: 1,
-			required: false
+			required: false,
 		},
 		{
 			id: 6,
@@ -123,7 +123,7 @@ export const game =
 			weight: 1,
 			type: "range",
 			format: "text",
-			required: false
+			required: false,
 		},
 		{
 			id: 7,
@@ -136,7 +136,7 @@ export const game =
 			multiple: false,
 			type: "radio",
 			format: "text",
-			required: false
+			required: false,
 		},
 		{
 			id: 8,

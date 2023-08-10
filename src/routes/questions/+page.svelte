@@ -209,15 +209,15 @@
 {#if browser && currentQuestion.images && visible}
     <div class="carousel">
        <Carousel
-            autoplayDuration={0}
-            duration={10000}
             autoplay
-            timingFunction="linear"
-            dots={false}
-            arrows={false}
-            swiping={false}
-            particlesToShow={8}
-            particlesToScroll={2}>
+            autoplayDuration    = {0}
+            duration            = {10000}
+            dots                = {false}
+            arrows              = {false}
+            swiping             = {false}
+            particlesToShow     = {8}
+            particlesToScroll   = {2}
+            timingFunction      = "linear">
 
             {#each currentQuestion.images as i}
                 <img src={i} class="image" alt=""/>
@@ -392,9 +392,9 @@
             {/if}
 
             <div class="button">
-                {#if index > 1}
+                <!-- {#if index > 1}
                     <button type="submit" class="prev-btn" formaction="/questions?/prev">←</button>
-                {/if}
+                {/if} -->
                 <button type="submit" class="submit-btn" formaction="/questions?/next">
                     {(index<data.game.questions.length)?"Next →":"Submit"}
                 </button>
