@@ -35,34 +35,22 @@
     <p class="score-text">Your score is:</p>
     <p class="score"><b>{counter}</b></p>
 
-    <div class="score-progress-container">
+    <!-- <div class="score-progress-container">
         <div class="score-progress" id="score-progress"/>
-    </div>
+    </div> -->
 
     {#if visible}
         <div class="suggestion-block">
-            {#each Object.keys(data.suggestions) as key, i}
-                {#if data.suggestions[key]}
-                    <p class="suggestion" in:fly={{y:30*(i+1)}}>{data.suggestions[key]}</p>
-                {/if}
-            {/each}
+            <!-- {#each Object.keys(data.suggestions) as key, i}
+                {#if data.suggestions[key]} -->
+                    <p class="suggestion" in:fly={{y:30}}>{data.feedback}</p>
+                <!-- {/if} -->
+            <!-- {/each} -->
         </div>
     {/if}
 </div>
 
 <style>
-    :root {
-        --line-border-fill: #2d9676;
-        --line-border-empty: #e0e0e0;
-        --card-line-height: 1.2em;
-        --card-padding: 1em;
-        --card-radius: 2em;
-        --color-green: #558309;
-        --color-gray: #e2ebf6;
-        --color-dark-gray: #c4d1e1;
-        --radio-border-width: 2px;
-        --radio-size: 1.5em;
-    }
 
     .score-text {
         font-size: 18px;
@@ -75,7 +63,7 @@
         font-weight: 500;
     }
 
-    .score-progress-container::before {
+/*    .score-progress-container::before {
       content: "";
       background: var(--line-border-empty);
       position: absolute;
@@ -109,7 +97,7 @@
       width: 0%;
       z-index: -1;
       transition: 2s ease;
-    }
+    }*/
 
     .suggestion-block{
         padding: 10px;
@@ -124,7 +112,7 @@
         box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
 
         background-color: #fff;
-        border-radius: var(--card-radius);
+        border-radius: 2em;
         padding: 20px;
         margin: 20px;
         text-align: center;

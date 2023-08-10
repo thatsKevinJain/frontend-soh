@@ -23,7 +23,6 @@
     let index = 1;
     let selectedOptions = []
     let ticks = [1,2,3,4]
-    let carousel = new Array(20)
     let backgroundColor = "#00cfff8a"
     let currentQuestion = data.game.questions[index-1]
     let completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
@@ -84,7 +83,7 @@
     /* CSS: setting to dynamically style multiple-questions with radio buttons */
     function getGridColumns(){
 
-        let size = currentQuestion.options ? currentQuestion.options.length : currentQuestion.max
+        let size = currentQuestion.options ? currentQuestion.options.length : (currentQuestion.max-currentQuestion.min+1)
 
         var gridColumns = "grid-template-columns: 250px 250px"
         for(let i=0;i<size;i++){
@@ -207,7 +206,7 @@
 </section>
 
 <!-- CAROUSEL based on categories -->
-{#if browser && currentQuestion.category}
+{#if browser && currentQuestion.images && visible}
     <div class="carousel">
        <Carousel
             autoplayDuration={0}
@@ -217,11 +216,11 @@
             dots={false}
             arrows={false}
             swiping={false}
-            particlesToShow={10}
+            particlesToShow={8}
             particlesToScroll={2}>
 
-            {#each carousel as o, i}
-                <img src={"https://source.unsplash.com/random/200x200/?"+ currentQuestion.category +"&" + i} class="image" alt=""/>
+            {#each currentQuestion.images as i}
+                <img src={i} class="image" alt=""/>
             {/each}
         </Carousel>
     </div>
@@ -301,8 +300,12 @@
                                     <div class="multiple-option">{o.option}</div>
                                 {/each}
                             {:else}
-                                {#each {length: currentQuestion.max} as _, i}
-                                    <div class="multiple-option">{i+1}</div>
+                                {#each {length: (currentQuestion.max-currentQuestion.min+1)} as _, i}
+                                    {#if i === currentQuestion.max}
+                                        <div class="multiple-option">{(i)+"+"}</div>
+                                    {:else}
+                                        <div class="multiple-option">{i}</div>
+                                    {/if}
                                 {/each}
                             {/if}
 
@@ -312,7 +315,7 @@
                                     <!-- Populate options for a SLIDER with a RANGE -->
                                     {#if currentQuestion.type === "range"}
                                         
-                                        <div class="slidecontainer" style={"grid-column-end: " + parseInt(currentQuestion.max+3) + ";"}>
+                                        <div class="slidecontainer" style={"grid-column-end: " + parseInt(currentQuestion.max-currentQuestion.min+4) + ";"}>
                                             <input  type  = "range"
                                                     class = "slider"
                                                     list  = "ticks"
@@ -320,7 +323,7 @@
                                                     max   = {currentQuestion.max}
                                                     step  = {currentQuestion.step}
                                                     name  = {currentQuestion.id + "-" + parseInt(i+1)}
-                                                    value = {parseInt(1)}/>
+                                                    value = {parseInt(currentQuestion.min)}/>
                                         </div>
 
                                         <!-- Add TICKS to the slider -->
