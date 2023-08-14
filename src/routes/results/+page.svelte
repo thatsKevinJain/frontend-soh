@@ -15,7 +15,7 @@
                 counter+=100;
             if(counter > data.results.effective_score-100 && counter < data.results.effective_score)
                 counter++;
-        }, 10)
+        }, 25)
 
         const score = document.getElementById("score-progress");
         score.style.width = Math.floor(data.results.effective_score*100/data.results.max_score) + "%";
@@ -41,11 +41,7 @@
 
     {#if visible}
         <div class="suggestion-block">
-            <!-- {#each Object.keys(data.suggestions) as key, i}
-                {#if data.suggestions[key]} -->
-                    <p class="suggestion" in:fly={{y:30}}>{data.feedback}</p>
-                <!-- {/if} -->
-            <!-- {/each} -->
+            <p class="suggestion" in:fly={{y:300}}>{data.feedback}</p>
         </div>
     {/if}
 </div>
@@ -61,6 +57,26 @@
         font-size: 30px;
         padding: 8px;
         font-weight: 500;
+    }
+
+    .suggestion-block{
+        padding: 10px;
+        margin: 10px;
+        width: 80%;
+    }
+
+    .suggestion {
+        font-size: large;
+        background: var(--m-3-sys-light-surface-container-low, #F7F2FA);
+
+        /* M3/Elevation Light/1 */
+        box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+
+        background-color: #fff;
+        border-radius: 1em;
+        padding: 20px;
+        margin: 20px;
+        text-align: left;
     }
 
 /*    .score-progress-container::before {
@@ -99,23 +115,5 @@
       transition: 2s ease;
     }*/
 
-    .suggestion-block{
-        padding: 10px;
-        margin: 10px;
-    }
-
-    .suggestion {
-        font-size: large;
-        background: var(--m-3-sys-light-surface-container-low, #F7F2FA);
-
-        /* M3/Elevation Light/1 */
-        box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
-
-        background-color: #fff;
-        border-radius: 2em;
-        padding: 20px;
-        margin: 20px;
-        text-align: center;
-    }
 </style>
 

@@ -3,6 +3,48 @@ export const game =
 	version: 1,
 	max_score: 5000,			// score that users can get
 	standardization_factor: 4,  // factor which we will use to standardize all scores
+	feedback: [
+		{
+			id: 1,
+			value: 0.5,
+			text: "Your answers indicate that you feel happy sometimes, but not very often. You could consider seeking support for the hard times or someone to talk to about any difficulties you may be experiencing. More generally, you could select a few evidence-based ways to boost your mood and see if they impact your overall feeling of wellbeing. For example, try to pursue meaning as well as pleasure, focus on gratitude (maybe even keeping a gratitude journal), show kindness to others, find purposeful work, find things that make you laugh, spend time with pets, maintain relationships with family and friends (especially the happy, optimistic ones), share experiences with loved ones vs. focusing on accruing material goods, spend time in nature, keep an optimistic outlook, set aside time for daily mindfulness and the pursuit of activities or hobbies that you enjoy, limit screen time, and engage in self-care such eating a healthy diet, making sure that you fit in time for daily exercise or movement, and getting plenty of high quality sleep."
+		},
+		{
+			id: 2,
+			value: 1.0,
+			text: "Your answers indicate that you feel happy sometimes, but not very often. You could consider seeking support for the hard times or someone to talk to about any difficulties you may be experiencing. More generally, you could select a few evidence-based ways to boost your mood and see if they impact your overall feeling of wellbeing. For example, try to pursue meaning as well as pleasure, focus on gratitude (maybe even keeping a gratitude journal), show kindness to others, find purposeful work, find things that make you laugh, spend time with pets, maintain relationships with family and friends (especially the happy, optimistic ones), share experiences with loved ones vs. focusing on accruing material goods, spend time in nature, keep an optimistic outlook, set aside time for daily mindfulness and the pursuit of activities or hobbies that you enjoy, limit screen time, and engage in self-care such eating a healthy diet, making sure that you fit in time for daily exercise or movement, and getting plenty of high quality sleep."
+		},
+		{
+			id: 3,
+			value: 1.5,
+			text: "Although you are doing some of the things that researchers tell us are related to happiness, you have plenty of room for improvement! Research shows that you could significantly improve your wellbeing by making even a few small changes. Consider how you might do more of the following: pursue meaning as well as pleasure, focus on gratitude (maybe even keeping a gratitude journal), show kindness to others, find purposeful work, laugh more often, spend time with pets, maintain relationships with family and friends (especially the happy, optimistic ones), share experiences with loved ones instead of focusing on accruing material goods, spend time in nature, keep an optimistic outlook, set aside time for daily mindfulness, pursuing activities or hobbies that you enjoy, limit screen time, and engage in self-care such eating a healthy diet, making sure that you fit in time for daily exercise or movement, and getting plenty of high quality sleep."
+		},
+		{
+			id: 4,
+			value: 2.0,
+			text: "While you are doing some of the things that researchers tell us are related to happiness, you could be a lot happier! Research shows that we can become happier by making some changes such as: pursue meaning as well as pleasure, focus on gratitude (maybe even keeping a gratitude journal), show kindness to others, find purposeful work, laugh often, spend time with pets, maintain relationships with family and friends (especially the happy, optimistic ones), share experiences with loved ones instead of focusing on accruing material goods, spend time in nature, keep an optimistic outlook, set aside time for daily mindfulness, pursuing activities or hobbies that you enjoy, limit screen time, and engage in self-care such eating a healthy diet, making sure that you fit in time for daily exercise or movement, and getting plenty of high quality sleep."
+		},
+		{
+			id: 5,
+			value: 2.5,
+			text: "While you are doing some of the things that researchers tell us are related to happiness, you could be a lot happier! Research shows that we can become happier by making some changes such as: pursue meaning as well as pleasure, focus on gratitude (maybe even keeping a gratitude journal), show kindness to others, find purposeful work, laugh often, spend time with pets, maintain relationships with family and friends (especially the happy, optimistic ones), share experiences with loved ones instead of focusing on accruing material goods, spend time in nature, keep an optimistic outlook, set aside time for daily mindfulness, pursuing activities or hobbies that you enjoy, limit screen time, and engage in self-care such eating a healthy diet, making sure that you fit in time for daily exercise or movement, and getting plenty of high quality sleep."
+		},
+		{
+			id: 1,
+			value: 3.0,
+			text: "You are engaging in some activities and displaying attitudes that are strongly related to happiness and wellbeing but could significantly improve your wellbeing by making a few changes. Consider how you might do more of the following: pursue meaning as well as pleasure, focus on gratitude (maybe even keeping a gratitude journal), show kindness to others, find purposeful work, laugh often, spend time with pets, maintain relationships with family and friends (especially the happy, optimistic ones), share experiences with loved ones instead of focusing on accruing material goods, spend time in nature, keep an optimistic outlook, set aside time for daily mindfulness, pursuing activities or hobbies that you enjoy, limit screen time, and engage in self-care such eating a healthy diet, making sure that you fit in time for daily exercise or movement, and getting plenty of high quality sleep."
+		},
+		{
+			id: 1,
+			value: 3.5,
+			text: "You are engaging in many activities and displaying many attitudes that are strongly related to happiness and wellbeing! You can maintain or even improve this by pursuing meaning as well as pleasure, focusing on gratitude (maybe even keeping a gratitude journal), showing kindness to others, finding purposeful work, laugh often, spend time with pets, maintaining relationships with family and friends (especially the happy, optimistic ones), sharing experiences with loved ones instead of focusing on accruing material goods, spending time in nature, keeping an optimistic outlook, setting aside time for daily mindfulness, pursuing activities or hobbies that you enjoy, limiting screen time, and engaging in self-care such eating a healthy diet, making sure that you fit in time for daily exercise or movement, and getting plenty of high quality sleep."
+		},
+		{
+			id: 1,
+			value: 4.0,
+			text: "You are making the most out of life and making choices that lead to high levels of satisfaction and joy. You can maintain this by pursuing meaning as well as pleasure, focusing on gratitude (maybe even keeping a gratitude journal), showing kindness to others, finding purposeful work, laugh often, spend time with pets, maintaining relationships with family and friends (especially the happy, optimistic ones), sharing experiences with loved ones instead of focusing on accruing material goods, spending time in nature, keeping an optimistic outlook, setting aside time for daily mindfulness, pursuing activities or hobbies that you enjoy, limiting screen time, and engaging in self-care such eating a healthy diet, making sure that you fit in time for daily exercise or movement, and getting plenty of high quality sleep. Remember that happiness is an emotion, not a constant state of being. It is natural to fluctuate in and out of feeling happy throughout a lifetime."
+		},
+	],
 	questions: [
 		{
 			id: 1,

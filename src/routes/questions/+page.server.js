@@ -68,6 +68,7 @@ export const actions = {
 		if(index == 1){
 			ans = {}
 		}
+		console.log(ans)
 
 		/* 
 			Different questions here will have a different way of storing the answer --
