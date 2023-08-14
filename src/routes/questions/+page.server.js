@@ -1,10 +1,11 @@
 // @ts-nocheck
-import { game } from '../../lib/game.js'
+// import { game } from '../../lib/game.js'
 import { getResponse } from '../../utils/getResponse.js'
+import { BACKEND_URL } from '$env/static/private';
 
 // INIT //
 let ans = {};
-// let game = {};
+let game = {};
 
 function onlyUnique(value, index, array) {
 	return array.indexOf(value) === index;
@@ -20,10 +21,10 @@ export async function load(){
 		This is a redundant API call (a bad practice when building apps of scale)
 		But works for now!
 	*/
-	// if(Object.keys(game).length === 0){
-	// 	game = await getResponse('http://localhost:3000/app/getGame');
-	// 	game = JSON.parse(game);
-	// }
+	if(Object.keys(game).length === 0){
+		game = await getResponse(BACKEND_URL + '/app/getGame');
+		game = JSON.parse(game);
+	}
 
     return {
     	game
@@ -112,7 +113,7 @@ export const actions = {
 			else go to the NEXT question.
 		*/
 		if(index > game.questions.length){
-			const response = await getResponse('http://localhost:3000/submission/create', 'POST', { answers: ans, user: cookies.get('_id') });
+			const response = await getResponse(BACKEND_URL + '/submission/create', 'POST', { answers: ans, user: cookies.get('_id') });
 
 			return { location: "/results" };
 		}

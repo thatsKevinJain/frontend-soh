@@ -2,6 +2,7 @@
 // import { demographic } from '../../lib/demographic.js'
 import { getResponse } from '../../utils/getResponse.js'
 import { redirect } from '@sveltejs/kit';
+import { BACKEND_URL } from '$env/static/private';
 let demographic;
 
 export async function load({cookies}){
@@ -9,7 +10,7 @@ export async function load({cookies}){
 	// Load questions on every page load //
 	// This is redundant API calling but works for now //
 	// TODO: store these questions in a svelte-store to avoid overloading APIs //
-	demographic = await getResponse('http://localhost:3000/app/getDemographic');
+	demographic = await getResponse(BACKEND_URL + '/app/getDemographic');
 	demographic = JSON.parse(demographic);
 
 	return { 
@@ -22,7 +23,7 @@ export const actions = {
 		const data = await request.formData();
 		
 		// TODO: Redirect the user straight to questions if demographic data already exists //
-		let result = await getResponse('http://localhost:3000/user/create', 'POST', { email: data.get('email') });
+		let result = await getResponse(BACKEND_URL + '/user/create', 'POST', { email: data.get('email') });
 		result = JSON.parse(result);
 		
 		if(result){
@@ -49,7 +50,7 @@ export const actions = {
 
 		const _id = cookies.get('_id');
 		
-		const response = await getResponse('http://localhost:3000/user/update', 'POST', { demographic: demo, _id });
+		const response = await getResponse(BACKEND_URL + '/user/update', 'POST', { demographic: demo, _id });
 
 		throw redirect(303, "/questions?i=1");
 	}
