@@ -6,8 +6,11 @@
     export let data;
     let counter = 0;
     let visible = false;
+    console.log("Out called")
 
     onMount(() => {
+        console.log("in called")
+
         visible = true;
 
         setInterval(() => {
@@ -17,8 +20,8 @@
                 counter++;
         }, 25)
 
-        const score = document.getElementById("score-progress");
-        score.style.width = Math.floor(data.results.effective_score*100/data.results.max_score) + "%";
+        // const score = document.getElementById("score-progress");
+        // score.style.width = Math.floor(data.results.effective_score*100/data.results.max_score) + "%";
     })
 
 </script>
@@ -30,6 +33,7 @@
   <div class='air air3'></div>
   <div class='air air4'></div>
 </section>
+
 
 <div class="main">
     <p class="score-text">Your score is:</p>
@@ -45,6 +49,7 @@
         </div>
     {/if}
 </div>
+
 
 <style>
 

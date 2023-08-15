@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { getResponse } from '../../utils/getResponse.js'
 import { BACKEND_URL } from '$env/static/private';
-let results;
+let results = {};
 
 export async function load({cookies}){
 
