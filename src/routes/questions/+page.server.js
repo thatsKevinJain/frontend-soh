@@ -1,6 +1,7 @@
 // @ts-nocheck
 // import { game } from '../../lib/game.js'
 import { getResponse } from '../../utils/getResponse.js'
+import { redirect } from '@sveltejs/kit';
 import { BACKEND_URL } from '$env/static/private';
 
 // INIT //
@@ -15,7 +16,11 @@ function getNElement(value, index, array) {
 	return value[0];
 }
 
-export async function load(){
+export async function load({ url }){
+
+	// INIT //
+	const index = url.searchParams.get('i');
+
 	/* 
 		Load game questions on every page load
 		This is a redundant API call (a bad practice when building apps of scale)
@@ -27,49 +32,49 @@ export async function load(){
 	}
 
     return {
-    	game
+    	game,
+    	index
     }
 };
 
 export const actions = {
 
-	prev: async ({ request }) => {
+	// prev: async ({ request, url }) => {
+	// 	// Get the form data //
+	// 	const data = await request.formData();
+	// 	const unwind = [...data];
+	// 	console.log("PREV", unwind);
+
+	// 	// Get the index //
+	// 	let index = parseInt(formData.get('index'))
+
+	// 	if(index == 1){
+	// 		ans = {}
+	// 	}
+	// 	else{
+	// 		Object.keys(ans).forEach((key) => {
+	// 			let question = parseInt(key.split("-"))
+	// 			if(question === index || question === (index - 1)){
+	// 				ans[key] = 0
+	// 			}
+	// 		})
+	// 	}
+	// 	return { prev: true };
+	// }, 
+
+	default: async ({ request, cookies, url }) => {
+
 		// Get the form data //
-		const formData = await request.formData();
-		const unwind = [...formData].slice(1);
-		console.log("PREV", unwind);
-
-		// Get the index //
-		let index = parseInt(formData.get('index'))
-
-		if(index == 1){
-			ans = {}
-		}
-		else{
-			Object.keys(ans).forEach((key) => {
-				let question = parseInt(key.split("-"))
-				if(question === index || question === (index - 1)){
-					ans[key] = 0
-				}
-			})
-		}
-		return { prev: true };
-	}, 
-
-	next: async ({ request, cookies }) => {
-
-		// Get the form data //
-		const formData = await request.formData();
-		const unwind = [...formData].slice(1);
+		const data = await request.formData();
+		const unwind = [...data];
 		console.log("NEXT", unwind);
 
 		// Get the index //
-		let index = parseInt(formData.get('index')) + 1
+		const index = url.searchParams.get("i");
 
 		if(index == 1){
 			ans = {}
 		}
-		console.log(ans)
 
 		/* 
 			Different questions here will have a different way of storing the answer --
@@ -107,6 +112,7 @@ export const actions = {
 				}
 			}
 		}
+		console.log(ans)
 		
 		/* 
 			If all the questions are answered, store the "ans" variable via our API and redirect to "results" page,
@@ -115,7 +121,7 @@ export const actions = {
 		if(index > game.questions.length){
 			const response = await getResponse(BACKEND_URL + '/submission/create', 'POST', { answers: ans, user: cookies.get('_id') });
 
-			return { location: "/results" };
+			throw redirect(303, "/results");
 		}
 		return { success: true };
 	}

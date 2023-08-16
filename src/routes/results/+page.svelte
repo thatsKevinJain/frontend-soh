@@ -6,10 +6,8 @@
     export let data;
     let counter = 0;
     let visible = false;
-    console.log("Out called")
 
     onMount(() => {
-        console.log("in called")
 
         visible = true;
 

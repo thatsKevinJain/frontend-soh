@@ -31,7 +31,7 @@ export const actions = {
 			cookies.set('_id', result._id);
 
 			if(result.demographic){
-				throw redirect(303, "/questions");
+				throw redirect(303, "/questions?i=1");
 			}
 		}
 		else{

@@ -1,9 +1,9 @@
 <script>
 // @ts-nocheck
     import { onMount } from 'svelte';
-    import { enhance } from '$app/forms';
+    // import { enhance } from '$app/forms';
     import { fly } from 'svelte/transition';
-    import { goto } from '$app/navigation';
+    // import { goto } from '$app/navigation';
     import Carousel from 'svelte-carousel'
     import { browser } from '$app/environment';
 
@@ -20,12 +20,13 @@
 
     /* Variables to store page specific data */
     let visible;
-    let index = 1;
+    let index = data.index;
     let selectedOptions = []
     let ticks = [1,2,3,4]
     let backgroundColor = "#00cfff8a"
     let currentQuestion = data.game.questions[index-1]
-    let completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
+    let completionPercent = (((index-1)/(data.game.questions.length)) * 100)
+    let oldCompletionPercent = (((index-2)/(data.game.questions.length)) * 100)
 
     /* 
         CSS: Get the number of ticks required to be placed on the range slider
@@ -107,15 +108,16 @@
     /*
         Update the progress bar, load the new queston, scroll to the top of screen
     */
-    function updatePage(){
-        backgroundColor = getRandomColor();
-        currentQuestion = data.game.questions[index-1]
-        completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
-        topFunction();
-        updateProgressBar();
-        getTicks();
-        visible = true;
-    }
+    // function updatePage(){
+    //     backgroundColor = getRandomColor();
+    //     currentQuestion = data.game.questions[index-1]
+    //     completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
+    //     oldCompletionPercent = (((index-2)/(data.game.questions.length)) * 100)
+    //     topFunction();
+    //     updateProgressBar();
+    //     getTicks();
+    //     visible = true;
+    // }
 
     /*
         Use the Golden Ratio and the HSV color system to generate a random background color for every question
@@ -148,46 +150,61 @@
     }
 
     /*
+        This function will go back to the previous page in the history and make follow the browser rules
+    */
+    function goBack(){
+        history.back();
+        return false;
+    }
+
+    /*
         ENHANCE function is called when the user presses submit,
         we will store the input in the form, update the index, load the next question, 
         and then redirect to a new page on form completion.
     */
-    function useEnhance(){
+    // function useEnhance(){
 
-        // Make the current question hidden //
-        visible = false
+    //     // Make the current question hidden //
+    //     visible = false
         
-        return async ({ result, update }) => {
+    //     return async ({ result, update }) => {
             
-            // `result` is an `ActionResult` object
-            // `update` is a function which triggers the default logic that would be triggered to reset the form
-            await update();
+    //         // `result` is an `ActionResult` object
+    //         // `update` is a function which triggers the default logic that would be triggered to reset the form
+    //         await update();
             
-            if(result.data.location){
-                await goto(result.data.location)
-            }
-            else if(result.data.prev){
-                /*
-                    We decrement the "index" here, update the page with the previous question 
-                */
-                index -= 1;
-                updatePage();
-            }
-            else{
-                /*
-                    We increment the "index" here, update the page with the new question 
-                */
-                index += 1;
-                updatePage();
-            }
-        };
-    }
+    //         if(result.data.location){
+    //             await goto(result.data.location)
+    //         }
+    //         else if(result.data.prev){
+    //             /*
+    //                 We decrement the "index" here, update the page with the previous question 
+    //             */
+    //             index -= 1;
+    //             updatePage();
+    //         }
+    //         else{
+    //             /*
+    //                 We increment the "index" here, update the page with the new question 
+    //             */
+    //             index += 1;
+    //             updatePage();
+    //         }
+    //     };
+    // }
 
     /* 
         Function called when components have finished mounting on the DOM,
         this will allow us to animate certain elements like progress-bar after the page is loaded
     */
     onMount(() => {
+        /* 
+            Get the index from URL,
+            this is an important step, load() function isn't called when user presses "BACK" on their browsers
+            It allows us to update the "index" to it's correct value. Saves us from many unforseen BUGS :)
+        */
+        index = document.URL.split("?i=")[1];
+        
         visible = true;
         backgroundColor = getRandomColor();
         updateProgressBar();
@@ -211,12 +228,12 @@
        <Carousel
             autoplay
             autoplayDuration    = {0}
-            duration            = {10000}
+            duration            = {5000}
             dots                = {false}
             arrows              = {false}
             swiping             = {false}
             particlesToShow     = {8}
-            particlesToScroll   = {2}
+            particlesToScroll   = {1}
             timingFunction      = "linear">
 
             {#each currentQuestion.images as i}
@@ -229,8 +246,8 @@
 <!-- PROGRESS BAR -->
 <div class="container">
   <div class="progress-container">
-    <div class="progress" id="progress" style={"width:" + completionPercent + "%"}> </div>
-    {#each percs as perc, i}
+    <div class="progress" id="progress" style={"width:" + oldCompletionPercent + "%"}> </div>
+    {#each percs as perc}
         <div class="circle">{perc.toString()+"%"}</div>
     {/each}
   </div>
@@ -247,10 +264,10 @@
 
             Power of "dynamic-page-loading-with-recursion"
         -->
-        <form method="POST" action="/questions" use:enhance={useEnhance}>
+        <form method="POST" action="/questions?i={parseInt(index)+1}">
 
             <!-- HACK: we will add a form input that allows us to pass current "index" value to the server -->
-            <input name="index" value={index} hidden/>
+            <!-- <input name="index" value={index} hidden/> -->
 
             <!-- 
                 Questions with "TEXT" format
@@ -321,9 +338,9 @@
                                                     list  = "ticks"
                                                     min   = {currentQuestion.min}
                                                     max   = {currentQuestion.max}
+                                                    value = {currentQuestion.min}
                                                     step  = {currentQuestion.step}
-                                                    name  = {currentQuestion.id + "-" + parseInt(i+1)}
-                                                    value = {parseInt(currentQuestion.min)}/>
+                                                    name  = {currentQuestion.id + "-" + parseInt(i+1)}/>
                                         </div>
 
                                         <!-- Add TICKS to the slider -->
@@ -392,10 +409,10 @@
             {/if}
 
             <div class="button">
-                <!-- {#if index > 1}
-                    <button type="submit" class="prev-btn" formaction="/questions?/prev">←</button>
-                {/if} -->
-                <button type="submit" class="submit-btn" formaction="/questions?/next">
+                {#if index > 1}
+                    <a class="prev-btn" href="/questions?i={parseInt(index)-1}" on:click={goBack}>←</a>
+                {/if}
+                <button type="submit" class="submit-btn">
                     {(index<data.game.questions.length)?"Next →":"Submit"}
                 </button>
             </div>
@@ -600,7 +617,7 @@
 
     .prev-btn {
         width: 50px;
-        height: 50px;
+        height: 46px;
         background: white;
         border-radius: 100px;
         margin-top: 20px;
@@ -608,6 +625,10 @@
         margin-left: 8px;
         margin-right: 8px;
         box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+        display: inline-block;
+        text-align: center;
+        padding: 10px;
+        text-decoration: none;
     }
 
     .button {
