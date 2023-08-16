@@ -9,6 +9,10 @@
 	});
 </script>
 
+<div class="main">
+    <a href="/"><img src="favicon.png" alt="Science of Happiness" style="width: 120px; height: 120px;"></a>
+</div>
+
 {#if visible}
     <div class="main" in:fly={{ y: 30, duration: 1000 }}>
         <h1>Science of Happiness</h1>

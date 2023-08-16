@@ -2,6 +2,8 @@
 // @ts-nocheck
     import { onMount } from 'svelte';
     import { fly } from 'svelte/transition';
+    import Typewriter from 'svelte-typewriter'
+    import { concurrent } from 'svelte-typewriter'
 
     export let data;
     let counter = 0;
@@ -22,7 +24,21 @@
         // score.style.width = Math.floor(data.results.effective_score*100/data.results.max_score) + "%";
     })
 
+    function done(){
+        console.log("YOLO")
+    }
+
 </script>
+
+{#if visible}
+    <div class="emojis">
+        <img in:fly={{x:100}} src=emoji-excellent.svg alt="excellent" style="width: 120px; height: 120px;">
+        <img in:fly={{x:200}} src=emoji-good.svg alt="good" style="width: 120px; height: 120px;">
+        <img in:fly={{x:300}} src=emoji-ok.svg alt="ok" style="width: 120px; height: 120px;">
+        <img in:fly={{x:400}} src=emoji-bad.svg alt="bad" style="width: 120px; height: 120px;">
+        <img in:fly={{x:500}} src=emoji-terrible.svg alt="terrible" style="width: 120px; height: 120px;">
+    </div>
+{/if}
 
 <!-- CLOUDS animation background -->
 <section>
@@ -42,14 +58,29 @@
     </div> -->
 
     {#if visible}
-        <div class="suggestion-block">
-            <p class="suggestion" in:fly={{y:300}}>{data.feedback}</p>
-        </div>
+        <Typewriter interval=15 on:done={done}>
+            <div class="suggestion-block">
+                <p class="suggestion" in:fly={{y:300}}>{data.feedback}</p>
+            </div>
+        </Typewriter>
     {/if}
 </div>
 
 
 <style>
+
+    .main {
+        margin: 20px;
+    }
+
+    .emojis {
+        margin: 20px;
+        margin-top: 40px;
+    }
+
+    .emojis img{
+        margin: 8px;
+    }
 
     .score-text {
         font-size: 18px;
@@ -65,7 +96,7 @@
     .suggestion-block{
         padding: 10px;
         margin: 10px;
-        width: 80%;
+        width: 1000px;
     }
 
     .suggestion {
