@@ -67,7 +67,7 @@ export const actions = {
 		// Get the form data //
 		const data = await request.formData();
 		const unwind = [...data];
-		// console.log("NEXT", unwind);
+		console.log("NEXT", unwind);
 
 		// Get the index //
 		const index = url.searchParams.get("i");
@@ -112,7 +112,7 @@ export const actions = {
 				}
 			}
 		}
-		// console.log(ans)
+		console.log(ans)
 		
 		/* 
 			If all the questions are answered, store the "ans" variable via our API and redirect to "results" page,

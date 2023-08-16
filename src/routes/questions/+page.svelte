@@ -20,13 +20,12 @@
 
     /* Variables to store page specific data */
     let visible;
-    let index = data.index;
     let selectedOptions = []
     let ticks = [1,2,3,4]
     let backgroundColor = "#00cfff8a"
-    let currentQuestion = data.game.questions[index-1]
-    let completionPercent = (((index-1)/(data.game.questions.length)) * 100)
-    let oldCompletionPercent = (((index-2)/(data.game.questions.length)) * 100)
+    let currentQuestion = data.game.questions[data.index-1]
+    let completionPercent = (((data.index-1)/(data.game.questions.length)) * 100)
+    let oldCompletionPercent = (((data.index-2)/(data.game.questions.length)) * 100)
 
     /* 
         CSS: Get the number of ticks required to be placed on the range slider
@@ -97,13 +96,13 @@
     /*
         Function to scroll the page to the TOP of the screen to enhance the user experience
     */
-    function topFunction() {
-        const c = document.documentElement.scrollTop || document.body.scrollTop;
-        if (c > 0) {
-            window.requestAnimationFrame(topFunction);
-            window.scrollTo(0, c - c / 15);
-        }
-    }
+    // function topFunction() {
+    //     const c = document.documentElement.scrollTop || document.body.scrollTop;
+    //     if (c > 0) {
+    //         window.requestAnimationFrame(topFunction);
+    //         window.scrollTo(0, c - c / 15);
+    //     }
+    // }
 
     /*
         Update the progress bar, load the new queston, scroll to the top of screen
@@ -203,11 +202,11 @@
             this is an important step, load() function isn't called when user presses "BACK" on their browsers
             It allows us to update the "index" to it's correct value. Saves us from many unforseen BUGS :)
         */
-        index = document.URL.split("?i=")[1];
+        data.index = document.URL.split("?i=")[1];
         
-        visible = true;
         backgroundColor = getRandomColor();
         updateProgressBar();
+        visible = true;
         getTicks();
     })
 
@@ -267,7 +266,7 @@
 
             Power of "dynamic-page-loading-with-recursion"
         -->
-        <form method="POST" action="/questions?i={parseInt(index)+1}">
+        <form method="POST" action="/questions?i={parseInt(data.index)+1}">
 
             <!-- HACK: we will add a form input that allows us to pass current "index" value to the server -->
             <!-- <input name="index" value={index} hidden/> -->
@@ -285,7 +284,7 @@
 
                     <!-- Options for a RADIO/CHECKBOX -->
                     <div>
-                        <p class="question">{index}. {currentQuestion.question}</p>
+                        <p class="question">{data.index}. {currentQuestion.question}</p>
                         <div class="option-single">
                             {#each currentQuestion.options as o, j}
                                 <label class="option-label">
@@ -304,7 +303,7 @@
                 <!-- Populate options for MULTIPLE questions -->
                 {#if currentQuestion.multiple}
                     <div>
-                        <p class="question">{index}. {currentQuestion.title}</p>
+                        <p class="question">{data.index}. {currentQuestion.title}</p>
                         
                         <!-- 
                             CSS: Based on the number of options, fetch a dynamic grid for this question
@@ -378,7 +377,7 @@
             -->
             {#if currentQuestion.format === "image"}
                 <div>
-                    <p class="question">{index}. {currentQuestion.question}</p>
+                    <p class="question">{data.index}. {currentQuestion.question}</p>
 
                     <!-- 
                         Fetch the randomized images array,
@@ -412,11 +411,11 @@
             {/if}
 
             <div class="button">
-                {#if index > 1}
-                    <a class="prev-btn" href="/questions?i={parseInt(index)-1}" on:click={goBack}>←</a>
+                {#if data.index > 1}
+                    <a class="prev-btn" href="/questions?i={parseInt(data.index)-1}" on:click={goBack}>←</a>
                 {/if}
                 <button type="submit" class="submit-btn">
-                    {(index<data.game.questions.length)?"Next →":"Submit"}
+                    {(data.index<data.game.questions.length)?"Next →":"Submit"}
                 </button>
             </div>
         </form>
@@ -472,6 +471,8 @@
     }
 
     .question {
+        padding-left: 20px;
+        padding-right: 20px;
         font-size: 20px;
         display: grid;
         justify-content: center;
