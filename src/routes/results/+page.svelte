@@ -8,35 +8,61 @@
     export let data;
     let counter = 0;
     let visible = false;
+    let feedbackVisible = false;
+
+    /* 
+        Randomize images in a given question
+    */
+    let randomizedArray = []
+    function getRandomizedArray(arr){
+        randomizedArray = []
+        for(;;)
+        {
+            var random = Math.floor(Math.random() * arr.length)
+            if(randomizedArray.length < arr.length){
+                if(randomizedArray.indexOf(random) === -1){
+                    randomizedArray.push(random)
+                }
+            }
+            else{
+                break;
+            }
+        }
+        for(var i=0; i<randomizedArray.length; i++){
+            randomizedArray[i] = arr[randomizedArray[i]]
+        }
+        return 0
+    }
+    console.log(data)
 
     onMount(() => {
 
         visible = true;
 
         setInterval(() => {
-            if(counter < data.results.effective_score-100)
+            if(counter < data.score.results.effective_score-100)
                 counter+=100;
-            if(counter > data.results.effective_score-100 && counter < data.results.effective_score)
+            if(counter > data.score.results.effective_score-100 && counter < data.score.results.effective_score)
                 counter++;
         }, 25)
 
         // const score = document.getElementById("score-progress");
-        // score.style.width = Math.floor(data.results.effective_score*100/data.results.max_score) + "%";
+        // score.style.width = Math.floor(data.score.results.effective_score*100/data.score.results.max_score) + "%";
     })
 
     function done(){
-        console.log("YOLO")
+        feedbackVisible = true;
     }
 
 </script>
 
 {#if visible}
     <div class="emojis">
-        <img in:fly={{x:100}} src=emoji-excellent.svg alt="excellent" style="width: 120px; height: 120px;">
-        <img in:fly={{x:200}} src=emoji-good.svg alt="good" style="width: 120px; height: 120px;">
-        <img in:fly={{x:300}} src=emoji-ok.svg alt="ok" style="width: 120px; height: 120px;">
-        <img in:fly={{x:400}} src=emoji-bad.svg alt="bad" style="width: 120px; height: 120px;">
-        <img in:fly={{x:500}} src=emoji-terrible.svg alt="terrible" style="width: 120px; height: 120px;">
+        <img in:fly={{x:100}} src=emoji-excellent.svg alt="excellent">
+        <img in:fly={{x:200}} src=emoji-good.svg alt="good">
+        <img in:fly={{x:300}} src=emoji-ok.svg alt="ok">
+        <img in:fly={{x:400}} src=emoji-bad.svg alt="bad">
+        <img in:fly={{x:500}} src=emoji-terrible.svg alt="terrible">
     </div>
 {/if}
 
@@ -58,16 +84,64 @@
     </div> -->
 
     {#if visible}
-        <Typewriter interval=15 on:done={done}>
+        <Typewriter interval="15" on:done={done}>
             <div class="suggestion-block">
-                <p class="suggestion" in:fly={{y:300}}>{data.feedback}</p>
+                <p class="suggestion" in:fly={{y:300}}>{data.score.feedback}</p>
             </div>
         </Typewriter>
+    {/if}
+
+    {#if feedbackVisible}
+        <p class="blank-text">{getRandomizedArray(data.results.feedback)}</p>
+        <div class="image-container" in:fly={{y:300}}>
+            {#each randomizedArray as o, j}
+                <!-- svelte-ignore a11y-label-has-associated-control -->
+                <div class="image-block">
+                    <img src={o.url} class="image" alt={o.text}/>
+                    <p class="image-label">{o.text}</p>
+                </div>
+            {/each}
+        </div>
     {/if}
 </div>
 
 
 <style>
+
+    .image-container {
+        display: grid;
+        grid-template-columns: auto auto auto auto auto;
+        column-gap: 20px;
+        row-gap: 8px;
+    }
+
+    .image-block {
+        background: #F7F2FA;
+
+        /* M3/Elevation Light/1 */
+        box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+        background-color: #fff;
+        text-align: center;
+        border-radius: 1.0em;
+        margin: 10px;
+        position: relative;
+        color: white;
+    }
+
+    .image-label {
+        background-image: linear-gradient(#f000, #0f0f0d);
+        position: absolute;
+        bottom: 8px;
+        padding: 4px;
+        width: 100%;
+        border-radius: 1.0em;
+    }
+
+    .image {
+        width: 250px;
+        height: 250px;
+        border-radius: 1.0em;
+    }
 
     .main {
         margin: 20px;
@@ -76,9 +150,12 @@
     .emojis {
         margin: 20px;
         margin-top: 40px;
+        max-width: 100%;
     }
 
     .emojis img{
+        width: 120px;
+        height: 120px;
         margin: 8px;
     }
 
@@ -88,7 +165,7 @@
     }
 
     .score {
-        font-size: 30px;
+        font-size: 50px;
         padding: 8px;
         font-weight: 500;
     }
@@ -111,6 +188,10 @@
         padding: 20px;
         margin: 20px;
         text-align: left;
+    }
+
+    .blank-text {
+        color: rgba(0, 0, 0, 0);
     }
 
 /*    .score-progress-container::before {
