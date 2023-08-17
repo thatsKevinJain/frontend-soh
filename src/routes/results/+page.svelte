@@ -173,7 +173,7 @@
     .suggestion-block{
         padding: 10px;
         margin: 10px;
-        width: 1000px;
+        width: 1300px;
     }
 
     .suggestion {
