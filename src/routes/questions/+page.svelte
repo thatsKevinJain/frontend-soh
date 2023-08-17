@@ -235,8 +235,8 @@
             arrows              = {false}
             swiping             = {false}
             particlesToShow     = {8}
-            particlesToScroll   = {1}
-            timingFunction      = "linear">
+            particlesToScroll   = {2}
+            timingFunction      = "ease-in-out">
 
             {#each currentQuestion.images as i}
                 <img src={i} class="image" alt=""/>

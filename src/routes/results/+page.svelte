@@ -3,7 +3,7 @@
     import { onMount } from 'svelte';
     import { fly } from 'svelte/transition';
     import Typewriter from 'svelte-typewriter'
-    import { concurrent } from 'svelte-typewriter'
+    import { scramble } from 'svelte-typewriter'
 
     export let data;
     let counter = 0;
@@ -84,7 +84,7 @@
     </div> -->
 
     {#if visible}
-        <Typewriter interval="15" on:done={done}>
+        <Typewriter interval={["1","10","20","30","50"]} on:done={done} keepCursorOnFinish={3000}>
             <div class="suggestion-block">
                 <p class="suggestion" in:fly={{y:300}}>{data.score.feedback}</p>
             </div>
