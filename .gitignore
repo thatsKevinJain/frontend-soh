@@ -1,4 +1,4 @@
-!node_modules/three
+# !node_modules/three
 .DS_Store
 # node_modules
 /build
