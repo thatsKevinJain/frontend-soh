@@ -2,9 +2,6 @@
     import { fly } from 'svelte/transition';
     import * as Threlte from '@threlte/core'
     import { onMount } from 'svelte';
-    import * as Three from 'three'
-    import { GLTF } from '@threlte/extras'
-    import * as Utils from 'three/src/math/MathUtils'
     import Beach from './Beach.svelte';
 
     let visible = false;
