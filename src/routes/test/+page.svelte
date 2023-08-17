@@ -1,11 +1,6 @@
 <script>
     import { fly } from 'svelte/transition';
-    import * as Threlte from '@threlte/core'
     import { onMount } from 'svelte';
-    import * as Three from 'three'
-    import { GLTF } from '@threlte/extras'
-    import * as Utils from 'three/src/math/MathUtils'
-
     let visible = false;
     let email = "";
     let name = "";
@@ -14,29 +9,6 @@
       visible = true;
     });
 </script>
-
-<div class="scene">
-  <Threlte.Canvas>
-    <!-- Camera -->
-    <Threlte.PerspectiveCamera position={{ x: 40, y: 40, z: 40 }} fov={50}>
-      <!-- Controls -->
-      <Threlte.OrbitControls autoRotate autoRotateSpeed={0.25}/>
-    </Threlte.PerspectiveCamera>
-
-    <!-- Lights the scene equally -->
-    <Threlte.AmbientLight color="white" intensity={0.5} />
-
-    <!-- Light that casts a shadow -->
-    <Threlte.DirectionalLight
-      color="white"
-      intensity={1}
-      position={{ x: 10, y: 10 }}
-      shadow={{
-        camera: { top: 10 },
-      }}
-    />
-  </Threlte.Canvas>
-</div>
 
 <!-- <div class="main">
     <a href="/"><img src="favicon.png" alt="Science of Happiness" style="width: 120px; height: 120px;"></a>
@@ -86,17 +58,6 @@
         justify-content: center;
         position: relative;
         margin-top: 50px;
-    }
-
-    .scene {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background: radial-gradient(hsl(182.8, 100%, 50%), hsl(218.4, 81.1%, 24.9%));
-        background-attachment: fixed;
-        z-index: -1;
     }
     /* center all elements and stack them like a list with a fixed width between each other */
     /*    .background {
