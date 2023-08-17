@@ -10,6 +10,7 @@
 
     onMount(() => {
       visible = true;
+      document.getElementsByTagName("html")[0].style.height = "100%";
     });
 </script>
 
@@ -114,6 +115,7 @@
         color: #ffffff;
         text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         margin-bottom: 80px;
+        margin-top: 40px;
     }
 
     /* Wrap the text */

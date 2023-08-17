@@ -639,6 +639,7 @@
         position: relative;
         bottom: 0;
         left: 40%;
+        margin-bottom: 40px;
     }
 
 </style>
