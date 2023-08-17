@@ -23,11 +23,12 @@ export const actions = {
 		const data = await request.formData();
 		
 		// TODO: Redirect the user straight to questions if demographic data already exists //
-		let result = await getResponse(BACKEND_URL + '/user/create', 'POST', { email: data.get('email') });
+		let result = await getResponse(BACKEND_URL + '/user/create', 'POST', { email: data.get('email'), name: data.get('name') });
 		result = JSON.parse(result);
 		
 		if(result){
 			cookies.set('email', data.get('email'));
+			cookies.set('name', data.get('name'));
 			cookies.set('_id', result._id);
 
 			if(result.demographic){

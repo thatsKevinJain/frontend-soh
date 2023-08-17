@@ -1,52 +1,149 @@
 <script>
-// @ts-nocheck
+    import { fly } from 'svelte/transition';
+    import * as Threlte from '@threlte/core'
+    import { onMount } from 'svelte';
+    import * as Three from 'three'
+    import { GLTF } from '@threlte/extras'
+    import * as Utils from 'three/src/math/MathUtils'
+    import Beach from './Beach.svelte';
 
-  import Carousel from 'svelte-carousel'
-  import { browser } from '$app/environment';
+    let visible = false;
+    let email = "";
+    let name = "";
 
-  let carousel; // for calling methods of the carousel instance
-  
-  const handleNextClick = () => {
-    carousel.goToNext()
-  }
-
-  let  options = [
-          { id: 1, label: "hello", score: 1, url: "https://images.unsplash.com/photo-1688889716860-c9b94cc3db63?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTgzNQ&ixlib=rb-4.0.3&q=80&w=200"},
-          { id: 2, label: "hello", score: 1, url: "https://images.unsplash.com/photo-1689257693246-6fea2884c4be?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTg2Mw&ixlib=rb-4.0.3&q=80&w=200"},
-          { id: 3, label: "hello", score: 1, url: "https://images.unsplash.com/photo-1688890968318-8d77993d3b99?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTg3NQ&ixlib=rb-4.0.3&q=80&w=200"},
-          { id: 4, label: "hello", score: 1, url: "https://plus.unsplash.com/premium_photo-1676478746990-4ef5c8ef234a?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTg4NQ&ixlib=rb-4.0.3&q=80&w=200"},
-          { id: 5, label: "hello", score: 1, url: "https://images.unsplash.com/photo-1688934728330-70f167cb366f?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTg5Nw&ixlib=rb-4.0.3&q=80&w=200"},
-          { id: 6, label: "hello", score: 0, url: "https://images.unsplash.com/photo-1688283581052-7da75fe95a5c?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTkwNw&ixlib=rb-4.0.3&q=80&w=200"},
-          { id: 7, label: "hello", score: 0, url: "https://images.unsplash.com/photo-1685957198326-92172d999300?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTkxNg&ixlib=rb-4.0.3&q=80&w=200"},
-          { id: 8, label: "hello", score: 0, url: "https://images.unsplash.com/photo-1690005866751-3cab315c0096?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTkyOA&ixlib=rb-4.0.3&q=80&w=200"},
-          { id: 9, label: "hello", score: 0, url: "https://images.unsplash.com/photo-1687253673883-d5f0f1f13443?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY5MDE0NTkzNw&ixlib=rb-4.0.3&q=80&w=200"},
-        ]
-
-  let opt = new Array(20)
+    onMount(() => {
+      visible = true;
+    });
 </script>
 
-{#if browser}
-<Carousel
-  autoplayDuration={0}
-  duration={5000}
-  autoplay
-  timingFunction="linear"
-  dots={false}
-  arrows={false}
-  swiping={false}
-  particlesToShow={10}
-  particlesToScroll={2}
->
-  {#each opt as o, i}
-     <img src={"https://source.unsplash.com/random/200x200/?emotions&" + i} class="image" alt="yo"/>
-  {/each}
-</Carousel>
+<div class="scene">
+  <Threlte.Canvas>
+    <!-- Camera -->
+    <Threlte.PerspectiveCamera position={{ x: 40, y: 40, z: 40 }} fov={50}>
+      <!-- Controls -->
+      <Threlte.OrbitControls autoRotate autoRotateSpeed={0.25}/>
+    </Threlte.PerspectiveCamera>
+
+    <!-- Lights the scene equally -->
+    <Threlte.AmbientLight color="white" intensity={0.5} />
+
+    <!-- Light that casts a shadow -->
+    <Threlte.DirectionalLight
+      color="white"
+      intensity={1}
+      position={{ x: 10, y: 10 }}
+      shadow={{
+        camera: { top: 10 },
+      }}
+    />
+    <Beach />
+  </Threlte.Canvas>
+</div>
+
+<!-- <div class="main">
+    <a href="/"><img src="favicon.png" alt="Science of Happiness" style="width: 120px; height: 120px;"></a>
+</div> -->
+
+{#if visible}
+    <div class="main-wrapper">
+        <div class="main-container">
+          <a href="/"><img src="favicon.png" alt="Science of Happiness" style="width: 120px; height: 120px;"></a>
+          <h1 in:fly={{ y: 90, duration: 1000 }}>Science of Happiness</h1>
+          <h3 in:fly={{ y: 100, duration: 2000 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint </h3>
+
+          <form method="POST" action="/demographic?/create" in:fly={{ y: 200, duration: 3000 }}>
+              <label>
+                  <p>Enter your name:</p>
+                  <input name="name" class="input" bind:value={name} type="text" required/>
+              </label>
+              
+              <label>
+                  <p>Enter your UGA email:</p>
+                  <input name="email" class="input" bind:value={email} type="email" required/>    
+              </label>
+              <button class="submit-btn"><img src="arrow.svg" alt="submit"></button>
+          </form>
+      </div>
+    </div>
 {/if}
 
+<!-- <img src="happiness2.jpg" alt="hello" class="background"/> -->
 
 <style>
-      .image {
-        width: 200px;
-        height: 200px;
+
+    .main-wrapper {
+        min-height: 100%;
+        display: flex;
+        /* change flex-direction from column to row will work */
+        flex-direction: column;
+        background-image: linear-gradient(#f000, #0f0f0d);
+        background-attachment: fixed;
+        background-size: cover;
+    }
+
+    .main-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-top: 50px;
+    }
+
+    .scene {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: radial-gradient(hsl(182.8, 100%, 50%), hsl(218.4, 81.1%, 24.9%));
+        background-attachment: fixed;
+        z-index: -1;
+    }
+    /* center all elements and stack them like a list with a fixed width between each other */
+    /*    .background {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }*/
+
+    h1 {
+        font-weight: 500;
+        font-size: 80px;
+        line-height: 48px;
+        color: #ffffff;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        margin-bottom: 80px;
+    }
+
+    /* Wrap the text */
+    h3 {
+        color: #ffffff;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        width: 80%;
+        text-align: justify;
+        margin-bottom: 40px;
+    }
+
+    p {
+        color: white;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        margin: 10px 0px 4px 0px;
+    }
+
+    .input {
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 48px;
+        color: #ffffff;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        background: #b7b7b7;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-radius: 10px;
+        opacity: 0.8;
     }
 </style>
