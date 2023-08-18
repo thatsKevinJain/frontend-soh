@@ -5,8 +5,9 @@
     import Beach from './Beach.svelte';
 
     let visible = false;
-    let email = "";
-    let name = "";
+    export let data;
+    let email = data.email ? data.email : "";
+    let name = data.name ? data.name : "";
 
     onMount(() => {
       visible = true;
@@ -15,39 +16,35 @@
 </script>
 
 <div class="scene">
-  <Threlte.Canvas>
-    <!-- Camera -->
-    <Threlte.PerspectiveCamera position={{ x: 40, y: 40, z: 40 }} fov={50}>
-      <!-- Controls -->
-      <Threlte.OrbitControls autoRotate autoRotateSpeed={0.25}/>
-    </Threlte.PerspectiveCamera>
+    <Threlte.Canvas>
+        <!-- Camera -->
+        <Threlte.PerspectiveCamera position={{ x: 40, y: 40, z: 40 }} fov={50}>
+          <!-- Controls -->
+            <Threlte.OrbitControls autoRotate autoRotateSpeed={0.25}/>
+        </Threlte.PerspectiveCamera>
 
-    <!-- Lights the scene equally -->
-    <Threlte.AmbientLight color="white" intensity={0.5} />
+        <!-- Lights the scene equally -->
+        <Threlte.AmbientLight color="white" intensity={0.5} />
 
-    <!-- Light that casts a shadow -->
-    <Threlte.DirectionalLight
-      color="white"
-      intensity={1}
-      position={{ x: 10, y: 10 }}
-      shadow={{
-        camera: { top: 10 },
-      }}
-    />
-    <Beach />
-  </Threlte.Canvas>
+        <!-- Light that casts a shadow -->
+        <Threlte.DirectionalLight
+            color="white"
+            intensity={1}
+            position={{ x: 10, y: 10 }}
+            shadow={{
+                camera: { top: 10 },
+            }}
+        />
+        <Beach />
+    </Threlte.Canvas>
 </div>
-
-<!-- <div class="main">
-    <a href="/"><img src="favicon.png" alt="Science of Happiness" style="width: 120px; height: 120px;"></a>
-</div> -->
 
 {#if visible}
     <div class="main-wrapper">
         <div class="main-container">
           <a href="/"><img src="favicon.png" alt="Science of Happiness" style="width: 120px; height: 120px;"></a>
-          <h1 in:fly={{ y: 90, duration: 1000 }}>Science of Happiness</h1>
-          <h3 in:fly={{ y: 100, duration: 2000 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint </h3>
+          <h1 in:fly={{ y: 100, duration: 1000 }}>Science of Happiness</h1>
+          <h3 in:fly={{ y: 200, duration: 2000 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint </h3>
 
           <form method="POST" action="/demographic?/create" in:fly={{ y: 200, duration: 3000 }}>
               <label>
@@ -64,8 +61,6 @@
       </div>
     </div>
 {/if}
-
-<!-- <img src="happiness2.jpg" alt="hello" class="background"/> -->
 
 <style>
 
@@ -98,15 +93,6 @@
         background-attachment: fixed;
         z-index: -1;
     }
-    /* center all elements and stack them like a list with a fixed width between each other */
-    /*    .background {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-    }*/
 
     h1 {
         font-weight: 500;

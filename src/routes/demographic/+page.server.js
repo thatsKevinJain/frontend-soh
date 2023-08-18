@@ -8,8 +8,6 @@ let demographic;
 export async function load({cookies}){
 
 	// Load questions on every page load //
-	// This is redundant API calling but works for now //
-	// TODO: store these questions in a svelte-store to avoid overloading APIs //
 	demographic = await getResponse(BACKEND_URL + '/app/getDemographic');
 	demographic = JSON.parse(demographic);
 
@@ -23,7 +21,7 @@ export const actions = {
 	create: async ({ cookies, request }) => {
 		const data = await request.formData();
 		
-		// TODO: Redirect the user straight to questions if demographic data already exists //
+		// Redirect the user straight to questions if demographic data already exists //
 		let result = await getResponse(BACKEND_URL + '/user/create', 'POST', { email: data.get('email'), name: data.get('name') });
 		result = JSON.parse(result);
 		

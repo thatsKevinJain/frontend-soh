@@ -36,35 +36,11 @@ export async function load({ url }){
 
 export const actions = {
 
-	// prev: async ({ request, url }) => {
-	// 	// Get the form data //
-	// 	const data = await request.formData();
-	// 	const unwind = [...data];
-	// 	console.log("PREV", unwind);
-
-	// 	// Get the index //
-	// 	let index = parseInt(formData.get('index'))
-
-	// 	if(index == 1){
-	// 		ans = {}
-	// 	}
-	// 	else{
-	// 		Object.keys(ans).forEach((key) => {
-	// 			let question = parseInt(key.split("-"))
-	// 			if(question === index || question === (index - 1)){
-	// 				ans[key] = 0
-	// 			}
-	// 		})
-	// 	}
-	// 	return { prev: true };
-	// }, 
-
 	default: async ({ request, cookies, url }) => {
 
 		// Get the form data //
 		const data = await request.formData();
 		const unwind = [...data];
-		// console.log("NEXT", unwind);
 
 		// Get the index //
 		const index = url.searchParams.get("i");
@@ -108,7 +84,6 @@ export const actions = {
 				}
 			}
 		}
-		// console.log(ans)
 
 		// Update the submission with the new answer //
 		let sub = await getResponse(BACKEND_URL + '/submission/update', 'POST', { answers: ans, user: cookies.get('_id'), _id: cookies.get('submissionId') });

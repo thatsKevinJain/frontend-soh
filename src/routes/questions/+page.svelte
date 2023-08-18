@@ -1,9 +1,7 @@
 <script>
 // @ts-nocheck
     import { onMount } from 'svelte';
-    // import { enhance } from '$app/forms';
     import { fly } from 'svelte/transition';
-    // import { goto } from '$app/navigation';
     import Carousel from 'svelte-carousel'
     import { browser } from '$app/environment';
 
@@ -94,31 +92,6 @@
     }
 
     /*
-        Function to scroll the page to the TOP of the screen to enhance the user experience
-    */
-    // function topFunction() {
-    //     const c = document.documentElement.scrollTop || document.body.scrollTop;
-    //     if (c > 0) {
-    //         window.requestAnimationFrame(topFunction);
-    //         window.scrollTo(0, c - c / 15);
-    //     }
-    // }
-
-    /*
-        Update the progress bar, load the new queston, scroll to the top of screen
-    */
-    // function updatePage(){
-    //     backgroundColor = getRandomColor();
-    //     currentQuestion = data.game.questions[index-1]
-    //     completionPercent = (((index-1)/(data.game.questions.length-1)) * 100)
-    //     oldCompletionPercent = (((index-2)/(data.game.questions.length)) * 100)
-    //     topFunction();
-    //     updateProgressBar();
-    //     getTicks();
-    //     visible = true;
-    // }
-
-    /*
         Use the Golden Ratio and the HSV color system to generate a random background color for every question
     */
     const goldenRatioConjugate = 0.618033988749895;
@@ -156,42 +129,6 @@
         return false;
     }
 
-    /*
-        ENHANCE function is called when the user presses submit,
-        we will store the input in the form, update the index, load the next question, 
-        and then redirect to a new page on form completion.
-    */
-    // function useEnhance(){
-
-    //     // Make the current question hidden //
-    //     visible = false
-        
-    //     return async ({ result, update }) => {
-            
-    //         // `result` is an `ActionResult` object
-    //         // `update` is a function which triggers the default logic that would be triggered to reset the form
-    //         await update();
-            
-    //         if(result.data.location){
-    //             await goto(result.data.location)
-    //         }
-    //         else if(result.data.prev){
-    //             /*
-    //                 We decrement the "index" here, update the page with the previous question 
-    //             */
-    //             index -= 1;
-    //             updatePage();
-    //         }
-    //         else{
-    //             /*
-    //                 We increment the "index" here, update the page with the new question 
-    //             */
-    //             index += 1;
-    //             updatePage();
-    //         }
-    //     };
-    // }
-
     /* 
         Function called when components have finished mounting on the DOM,
         this will allow us to animate certain elements like progress-bar after the page is loaded
@@ -218,10 +155,10 @@
 
 <!-- CLOUDS animation background -->
 <section style={"background: " + backgroundColor}>
-  <div class='air air1'></div>
-  <div class='air air2'></div>
-  <div class='air air3'></div>
-  <div class='air air4'></div>
+    <div class='air air1'></div>
+    <div class='air air2'></div>
+    <div class='air air3'></div>
+    <div class='air air4'></div>
 </section>
 
 <!-- CAROUSEL based on categories -->
@@ -247,12 +184,12 @@
 
 <!-- PROGRESS BAR -->
 <div class="container">
-  <div class="progress-container">
+    <div class="progress-container">
     <div class="progress" id="progress" style={"width:" + oldCompletionPercent + "%"}> </div>
-    {#each percs as perc}
-        <div class="circle">{perc.toString()+"%"}</div>
-    {/each}
-  </div>
+        {#each percs as perc}
+            <div class="circle">{perc.toString()+"%"}</div>
+        {/each}
+    </div>
 </div>
 
 <!-- QUESTIONS -->
@@ -430,14 +367,14 @@
     }
 
     :root {
-      --card-line-height: 1.2em;
-      --card-padding: 1em;
-      --card-radius: 0.5em;
-      --color-green: #558309;
-      --color-gray: #e2ebf6;
-      --color-dark-gray: #c4d1e1;
-      --radio-border-width: 1.5px;
-      --radio-size: 1.8em;
+        --card-line-height: 1.2em;
+        --card-padding: 1em;
+        --card-radius: 0.5em;
+        --color-green: #558309;
+        --color-gray: #e2ebf6;
+        --color-dark-gray: #c4d1e1;
+        --radio-border-width: 1.5px;
+        --radio-size: 1.8em;
     }
 
     .option-label {
@@ -486,7 +423,7 @@
     }
 
     .checkbox:checked {
-      border-color: var(--color-green);
+        border-color: var(--color-green);
     }
 
     .checkbox:disabled {

@@ -3,7 +3,6 @@
     import { onMount } from 'svelte';
     import { fly } from 'svelte/transition';
     import Typewriter from 'svelte-typewriter'
-    import { scramble } from 'svelte-typewriter'
 
     export let data;
     let counter = 0;
@@ -33,7 +32,6 @@
         }
         return 0
     }
-    // console.log(data)
 
     onMount(() => {
 
@@ -45,9 +43,6 @@
             if(counter > data.score.results.effective_score-100 && counter < data.score.results.effective_score)
                 counter++;
         }, 25)
-
-        // const score = document.getElementById("score-progress");
-        // score.style.width = Math.floor(data.score.results.effective_score*100/data.score.results.max_score) + "%";
     })
 
     function done(){
@@ -78,10 +73,6 @@
 <div class="main">
     <p class="score-text">Your score is:</p>
     <p class="score"><b>{counter}</b></p>
-
-    <!-- <div class="score-progress-container">
-        <div class="score-progress" id="score-progress"/>
-    </div> -->
 
     {#if visible}
         <Typewriter interval={["1","10","20","30","50"]} on:done={done} keepCursorOnFinish={3000}>
@@ -193,42 +184,6 @@
     .blank-text {
         color: rgba(0, 0, 0, 0);
     }
-
-/*    .score-progress-container::before {
-      content: "";
-      background: var(--line-border-empty);
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-      border-radius: 10px;
-      height: 18px;
-      width: 100%;
-      z-index: -1;
-    }
-
-    .score-progress-container {
-      display: flex;
-      justify-content: space-between;
-      position: relative;
-      margin: 30px;
-      max-width: 100%;
-      border-radius: 10px;
-      width: 350px;
-    }
-
-    .score-progress {
-      background: var(--line-border-fill);
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-      border-radius: 10px;
-      height: 18px;
-      width: 0%;
-      z-index: -1;
-      transition: 2s ease;
-    }*/
 
 </style>
 
