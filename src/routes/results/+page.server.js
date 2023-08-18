@@ -6,9 +6,8 @@ let score = {};
 
 export async function load({cookies}){
 
-	score = await getResponse(`${BACKEND_URL}/submission/find?_id=${cookies.get('_id')}`);
+	score = await getResponse(`${BACKEND_URL}/submission/find?_id=${cookies.get('submissionId')}`);
 	score = JSON.parse(score);
-	console.log(score)
 
     return {
     	results,

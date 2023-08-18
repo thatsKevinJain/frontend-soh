@@ -5,7 +5,6 @@ import { redirect } from '@sveltejs/kit';
 import { BACKEND_URL } from '$env/static/private';
 
 // INIT //
-let ans = {};
 let game = {};
 
 function onlyUnique(value, index, array) {
@@ -23,8 +22,6 @@ export async function load({ url }){
 
 	/* 
 		Load game questions on every page load
-		This is a redundant API call (a bad practice when building apps of scale)
-		But works for now!
 	*/
 	if(Object.keys(game).length === 0){
 		game = await getResponse(BACKEND_URL + '/app/getGame');
@@ -67,14 +64,13 @@ export const actions = {
 		// Get the form data //
 		const data = await request.formData();
 		const unwind = [...data];
-		console.log("NEXT", unwind);
+		// console.log("NEXT", unwind);
 
 		// Get the index //
 		const index = url.searchParams.get("i");
 
-		if(index == 1){
-			ans = {}
-		}
+		// Variable to store the answer for this question //
+		let ans = {}
 
 		/* 
 			Different questions here will have a different way of storing the answer --
@@ -112,14 +108,21 @@ export const actions = {
 				}
 			}
 		}
-		console.log(ans)
-		
+		// console.log(ans)
+
+		// Update the submission with the new answer //
+		let sub = await getResponse(BACKEND_URL + '/submission/update', 'POST', { answers: ans, user: cookies.get('_id'), _id: cookies.get('submissionId') });
+		sub = JSON.parse(sub);
+		if(sub.message){
+			throw redirect(303, "/results");
+		}
+
 		/* 
 			If all the questions are answered, store the "ans" variable via our API and redirect to "results" page,
 			else go to the NEXT question.
 		*/
 		if(index > game.questions.length){
-			const response = await getResponse(BACKEND_URL + '/submission/create', 'POST', { answers: ans, user: cookies.get('_id') });
+			const response = await getResponse(BACKEND_URL + '/submission/finish', 'POST', { user: cookies.get('_id'), _id: cookies.get('submissionId') });
 
 			throw redirect(303, "/results");
 		}

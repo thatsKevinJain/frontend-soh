@@ -14,8 +14,9 @@ export async function load({cookies}){
 	demographic = JSON.parse(demographic);
 
 	return { 
-		demographic, 
-		email: cookies.get('email') };
+		demographic,
+		name: cookies.get('name')
+	}
 }
 
 export const actions = {
@@ -32,6 +33,12 @@ export const actions = {
 			cookies.set('_id', result._id);
 
 			if(result.demographic){
+
+				// Create a submission object, store it's id in cookies and start the questions page //
+				let submission = await getResponse(BACKEND_URL + '/submission/create', 'POST', { user: result._id });
+				submission = JSON.parse(submission);
+				cookies.set('submissionId', submission._id)
+
 				throw redirect(303, "/questions?i=1");
 			}
 		}
@@ -52,6 +59,11 @@ export const actions = {
 		const _id = cookies.get('_id');
 		
 		const response = await getResponse(BACKEND_URL + '/user/update', 'POST', { demographic: demo, _id });
+
+		// Create a submission object, store it's id in cookies and start the questions page //
+		let submission = await getResponse(BACKEND_URL + '/submission/create', 'POST', { user: _id });
+		submission = JSON.parse(submission);
+		cookies.set('submissionId', submission._id)
 
 		throw redirect(303, "/questions?i=1");
 	}

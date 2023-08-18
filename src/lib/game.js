@@ -1,7 +1,7 @@
 export const game = 
 {
 	version: 1,
-	max_score: 5000,			// score that users can get
+	max_score: 4000,			// score that users can get
 	standardization_factor: 4,  // factor which we will use to standardize all scores
 	feedback: [
 		{

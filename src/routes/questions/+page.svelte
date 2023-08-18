@@ -225,7 +225,7 @@
 </section>
 
 <!-- CAROUSEL based on categories -->
-{#if browser && currentQuestion.images && visible}
+{#if browser && currentQuestion.images}
     <div class="carousel">
        <Carousel
             autoplay

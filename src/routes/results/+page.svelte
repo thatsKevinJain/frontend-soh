@@ -33,7 +33,7 @@
         }
         return 0
     }
-    console.log(data)
+    // console.log(data)
 
     onMount(() => {
 

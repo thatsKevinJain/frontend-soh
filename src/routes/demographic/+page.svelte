@@ -15,7 +15,7 @@
 </section>
 
 <div class="main">
-	<h1>Hello {data.email.split("@")[0]}!</h1>
+	<h2>Hello {data.name.split(" ")[0]}! Tell us a little about yourself: </h2>
 
 	<form method="POST" action="?/submit">
 	{#each data.demographic.questions as q, i}
@@ -29,7 +29,7 @@
 											name     = {q.id} 
 											value    = {o.id} 
 											required = {q.required ? true : null}
-											class    = "radio"/>
+											class    = "checkbox"/>
 							{o.option}
 						</label><br>
 				{/each}
@@ -52,5 +52,13 @@
 		margin-top: 8px;
 		font-size: 18px;
 	}
+
+  .submit-btn {
+      position: relative;
+      bottom: 0;
+      left: 40%;
+      margin-bottom: 100px;
+      margin-top: 40px;
+  }
 
 </style>
