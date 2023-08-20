@@ -23,9 +23,7 @@ export async function load({ url }){
 	/* 
 		Load game questions on every page load
 	*/
-	console.log("load() called")
 	if(game && Object.keys(game).length === 0){
-		console.log("Loading Questions ...")
 		game = await getResponse(BACKEND_URL + '/app/getGame');
 		game = JSON.parse(game);
 	}
