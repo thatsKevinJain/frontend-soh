@@ -47,10 +47,11 @@ export const actions = {
 	submit: async ({ cookies, request }) => {
 		const data = await request.formData();
 
-		const demo = [...data].map((d) => {
-			return [d[0], parseInt(d[1])];
-		}).reduce((a, d) => {
-			a[d[0]] = d[1];
+		const demo = [...data].reduce((a, d) => {
+			if(!a[d[0]])
+				a[d[0]] = d[1];
+			else
+				a[d[0]] = a[d[0]] +","+ d[1]
 			return a;
 		}, {});
 
