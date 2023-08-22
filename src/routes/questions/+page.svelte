@@ -17,7 +17,7 @@
     const percs = [0, 25, 50, 75, 100]
 
     /* Variables to store page specific data */
-    let visible;
+    let visible = false;
     let selectedOptions = []
     let ticks = [1,2,3,4]
     let backgroundColor = "#00cfff8a"
@@ -166,17 +166,17 @@
     <div class="carousel">
        <Carousel
             autoplay
-            autoplayDuration    = {0}
-            duration            = {5000}
+            autoplayDuration    = {1000}
+            duration            = {2000}
             dots                = {false}
             arrows              = {false}
             swiping             = {false}
             particlesToShow     = {8}
-            particlesToScroll   = {2}
-            timingFunction      = "ease-in-out">
+            particlesToScroll   = {1}
+            timingFunction      = "linear">
 
             {#each currentQuestion.images as i}
-                <img src={i} class="image" alt=""/>
+                <img src={i} class="carousel-image" alt=""/>
             {/each}
         </Carousel>
     </div>
@@ -523,8 +523,14 @@
     }
 
     .image {
+        width: 300px;
+        height: 300px;
+    }
+
+    .carousel-image {
         width: 200px;
         height: 200px;
+        padding: 0px 8px 8px 0px;   
     }
 
     .blank-text {

@@ -11,6 +11,7 @@ export async function load({cookies}){
 
     return {
     	results,
-    	score
+    	score,
+    	name: cookies.get('name')
     }
 };

@@ -71,8 +71,9 @@
 
 
 <div class="main">
-    <p class="score-text">Your score is:</p>
+    <p class="score-text">Hey {data.name.split(" ")[0]}, your score is:</p>
     <p class="score"><b>{counter}</b></p>
+    <p class="score-text">Here's some feedback based on your answers:</p>
 
     {#if visible}
         <Typewriter interval={["1","10","20","30","50"]} on:done={done} keepCursorOnFinish={3000}>
@@ -162,8 +163,8 @@
     }
 
     .suggestion-block{
-        padding: 10px;
-        margin: 10px;
+        padding: 0px 10px 10px 10px;
+        margin: 0px 0px 10px 0px;
         width: 1300px;
     }
 

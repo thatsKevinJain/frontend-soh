@@ -21,7 +21,8 @@ export async function load({ url }){
 	const index = url.searchParams.get('i');
 
 	/* 
-		Load game questions on every page load
+		Load game questions on every page load, only if they are don't exist in memory
+		Saves recurrent API calls
 	*/
 	if(game && Object.keys(game).length === 0){
 		game = await getResponse(BACKEND_URL + '/app/getGame');
