@@ -44,7 +44,7 @@
         <div class="main-container">
           <a href="/"><img src="favicon.png" alt="Science of Happiness" style="width: 120px; height: 120px;"></a>
           <h1 in:fly={{ y: 100, duration: 1000 }}>Science of Happiness</h1>
-          <h3 in:fly={{ y: 200, duration: 2000 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint </h3>
+          <!-- <h3 in:fly={{ y: 200, duration: 2000 }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint </h3> -->
 
           <form method="POST" action="/demographic?/create" in:fly={{ y: 200, duration: 3000 }}>
               <label>
@@ -66,6 +66,7 @@
 
     .main-wrapper {
         min-height: 100%;
+        min-width: 100%;
         display: flex;
         /* change flex-direction from column to row will work */
         flex-direction: column;

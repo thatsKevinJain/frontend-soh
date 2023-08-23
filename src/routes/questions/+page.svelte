@@ -344,6 +344,9 @@
                             </label>
                         {/each}
                     </div>
+                    <div style="display: grid;">
+                        <p style="justify-self: end; padding: 10px 20px 10px 0px;"><b>{selectedOptions.length}</b>/{currentQuestion.maxSelections} images selected</p>
+                    </div>
                 </div>
             {/if}
 
