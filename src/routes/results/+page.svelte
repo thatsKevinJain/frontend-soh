@@ -71,7 +71,7 @@
 
 
 <div class="main">
-    <p class="score-text">Hey {data.name.split(" ")[0]}, your score is:</p>
+    <p class="score-text">Hey <b>{data.name.split(" ")[0]}</b>, your score is:</p>
     <p class="score"><b>{counter}</b></p>
     <p class="score-text">Here's some feedback based on your answers:</p>
 

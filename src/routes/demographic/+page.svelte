@@ -23,7 +23,8 @@
 </section>
 
 <div class="main">
-	<h2>Hello {data.name.split(" ")[0]}! We would like to get some demographic information about you: </h2>
+	<h2>Hello {data.name.split(" ")[0]}!</h2>
+	<p>We would like to get some demographic information about you: </p>
 
 	<form method="POST" action="?/submit" on:submit={validateCheckbox}>
 	{#each data.demographic.questions as q, i}
