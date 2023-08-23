@@ -4,9 +4,6 @@ import { getResponse } from '../../utils/getResponse.js'
 import { redirect } from '@sveltejs/kit';
 import { BACKEND_URL } from '$env/static/private';
 
-// INIT //
-let game = {};
-
 function onlyUnique(value, index, array) {
 	return array.indexOf(value) === index;
 }
@@ -24,7 +21,7 @@ export async function load({ url }){
 		Load game questions on every page load
 	*/
 	// if(game && Object.keys(game).length === 0){
-	game = await getResponse(BACKEND_URL + '/app/getGame?i=' + (index-1));
+	let game = await getResponse(BACKEND_URL + '/app/getGame?i=' + (index-1));
 	game = JSON.parse(game);
 	// }
 
@@ -37,6 +34,8 @@ export async function load({ url }){
 export const actions = {
 
 	default: async ({ request, cookies, url }) => {
+
+		let length = 14;
 
 		// Get the form data //
 		const data = await request.formData();
@@ -96,7 +95,7 @@ export const actions = {
 			If all the questions are answered, store the "ans" variable via our API and redirect to "results" page,
 			else go to the NEXT question.
 		*/
-		if(index > game.length){
+		if(index > length){
 			const response = await getResponse(BACKEND_URL + '/submission/finish', 'POST', { user: cookies.get('_id'), _id: cookies.get('submissionId') });
 
 			throw redirect(303, "/results");
