@@ -21,9 +21,9 @@
     let selectedOptions = []
     let ticks = [1,2,3,4]
     let backgroundColor = "#00cfff8a"
-    let currentQuestion = data.game.questions[data.index-1]
-    let completionPercent = (((data.index-1)/(data.game.questions.length)) * 100)
-    let oldCompletionPercent = (((data.index-2)/(data.game.questions.length)) * 100)
+    let currentQuestion = data.game.question
+    let completionPercent = (((data.index-1)/(data.game.length)) * 100)
+    let oldCompletionPercent = (((data.index-2)/(data.game.length)) * 100)
 
     /* 
         CSS: Get the number of ticks required to be placed on the range slider
@@ -352,7 +352,7 @@
                     <a class="prev-btn" href="/questions?i={parseInt(data.index)-1}" on:click={goBack}>←</a>
                 {/if}
                 <button type="submit" class="submit-btn">
-                    {(data.index<data.game.questions.length)?"Next →":"Submit"}
+                    {(data.index<data.game.length)?"Next →":"Submit"}
                 </button>
             </div>
         </form>

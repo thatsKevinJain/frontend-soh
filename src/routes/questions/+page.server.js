@@ -21,13 +21,12 @@ export async function load({ url }){
 	const index = url.searchParams.get('i');
 
 	/* 
-		Load game questions on every page load, only if they are don't exist in memory
-		Saves recurrent API calls
+		Load game questions on every page load
 	*/
-	if(game && Object.keys(game).length === 0){
-		game = await getResponse(BACKEND_URL + '/app/getGame');
-		game = JSON.parse(game);
-	}
+	// if(game && Object.keys(game).length === 0){
+	game = await getResponse(BACKEND_URL + '/app/getGame?i=' + (index-1));
+	game = JSON.parse(game);
+	// }
 
     return {
     	game,
@@ -97,7 +96,7 @@ export const actions = {
 			If all the questions are answered, store the "ans" variable via our API and redirect to "results" page,
 			else go to the NEXT question.
 		*/
-		if(index > game.questions.length){
+		if(index > game.length){
 			const response = await getResponse(BACKEND_URL + '/submission/finish', 'POST', { user: cookies.get('_id'), _id: cookies.get('submissionId') });
 
 			throw redirect(303, "/results");
