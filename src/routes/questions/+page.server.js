@@ -35,7 +35,7 @@ export const actions = {
 
 	default: async ({ request, cookies, url }) => {
 
-		let length = 10;
+		let length = 14;
 
 		// Get the form data //
 		const data = await request.formData();
