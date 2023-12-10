@@ -71,8 +71,8 @@
 
 
 <div class="main">
-    <p class="score-text">Thank you for your submission!</p>
-<!--     <p class="score-text">Hey <b>{data.name.split(" ")[0]}</b>, your score is:</p>
+    <!-- <p class="score-text">Thank you for your submission!</p> -->
+    <p class="score-text">Hey <b>{data.name.split(" ")[0]}</b>, your score is:</p>
     <p class="score"><b>{counter}</b></p>
     <p class="score-text">Here's some feedback based on your answers:</p>
 
@@ -82,20 +82,20 @@
                 <p class="suggestion" in:fly={{y:300}}>{data.score.feedback}</p>
             </div>
         </Typewriter>
-    {/if} -->
+    {/if}
 
-<!--     {#if feedbackVisible}
+    {#if feedbackVisible}
         <p class="blank-text">{getRandomizedArray(data.results.feedback)}</p>
         <div class="image-container" in:fly={{y:300}}>
-            {#each randomizedArray as o, j} -->
+            {#each randomizedArray as o, j}
                 <!-- svelte-ignore a11y-label-has-associated-control -->
-<!--                 <div class="image-block">
+                <div class="image-block">
                     <img src={o.url} class="image" alt={o.text}/>
                     <p class="image-label">{o.text}</p>
                 </div>
             {/each}
         </div>
-    {/if} -->
+    {/if}
 </div>
 
 
