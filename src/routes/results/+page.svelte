@@ -73,7 +73,7 @@
 <div class="main">
     <!-- <p class="score-text">Thank you for your submission!</p> -->
     <p class="score-text">Hey <b>{data.name.split(" ")[0]}</b>, your score is:</p>
-    <p class="score"><b>{counter}</b> / {data.results.max_score}</p>
+    <p class="score"><b>{counter}</b> / {data.score.results.max_score}</p>
     <p class="score-text">Here's some feedback based on your answers:</p>
 
     {#if visible}
