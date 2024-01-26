@@ -12,7 +12,7 @@ function getNElement(value, index, array) {
 	return value[0];
 }
 
-export async function load({ url }){
+export async function load({ url, cookies }){
 
 	// INIT //
 	const index = url.searchParams.get('i');
@@ -23,6 +23,7 @@ export async function load({ url }){
 	// if(game && Object.keys(game).length === 0){
 	let game = await getResponse(BACKEND_URL + '/app/getGame?i=' + (index-1));
 	game = JSON.parse(game);
+	cookies.set('length', game.length);
 	// }
 
     return {
@@ -35,7 +36,8 @@ export const actions = {
 
 	default: async ({ request, cookies, url }) => {
 
-		let length = 15;
+		// let length = 15;
+		let length = cookies.get('length') || 15;
 
 		// Get the form data //
 		const data = await request.formData();

@@ -1,7 +1,7 @@
 export const game = 
 {
 	version: 1,
-	max_score: 4000,			// score that users can get
+	max_score: 100,				// score that users can get
 	standardization_factor: 4,  // factor which we will use to standardize all scores
 	feedback: [
 		{ id: 1, value: 0.5, text: "Your answers indicate that you feel happy sometimes, but not very often. You could consider seeking support for the hard times or someone to talk to about any difficulties you may be experiencing. More generally, you could select a few evidence-based ways to boost your mood and see if they impact your overall feeling of wellbeing. For example, try to pursue meaning as well as pleasure, focus on gratitude (maybe even keeping a gratitude journal), show kindness to others, find purposeful work, find things that make you laugh, spend time with pets, maintain relationships with family and friends (especially the happy, optimistic ones), share experiences with loved ones vs. focusing on accruing material goods, spend time in nature, keep an optimistic outlook, set aside time for daily mindfulness and the pursuit of activities or hobbies that you enjoy, limit screen time, and engage in self-care such eating a healthy diet, making sure that you fit in time for daily exercise or movement, and getting plenty of high quality sleep." },
@@ -352,9 +352,7 @@ export const game =
 			multiple: true,
 			type: "radio",
 			format: "text",
-			required: true,
+			required: false,
 		},
 	]
 };
-
-		
