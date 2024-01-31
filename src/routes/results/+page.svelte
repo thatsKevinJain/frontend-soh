@@ -76,13 +76,23 @@
     <p class="score"><b>{counter}</b> / {data.score.results.max_score}</p>
     <p class="score-text">Here's some feedback based on your answers:</p>
 
-    {#if visible}
-        <Typewriter interval={["1","10","20","30","50"]} on:done={done} keepCursorOnFinish={3000}>
-            <div class="suggestion-block">
-                <p class="suggestion" in:fly={{y:300}}>{data.score.feedback}</p>
-            </div>
-        </Typewriter>
-    {/if}
+    <!-- {#if visible} -->
+    <!-- <Typewriter interval={["1","10","20","30","50"]} on:done={done} keepCursorOnFinish={3000}> -->
+    {#await data.streamed.llm}
+        Loading response from AI...
+    {:then chunk}
+        <div class="suggestion-block">
+            <p class="suggestion" in:fly={{y:300}}>
+               {#each chunk.trim().split("data: [DONE]").join("").split("data: {\"response\":\"").join("").split("\"}\n\n").join("").trim().split("\\n") as para}
+                    {para}
+                    <br><br>
+               {/each}
+               {data.score.feedback}
+            </p>
+        </div>
+    {/await}
+    <!-- </Typewriter> -->
+    <!-- {/if} -->
 
     {#if feedbackVisible}
         <p class="blank-text">{getRandomizedArray(data.results.feedback)}</p>
