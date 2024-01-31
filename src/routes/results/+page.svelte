@@ -74,27 +74,41 @@
     <!-- <p class="score-text">Thank you for your submission!</p> -->
     <p class="score-text">Hey <b>{data.name.split(" ")[0]}</b>, your score is:</p>
     <p class="score"><b>{counter}</b> / {data.score.results.max_score}</p>
+    {#if data.score.oldResults}
+        <p class="score-text">Your previous score was: <b>{data.score.oldResults.effective_score}</b> / {data.score.oldResults.max_score}</p>
+    {/if}
     <p class="score-text">Here's some feedback based on your answers:</p>
 
-    <!-- {#if visible} -->
-    <!-- <Typewriter interval={["1","10","20","30","50"]} on:done={done} keepCursorOnFinish={3000}> -->
-    {#await data.streamed.llm}
-        Loading response from AI...
-    {:then chunk}
+    {#if visible}
+    <!-- <Typewriter interval={["30"]} on:done={done} keepCursorOnFinish={3000}> -->
         <div class="suggestion-block">
-            <p class="suggestion" in:fly={{y:300}}>
-               {#each chunk.trim().split("data: [DONE]").join("").split("data: {\"response\":\"").join("").split("\"}\n\n").join("").trim().split("\\n") as para}
-                    {para}
-                    <br><br>
-               {/each}
-               {data.score.feedback}
-            </p>
+                {#if data.score.llmResponse}
+                    {#each data.score.llmResponse.split("\\n") as res, i}
+                        <div class="suggestion" in:fly={{y:300*i}}>
+                            {res}
+                        </div>
+                    {/each}
+                    <div class="suggestion" in:fly={{y:300}}>
+                        For the question with images:
+                        {data.score.images_feedback}
+                    </div>
+                    <div class="suggestion" in:fly={{y:300}}>
+                        {data.score.feedback}
+                    </div>
+                {:else}
+                    <div class="suggestion" in:fly={{y:300}}>
+                        For the question with images:
+                        {data.score.images_feedback}
+                    </div>
+                    <div class="suggestion" in:fly={{y:300}}>
+                        {data.score.feedback}
+                    </div>
+                {/if}
         </div>
-    {/await}
     <!-- </Typewriter> -->
-    <!-- {/if} -->
+    {/if}
 
-    {#if feedbackVisible}
+    <!-- {#if feedbackVisible} -->
         <p class="blank-text">{getRandomizedArray(data.results.feedback)}</p>
         <div class="image-container" in:fly={{y:300}}>
             {#each randomizedArray as o, j}
@@ -105,7 +119,7 @@
                 </div>
             {/each}
         </div>
-    {/if}
+    <!-- {/if} -->
 </div>
 
 
@@ -170,7 +184,7 @@
     .score {
         font-size: 50px;
         padding: 8px;
-        font-weight: 500;
+/*        font-weight: 500;*/
     }
 
     .suggestion-block{

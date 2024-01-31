@@ -89,9 +89,9 @@ export const actions = {
 		// Update the submission with the new answer //
 		let sub = await getResponse(BACKEND_URL + '/submission/update', 'POST', { answers: ans, user: cookies.get('_id'), _id: cookies.get('submissionId') });
 		sub = JSON.parse(sub);
-		if(sub.message){
-			throw redirect(303, "/results");
-		}
+		// if(sub.message){
+		// 	throw redirect(303, "/results");
+		// }
 
 		/* 
 			If all the questions are answered, store the "ans" variable via our API and redirect to "results" page,

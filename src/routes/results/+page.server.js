@@ -6,27 +6,12 @@ let submission = {};
 
 export async function load({cookies, fetch}){
 
-	submission = await getResponse(`${BACKEND_URL}/submission/find?_id=${cookies.get('submissionId')}`);
+	submission = await getResponse(`${BACKEND_URL}/submission/find?_id=${cookies.get('_id')}`);
 	submission = JSON.parse(submission);
 
     return {
     	results,
     	score: submission,
-    	name: cookies.get('name'),
-    	streamed: {
-    		llm: getStreamResponse(
-    			`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/ai/run/${CF_MODEL}`,
-				"POST",
-				{
-					"stream": true,
-					"messages": [
-						{"role":"system","content": BASE_PROMPT},
-						{"role":"user","content": submission.prompt}
-					]
-				},
-				{
-					'Authorization': `Bearer ${CF_API_KEY}`
-				})
-    	}
+    	name: cookies.get('name')
     }
 };
