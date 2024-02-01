@@ -83,11 +83,13 @@
     <!-- <Typewriter interval={["30"]} on:done={done} keepCursorOnFinish={3000}> -->
         <div class="suggestion-block">
                 {#if data.score.llmResponse}
-                    {#each data.score.llmResponse.split("\\n") as res, i}
-                        <div class="suggestion" in:fly={{y:300*i}}>
+                    <div class="suggestion" in:fly={{y:300}}>
+                        {#each data.score.llmResponse.split("\\n") as res}
                             {res}
-                        </div>
-                    {/each}
+                            <br>
+                        {/each}
+                    </div>
+                    
                     <div class="suggestion" in:fly={{y:300}}>
                         For the question with images:
                         {data.score.images_feedback}
