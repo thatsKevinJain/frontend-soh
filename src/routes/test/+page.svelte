@@ -1,4 +1,56 @@
 <script>
+  import { onMount } from 'svelte';
+
+  let progress = 0;
+
+  onMount(() => {
+    const interval = 30; // seconds
+    const updateInterval = 100; // milliseconds
+    const steps = 100;
+    const stepSize = (interval * 1000) / steps;
+
+    const updateProgressBar = () => {
+      progress += 1;
+      if (progress <= 100) {
+        setTimeout(updateProgressBar, stepSize);
+      }
+    };
+
+    updateProgressBar();
+  });
+</script>
+
+<main>
+  <div class="progress-bar">
+    <div class="progress" style={`width: ${progress}%`}></div>
+  </div>
+</main>
+
+<style>
+  main {
+    text-align: center;
+    padding: 1em;
+    max-width: 240px;
+    margin: 0 auto;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.3s ease;
+  }
+</style>
+
+
+<!-- <script>
     import { fly } from 'svelte/transition';
     import { onMount } from 'svelte';
     let visible = false;
@@ -8,13 +60,13 @@
     onMount(() => {
       visible = true;
     });
-</script>
+</script> -->
 
 <!-- <div class="main">
     <a href="/"><img src="favicon.png" alt="Science of Happiness" style="width: 120px; height: 120px;"></a>
 </div> -->
 
-{#if visible}
+<!-- {#if visible}
     <div class="main-wrapper">
         <div class="main-container">
           <a href="/"><img src="favicon.png" alt="Science of Happiness" style="width: 120px; height: 120px;"></a>
@@ -36,10 +88,10 @@
       </div>
     </div>
 {/if}
-
+ -->
 <!-- <img src="happiness2.jpg" alt="hello" class="background"/> -->
 
-<style>
+<!-- <style>
 
     .main-wrapper {
         min-height: 100%;
@@ -105,4 +157,4 @@
         border-radius: 10px;
         opacity: 0.8;
     }
-</style>
+</style> -->

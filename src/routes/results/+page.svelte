@@ -2,12 +2,13 @@
 // @ts-nocheck
     import { onMount } from 'svelte';
     import { fly } from 'svelte/transition';
-    import Typewriter from 'svelte-typewriter'
+    import ProgressBar from './ProgressBar.svelte';
+    // import Typewriter from 'svelte-typewriter'
 
     export let data;
     let counter = 0;
     let visible = false;
-    let feedbackVisible = false;
+    // let feedbackVisible = false;
 
     /* 
         Randomize images in a given question
@@ -75,52 +76,65 @@
     <p class="score-text">Hey <b>{data.name.split(" ")[0]}</b>, your score is:</p>
     <p class="score"><b>{counter}</b> / {data.score.results.max_score}</p>
     {#if data.score.oldResults}
-        <p class="score-text">Your previous score was: <b>{data.score.oldResults.effective_score}</b> / {data.score.oldResults.max_score}</p>
+        {#if data.score.oldResults.effective_score > data.score.results.effective_score}
+            <p class="score-text">your score has decreased by <b>{data.score.oldResults.effective_score - data.score.results.effective_score}</b> points from the first time you gave the test. Previous score: <b>{data.score.oldResults.effective_score}</b> / {data.score.oldResults.max_score}</p>
+            <p class="score-text">This suggests that you are making choices associated with less happiness and overall wellbeing.</p>
+        {:else}
+            <p class="score-text">your score has increased by <b>{data.score.results.effective_score - data.score.oldResults.effective_score}</b> points from the first time you gave the test. Previous score: <b>{data.score.oldResults.effective_score}</b> / {data.score.oldResults.max_score}</p>
+            <p class="score-text">This suggests that you are making choices associated with greater happiness and overall wellbeing!</p>
+        {/if}
     {/if}
-    <p class="score-text">Here's some feedback based on your answers:</p>
-
+    
     {#if visible}
-    <!-- <Typewriter interval={["30"]} on:done={done} keepCursorOnFinish={3000}> -->
-        <div class="suggestion-block">
-                {#if data.score.llmResponse}
-                    <div class="suggestion" in:fly={{y:300}}>
-                        {#each data.score.llmResponse.split("\\n") as res}
-                            {res}
-                            <br>
-                        {/each}
+    <!-- <Typewriter interval={["1"]} on:done={done} keepCursorOnFinish={3000}> -->
+        {#if data.score.llmResponse}
+            <p class="score-text">Here's some feedback based on your answers:</p>
+            <div class="suggestion-block">
+                <div class="suggestion" in:fly={{y:300}}>
+                    {#each data.score.llmResponse.split("\\n") as res}
+                        {res}
+                        <br>
+                    {/each}
+                </div>
+                
+                <div class="suggestion" in:fly={{y:300}}>
+                    For the question with images:
+                    {data.score.images_feedback}
+                </div>
+                <div class="suggestion" in:fly={{y:300}}>
+                    {data.score.feedback}
+                </div>
+            </div>
+
+            <p class="blank-text">{getRandomizedArray(data.results.feedback)}</p>
+            <div class="image-container" in:fly={{y:300}}>
+                {#each randomizedArray as o, j}
+                    <!-- svelte-ignore a11y-label-has-associated-control -->
+                    <div class="image-block">
+                        <img src={o.url} class="image" alt={o.text}/>
+                        <p class="image-label">{o.text}</p>
                     </div>
-                    
-                    <div class="suggestion" in:fly={{y:300}}>
-                        For the question with images:
-                        {data.score.images_feedback}
-                    </div>
-                    <div class="suggestion" in:fly={{y:300}}>
-                        {data.score.feedback}
-                    </div>
-                {:else}
-                    <div class="suggestion" in:fly={{y:300}}>
-                        For the question with images:
-                        {data.score.images_feedback}
-                    </div>
-                    <div class="suggestion" in:fly={{y:300}}>
-                        {data.score.feedback}
-                    </div>
-                {/if}
-        </div>
+                {/each}
+            </div>
+        {:else}
+            <ProgressBar />
+            <!-- <div class="suggestion-block">
+                <div class="suggestion" in:fly={{y:300}}>
+                    For the question with images:
+                    {data.score.images_feedback}
+                </div>
+                <div class="suggestion" in:fly={{y:300}}>
+                    {data.score.feedback}
+                </div>
+            </div> -->
+        {/if}
     <!-- </Typewriter> -->
     {/if}
 
+    <!-- <ProgressBar /> -->
+
     <!-- {#if feedbackVisible} -->
-        <p class="blank-text">{getRandomizedArray(data.results.feedback)}</p>
-        <div class="image-container" in:fly={{y:300}}>
-            {#each randomizedArray as o, j}
-                <!-- svelte-ignore a11y-label-has-associated-control -->
-                <div class="image-block">
-                    <img src={o.url} class="image" alt={o.text}/>
-                    <p class="image-label">{o.text}</p>
-                </div>
-            {/each}
-        </div>
+        
     <!-- {/if} -->
 </div>
 
