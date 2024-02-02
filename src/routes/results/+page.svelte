@@ -78,10 +78,10 @@
     {#if data.score.oldResults}
         {#if data.score.oldResults.effective_score > data.score.results.effective_score}
             <p class="score-text">your score has decreased by <b>{data.score.oldResults.effective_score - data.score.results.effective_score}</b> points from the first time you gave the test. Previous score: <b>{data.score.oldResults.effective_score}</b> / {data.score.oldResults.max_score}</p>
-            <p class="score-text">This suggests that you are making choices associated with less happiness and overall wellbeing.</p>
+            <p class="score-text">This suggests that you are making fewer choices associated with happiness and overall wellbeing.</p>
         {:else}
             <p class="score-text">your score has increased by <b>{data.score.results.effective_score - data.score.oldResults.effective_score}</b> points from the first time you gave the test. Previous score: <b>{data.score.oldResults.effective_score}</b> / {data.score.oldResults.max_score}</p>
-            <p class="score-text">This suggests that you are making choices associated with greater happiness and overall wellbeing!</p>
+            <p class="score-text">This suggests that you are making more choices associated with greater happiness and overall wellbeing!</p>
         {/if}
     {/if}
     
@@ -92,8 +92,10 @@
             <div class="suggestion-block">
                 <div class="suggestion" in:fly={{y:300}}>
                     {#each data.score.llmResponse.split("\\n") as res}
-                        {res}
-                        <br>
+                        {#if res != ""}
+                            {res}
+                            <br>
+                        {/if}
                     {/each}
                 </div>
                 

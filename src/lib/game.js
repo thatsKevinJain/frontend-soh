@@ -74,9 +74,9 @@ export const game =
 			options: [
 				{ id: 1, score: 0, option: "About 30 minutes or less" },
 				{ id: 2, score: 0.25, option: "30-89 minutes" },
-				{ id: 3, score: 0.5, option: "90-150 minutes/1.5-2.5 hours per week" },
+				{ id: 3, score: 1, option: "90-150 minutes/1.5-2.5 hours per week" },
 				{ id: 4, score: 0.75, option: "2.5-5 hours per week" },
-				{ id: 5, score: 1, option: "Over 5 hours per week" },
+				{ id: 5, score: 0.50, option: "Over 5 hours per week" },
 			],
 			images: ["https://images.unsplash.com/photo-1430462708036-7ef5363d56d8?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1558724041-f4de24818f17?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1545205597-3d9d02c29597?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1545389336-cf090694435e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1518611012118-696072aa579a?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1621886178958-be42369fc9e7?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1616699002805-0741e1e4a9c5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1600618528240-fb9fc964b853?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200","https://images.unsplash.com/photo-1494989615690-9900562a5b20?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixlib=rb-4.0.3&q=80&w=200"],
 			weight: 1,
@@ -251,11 +251,11 @@ export const game =
 			id: 12,
 			question: "Which of the following best describes your approach to relationships with others?",
 			options: [
-				{ id: 1, score: 0, option: "I generally trust others and find it relatively easy to get close to people. I am comfortable depending on others and having them depend on me. I rarely worry about my friends leaving me out of group plans or talking negatively about me. I rarely worry about my romantic partner leaving me." },
-				{ id: 2, score: 0, option: "I find it somewhat difficult to trust others and I don’t like them to try and get too close to me. I don’t like for people to grow to depend on me and I am uncomfortable with the idea of depending on them. Others often want to become more intimate than I am comfortable being. I don’t like for friends or potential romantic partners to pry into my inner thoughts and feelings." },
-				{ id: 3, score: 0, option: "I sometimes trust others but I often worry that they will leave me. Others are usually reluctant to get as close as I would like. I often fear that my friend group doesn’t really want to include me in plans or that they talk negatively about me behind my back. I worry a lot that my romantic partner doesn’t love me or will leave me." },
+				{ id: 1, score: 1, option: "I generally trust others and find it relatively easy to get close to people. I am comfortable depending on others and having them depend on me. I rarely worry about my friends leaving me out of group plans or talking negatively about me. I rarely worry about my romantic partner leaving me." },
+				{ id: 2, score: 0.5, option: "I find it somewhat difficult to trust others and I don’t like them to try and get too close to me. I don’t like for people to grow to depend on me and I am uncomfortable with the idea of depending on them. Others often want to become more intimate than I am comfortable being. I don’t like for friends or potential romantic partners to pry into my inner thoughts and feelings." },
+				{ id: 3, score: 0.5, option: "I sometimes trust others but I often worry that they will leave me. Others are usually reluctant to get as close as I would like. I often fear that my friend group doesn’t really want to include me in plans or that they talk negatively about me behind my back. I worry a lot that my romantic partner doesn’t love me or will leave me." },
 			],
-			weight: 0,
+			weight: 1,
 			multiple: false,
 			type: "radio",
 			format: "text",
@@ -332,7 +332,7 @@ export const game =
 		},
 		{
 			id: 15,
-			title: "This course uses an active learning approach. Some examples are: think-pair-share, group discussion, crowd crumple, minute papers, audience polling (Menti, Kahoot!), concept mapping, peer instruction and reflective writing.  Thinking about these activities, how strongly do you agree or disagree with the following statements.",
+			title: "This course uses an active learning approach. Some examples are: think-pair-share, group discussion, crowd crumple, minute papers, audience polling (Menti, Kahoot!), concept mapping, peer instruction and reflective writing.  Thinking about these activities, how strongly do you agree or disagree with the following statements. If this the first time you are taking the test, please skip this section",
 			questions: [
 				{ id: 1, sign: 1, q: "These activities enhanced my learning experience in this class." },
 				{ id: 2, sign: 1, q: "These activities provided opportunities for me to process course material through multiple avenues for learning." },

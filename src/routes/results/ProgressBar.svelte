@@ -5,7 +5,7 @@
   let text = "Loading responses from AI...";
 
   onMount(() => {
-    const interval = 30; // seconds
+    const interval = 60; // seconds
     const steps = 100;
     const stepSize = (interval * 1000) / steps;
 
